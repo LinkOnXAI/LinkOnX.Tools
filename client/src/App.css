@@ -187,6 +187,11 @@ button:disabled {
   min-height: 0;
 }
 
+.workspace.message-like-layout {
+  height: 90vh;
+  max-height: 90vh;
+}
+
 .panel {
   padding: 1rem;
   display: flex;
@@ -678,6 +683,12 @@ button:disabled {
   min-height: 0;
 }
 
+.sql-highlight-editor-wrap {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 .sql-highlight-editor.disabled {
   opacity: 0.72;
 }
@@ -689,6 +700,14 @@ button:disabled {
 
 .sql-highlight-editor .sql-textarea-input:focus {
   outline: none;
+}
+
+.sql-highlight-editor .sql-textarea-input {
+  overflow: auto !important;
+}
+
+.sql-highlight-editor .sql-textarea-pre {
+  will-change: transform;
 }
 
 .sql-highlight-editor .token.comment {
