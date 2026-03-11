@@ -328,7 +328,8 @@ app.get("/api/qsf/query-developer/tree", requireAuth, async (req, res) => {
   }
 
   const stat = await fs.promises.stat(fullPath);
-  const tree = buildQueryDeveloperTree(root, fileName);
+  const factoryName = String(req.user?.factory || "").trim();
+  const tree = buildQueryDeveloperTree(root, fileName, factoryName);
 
   return res.json({
     name: fileName,
@@ -505,15 +506,39 @@ async function listQsfFiles() {
   for (const entry of qsfEntries) {
     const fullPath = resolveQsfPath(entry.name);
     const stat = await fs.promises.stat(fullPath);
+    const systemName = await readSystemNameFromQsf(fullPath);
     files.push({
       name: entry.name,
+      systemName,
       size: stat.size,
       modifiedAt: stat.mtime.toISOString(),
     });
   }
 
-  files.sort((left, right) => left.name.localeCompare(right.name));
+  files.sort((left, right) => {
+    const leftKey = String(left.systemName || left.name || "");
+    const rightKey = String(right.systemName || right.name || "");
+    const bySystem = leftKey.localeCompare(rightKey);
+    if (bySystem !== 0) return bySystem;
+    return String(left.name || "").localeCompare(String(right.name || ""));
+  });
   return files;
+}
+
+async function readSystemNameFromQsf(fullPath) {
+  try {
+    const xmlText = await fs.promises.readFile(fullPath, "utf8");
+    const documentNode = parseXmlDocument(xmlText);
+    const root = documentNode.documentElement;
+    if (!root || root.tagName !== "Q") return "";
+
+    const firstSystem = getElementChildren(root).find((node) => node.tagName === "S");
+    if (!firstSystem) return "";
+
+    return readAttribute(firstSystem, "N", "").trim();
+  } catch {
+    return "";
+  }
 }
 
 async function ensureQsfDirectoryExists() {
@@ -544,13 +569,14 @@ function parseXmlDocument(xmlText) {
   return documentNode;
 }
 
-function buildQueryDeveloperTree(rootNode, fileName) {
+function buildQueryDeveloperTree(rootNode, fileName, factoryName) {
+  const rootLabel = String(factoryName || "").trim() || String(fileName || "").trim() || "Factory";
   const childRefs = collectQueryChildRefs(rootNode, [], QUERY_DEVELOPER_CHILD_TAGS.Q);
   return {
     id: "qd:root",
     kind: "root",
     tag: rootNode.tagName,
-    label: `${fileName} Desc=[Disk QSF]`,
+    label: rootLabel,
     path: `/${rootNode.tagName}[1]`,
     locator: {
       elementPath: [],

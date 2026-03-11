@@ -1,0 +1,176 @@
+.option-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.option-dialog {
+  width: min(520px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.option-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 8px 12px;
+  align-items: center;
+}
+
+.option-grid > * {
+  min-width: 0;
+}
+
+.option-grid label {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.option-grid input,
+.option-grid select {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px 8px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.option-theme-presets {
+  display: flex;
+  gap: 8px;
+}
+
+.option-theme-btn {
+  flex: 1 1 auto;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #334155;
+  padding: 8px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease,
+    opacity 140ms ease;
+}
+
+.option-theme-btn.active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.16);
+}
+
+.option-theme-btn:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 1px;
+}
+
+.option-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.option-actions button {
+  padding: 8px 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  background: #f4f6fa;
+  cursor: pointer;
+}
+
+.option-actions .primary {
+  background: #4364f7;
+  color: #fff;
+  border-color: #4364f7;
+}
+
+body.app-theme-dark .option-backdrop {
+  background: rgba(2, 6, 23, 0.62);
+}
+
+body.app-theme-dark .option-dialog {
+  background: #0f1a2d;
+  border: 1px solid #31445f;
+  box-shadow: 0 16px 36px rgba(2, 6, 23, 0.5);
+}
+
+body.app-theme-dark .option-dialog h3,
+body.app-theme-dark .option-grid label {
+  color: #dbe7ff;
+}
+
+body.app-theme-dark .option-grid input,
+body.app-theme-dark .option-grid select {
+  background: #0c172b;
+  color: #dbe7ff;
+  border-color: #31445f;
+}
+
+body.app-theme-dark .option-theme-btn {
+  background: #172741;
+  border-color: #31445f;
+  color: #dbe7ff;
+  opacity: 0.82;
+}
+
+body.app-theme-dark .option-theme-btn.active {
+  border-color: #93c5fd;
+  background: linear-gradient(180deg, #23416f 0%, #1d365d 100%);
+  color: #ffffff;
+  opacity: 1;
+  box-shadow:
+    0 0 0 2px rgba(96, 165, 250, 0.35),
+    0 8px 18px rgba(30, 64, 175, 0.3);
+}
+
+body.app-theme-dark .option-theme-btn.active::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #67e8f9;
+  box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.22);
+}
+
+body.app-theme-dark .option-theme-btn:hover:not(.active) {
+  opacity: 0.95;
+  border-color: #4b6284;
+}
+
+body.app-theme-dark .option-actions button {
+  background: #172741;
+  border-color: #31445f;
+  color: #dbe7ff;
+}
+
+body.app-theme-dark .option-actions .primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
