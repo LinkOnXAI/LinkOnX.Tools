@@ -17,10 +17,8 @@ const port = Number(process.env.PORT || 3001);
 const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 const jwtSecret = process.env.JWT_SECRET || "linkonx-tools-web-dev-secret";
 const authCookieName = "linkonx_qd_session";
-const mssqlConnectionString =
-  process.env.MSSQL_CONNECTION_STRING ||
-  "Data Source=192.168.0.111,1433;Initial Catalog=LINKON;User ID=linkon;Password=p@ssw0rd!2;Encrypt=False;TrustServerCertificate=True";
-const authUserTable = process.env.AUTH_USER_TABLE || "dbo.QSECUSRDEF";
+const mssqlConnectionString = String(process.env.MSSQL_CONNECTION_STRING || "").trim();
+const authUserTable = String(process.env.AUTH_USER_TABLE || "").trim();
 const qsfRootDir = path.resolve(process.env.QSF_ROOT_DIR || path.join(process.cwd(), "data", "qsf"));
 const securityKey = loadSecurityKey();
 const isProduction = String(process.env.NODE_ENV || "").trim().toLowerCase() === "production";
@@ -1458,7 +1456,7 @@ async function directoryExists(targetPath) {
 function parseSchemaTable(value) {
   const normalized = String(value || "").trim();
   if (!normalized) {
-    return { schema: "dbo", table: "QSECUSRDEF" };
+    throw new Error("AUTH_USER_TABLE environment variable is required.");
   }
   const split = normalized.split(".");
   const namePattern = /^[A-Za-z_][A-Za-z0-9_]*$/;
