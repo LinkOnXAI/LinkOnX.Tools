@@ -104,6 +104,66 @@ label {
   font-size: 0.86rem;
 }
 
+.login-remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.84rem;
+  line-height: 1.2;
+}
+
+.login-remember input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border-radius: 4px;
+}
+
+.session-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  background: rgba(15, 23, 42, 0.42);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.session-dialog {
+  width: min(420px, 100%);
+  border: 1px solid #d5dee9;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.22);
+  padding: 1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.session-dialog h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  color: #0f172a;
+}
+
+.session-dialog p {
+  margin: 0;
+  color: #475569;
+}
+
+.session-dialog .session-dialog-comment {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.session-dialog-actions {
+  margin-top: 0.25rem;
+  display: inline-flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 input,
 textarea,
 button,
@@ -459,6 +519,48 @@ button:disabled {
 .tree-search-icon-down {
   mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 8l5 5 5-5' stroke='%23000' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
     center / contain no-repeat;
+}
+
+.tree-context-menu {
+  position: fixed;
+  z-index: 2100;
+  min-width: 168px;
+  display: grid;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.2);
+}
+
+.tree-context-menu button {
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #0f172a;
+  text-align: left;
+  padding: 0.34rem 0.55rem;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.tree-context-menu button:hover:not(:disabled) {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  box-shadow: none;
+}
+
+.tree-context-menu button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tree-context-separator {
+  display: block;
+  height: 1px;
+  margin: 3px 2px;
+  background: #dbe4ef;
 }
 
 .tree {
@@ -953,6 +1055,25 @@ body.app-theme-dark .tree-node::before {
   );
 }
 
+body.app-theme-dark .tree-context-menu {
+  background: #0f1a2d;
+  border-color: #31445f;
+  box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
+}
+
+body.app-theme-dark .tree-context-menu button {
+  color: #dbe7ff;
+}
+
+body.app-theme-dark .tree-context-menu button:hover:not(:disabled) {
+  background: #172741;
+  border-color: #3b4f70;
+}
+
+body.app-theme-dark .tree-context-separator {
+  background: #31445f;
+}
+
 body.app-theme-dark .file-list li button {
   background: #0f1a2d;
   border-color: #31445f;
@@ -1001,6 +1122,28 @@ body.app-theme-dark .home-shortcut-name {
 
 body.app-theme-dark .home-shortcut-desc {
   color: #93a6c3;
+}
+
+body.app-theme-dark .login-remember {
+  color: #dbe7ff;
+}
+
+body.app-theme-dark .session-dialog {
+  background: #0f1a2d;
+  border-color: #31445f;
+  box-shadow: 0 18px 38px rgba(2, 6, 23, 0.55);
+}
+
+body.app-theme-dark .session-dialog h3 {
+  color: #dbe7ff;
+}
+
+body.app-theme-dark .session-dialog p {
+  color: #a9b8cf;
+}
+
+body.app-theme-dark .session-dialog .session-dialog-comment {
+  color: #e2e8f0;
 }
 
 @media (max-width: 1100px) {

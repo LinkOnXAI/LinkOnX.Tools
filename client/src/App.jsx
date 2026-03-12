@@ -4,9 +4,34 @@ import { RibbonBar } from "./components/RibbonBar";
 import { RibbonIcon } from "./components/RibbonIcon";
 import { OptionDialog } from "./components/OptionDialog";
 import Split from "react-split";
-import Editor from "react-simple-code-editor";
-import Prism from "prismjs";
-import "prismjs/components/prism-sql";
+import { SqlHighlightEditor } from "./queryDeveloper/SqlHighlightEditor";
+import {
+  CONTEXT_ALLOWED_CHILDREN,
+  SQL_PROVIDERS,
+  TREE_ACTION_ENDPOINTS,
+  TREE_NODE_DEPTH_INDENT_PX,
+} from "./queryDeveloper/constants";
+import {
+  applySavedPropertyToDetail,
+  applySavedPropertyToTree,
+  buildTreeClipboardKey,
+  boolToSelectValue,
+  buildQsfDownloadName,
+  buildTreeMap,
+  defaultExpanded,
+  expandPath,
+  findTreeMatches,
+  flattenVisible,
+  getQueryDeveloperTreeIcon,
+  getSqlProviderLogoSrc,
+  getSqlProviderMonogram,
+  groupProperties,
+  isAlwaysReadOnlyProperty,
+  normalizeBoolValue,
+  parseDownloadFileName,
+  scrollTreeNodeIntoView,
+  selectPath,
+} from "./queryDeveloper/utils";
 
 const TOOL_MODULES = [
   { id: "home", label: "Home" },
@@ -37,8 +62,10 @@ const HOME_SHORTCUT_GROUPS = [
 ];
 
 const MAIN_LOGO_SRC = "/linkonx-main-logo.svg";
-const SQL_PROVIDERS = ["MsSql", "Oracle", "MySql", "MariaDb", "PostgreSql", "Machbase", "OleDb", "Influx", "SQLite"];
-const TREE_NODE_DEPTH_INDENT_PX = 10;
+const AUTO_LOGOUT_IDLE_MS = 10 * 60 * 1000;
+const LOGIN_REMEMBER_KEY = "linkon.login.remember";
+const LOGIN_REMEMBER_FACTORY_KEY = "linkon.login.factory";
+const LOGIN_REMEMBER_USER_KEY = "linkon.login.user";
 
 function App() {
   const [booting, setBooting] = useState(true);
@@ -46,7 +73,26 @@ function App() {
   const [showOption, setShowOption] = useState(false);
   const [authPending, setAuthPending] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [credentials, setCredentials] = useState({ factory: "", username: "", password: "" });
+  const [credentials, setCredentials] = useState(() => {
+    try {
+      const remembered = window.localStorage.getItem(LOGIN_REMEMBER_KEY) === "true";
+      if (!remembered) return { factory: "", username: "", password: "" };
+      return {
+        factory: String(window.localStorage.getItem(LOGIN_REMEMBER_FACTORY_KEY) || ""),
+        username: String(window.localStorage.getItem(LOGIN_REMEMBER_USER_KEY) || ""),
+        password: "",
+      };
+    } catch {
+      return { factory: "", username: "", password: "" };
+    }
+  });
+  const [rememberLoginId, setRememberLoginId] = useState(() => {
+    try {
+      return window.localStorage.getItem(LOGIN_REMEMBER_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
   const [treeFontFamily, setTreeFontFamily] = useState("Noto Sans KR, Noto Sans, Segoe UI, system-ui, sans-serif");
   const [treeFontSize, setTreeFontSize] = useState(14);
   const [propFontFamily, setPropFontFamily] = useState("Noto Sans KR, Noto Sans, Segoe UI, system-ui, sans-serif");
@@ -85,7 +131,10 @@ function App() {
   const [searchCaseSensitive, setSearchCaseSensitive] = useState(false);
   const [searchMatches, setSearchMatches] = useState([]);
   const [searchIndex, setSearchIndex] = useState(-1);
+  const [treeClipboard, setTreeClipboard] = useState(null);
+  const [contextMenu, setContextMenu] = useState(null);
   const treePaneRef = useRef(null);
+  const contextMenuRef = useRef(null);
 
   const [nodeDetail, setNodeDetail] = useState(null);
   const [propertyDraft, setPropertyDraft] = useState({});
@@ -95,9 +144,16 @@ function App() {
 
   const [saving, setSaving] = useState(false);
   const [banner, setBanner] = useState("");
+  const [showAutoLogoutDialog, setShowAutoLogoutDialog] = useState(false);
+  const idleTimerRef = useRef(null);
+  const autoLogoutPendingRef = useRef(false);
 
   const treeMap = useMemo(() => buildTreeMap(treeRoot), [treeRoot]);
   const treeRows = useMemo(() => flattenVisible(treeRoot, expanded), [treeRoot, expanded]);
+  const contextNode = useMemo(() => {
+    if (!contextMenu?.pathText) return null;
+    return treeMap.get(contextMenu.pathText) || null;
+  }, [contextMenu, treeMap]);
   const activeModuleInfo = useMemo(
     () => TOOL_MODULES.find((item) => item.id === activeModule) || TOOL_MODULES[0],
     [activeModule],
@@ -146,6 +202,18 @@ function App() {
       setActiveSqlProvider("MsSql");
     }
   }, []);
+
+  const resetSessionState = useCallback(() => {
+    setUser(null);
+    setFiles([]);
+    setSelectedFile("");
+    setTreeRoot(null);
+    setSelectedPath("");
+    setNodeDetail(null);
+    initDrafts(null);
+    setBanner("");
+    setAuthError("");
+  }, [initDrafts]);
 
   const loadNodeDetail = useCallback(
     async (fileName, pathText) => {
@@ -273,12 +341,64 @@ function App() {
   }, [showTreeDepthGuide]);
 
   useEffect(() => {
+    try {
+      window.localStorage.setItem(LOGIN_REMEMBER_KEY, rememberLoginId ? "true" : "false");
+      if (!rememberLoginId) {
+        window.localStorage.removeItem(LOGIN_REMEMBER_FACTORY_KEY);
+        window.localStorage.removeItem(LOGIN_REMEMBER_USER_KEY);
+      }
+    } catch {
+      // ignore storage failures
+    }
+  }, [rememberLoginId]);
+
+  useEffect(() => {
     if (!banner) return undefined;
     const timer = window.setTimeout(() => {
       setBanner("");
     }, 3000);
     return () => window.clearTimeout(timer);
   }, [banner]);
+
+  const runAutoLogout = useCallback(async () => {
+    try {
+      await apiRequest("/api/auth/logout", { method: "POST" });
+    } catch {
+      // ignore logout request failures during inactivity logout
+    } finally {
+      setCredentials((prev) => ({ ...prev, password: "" }));
+      resetSessionState();
+      setShowAutoLogoutDialog(true);
+    }
+  }, [resetSessionState]);
+
+  useEffect(() => {
+    if (!user) return undefined;
+
+    const onUserActivity = () => {
+      if (autoLogoutPendingRef.current) return;
+      if (idleTimerRef.current) window.clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = window.setTimeout(() => {
+        if (autoLogoutPendingRef.current) return;
+        autoLogoutPendingRef.current = true;
+        void runAutoLogout().finally(() => {
+          autoLogoutPendingRef.current = false;
+        });
+      }, AUTO_LOGOUT_IDLE_MS);
+    };
+
+    const activityEvents = ["mousemove", "mousedown", "keydown", "touchstart", "scroll", "focus"];
+    onUserActivity();
+    activityEvents.forEach((eventName) => window.addEventListener(eventName, onUserActivity));
+
+    return () => {
+      activityEvents.forEach((eventName) => window.removeEventListener(eventName, onUserActivity));
+      if (idleTimerRef.current) {
+        window.clearTimeout(idleTimerRef.current);
+        idleTimerRef.current = null;
+      }
+    };
+  }, [runAutoLogout, user]);
 
   useEffect(() => {
     setSearchMatches([]);
@@ -292,6 +412,31 @@ function App() {
     return () => window.cancelAnimationFrame(frame);
   }, [selectedPath, expanded]);
 
+  useEffect(() => {
+    if (!contextMenu) return undefined;
+
+    const onPointerDown = (event) => {
+      const target = event.target;
+      if (contextMenuRef.current && target instanceof Node && contextMenuRef.current.contains(target)) return;
+      setContextMenu(null);
+    };
+    const onEscape = (event) => {
+      if (event.key === "Escape") setContextMenu(null);
+    };
+    const onViewportChanged = () => setContextMenu(null);
+
+    window.addEventListener("mousedown", onPointerDown, true);
+    window.addEventListener("keydown", onEscape);
+    window.addEventListener("resize", onViewportChanged);
+    window.addEventListener("scroll", onViewportChanged, true);
+    return () => {
+      window.removeEventListener("mousedown", onPointerDown, true);
+      window.removeEventListener("keydown", onEscape);
+      window.removeEventListener("resize", onViewportChanged);
+      window.removeEventListener("scroll", onViewportChanged, true);
+    };
+  }, [contextMenu]);
+
   const onLogin = async (event) => {
     event.preventDefault();
     setAuthError("");
@@ -299,6 +444,7 @@ function App() {
     setAuthPending(true);
 
     const factory = credentials.factory.trim();
+    const loginId = credentials.username.trim();
     if (!factory) {
       setAuthError("Factory is required.");
       setAuthPending(false);
@@ -310,13 +456,22 @@ function App() {
         method: "POST",
         body: {
           factory,
-          id: credentials.username.trim(),
-          username: credentials.username.trim(),
+          id: loginId,
+          username: loginId,
           password: credentials.password,
         },
       });
       setUser(session);
       setActiveModule("home");
+      setShowAutoLogoutDialog(false);
+      if (rememberLoginId) {
+        try {
+          window.localStorage.setItem(LOGIN_REMEMBER_FACTORY_KEY, factory);
+          window.localStorage.setItem(LOGIN_REMEMBER_USER_KEY, loginId);
+        } catch {
+          // ignore storage failures
+        }
+      }
       setCredentials((prev) => ({ ...prev, password: "" }));
       setBanner("Login completed. LinkOnX Tools is ready.");
     } catch (error) {
@@ -331,15 +486,8 @@ function App() {
     try {
       await apiRequest("/api/auth/logout", { method: "POST" });
     } finally {
-      setUser(null);
-      setFiles([]);
-      setSelectedFile("");
-      setTreeRoot(null);
-      setSelectedPath("");
-      setNodeDetail(null);
-      initDrafts(null);
-      setBanner("");
-      setAuthError("");
+      setShowAutoLogoutDialog(false);
+      resetSessionState();
     }
   };
 
@@ -417,6 +565,149 @@ function App() {
       return next;
     });
   }, []);
+
+  const onOpenContextMenu = useCallback((event, pathText) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setContextMenu({
+      x: Number(event.clientX || 0),
+      y: Number(event.clientY || 0),
+      pathText,
+    });
+  }, []);
+
+  const onRunTreeMutation = useCallback(async (action, pathText, sourcePathText = "", sourceXml = "") => {
+    if (!selectedFile || !pathText) return;
+    if (!confirmDiscard()) return;
+
+    setSaving(true);
+    setBanner("");
+    setContextMenu(null);
+    try {
+      const data = await requestTreeAction({
+        name: selectedFile,
+        action,
+        locator: { pathText },
+        sourceLocator: sourcePathText ? { pathText: sourcePathText } : undefined,
+        sourceXml: sourceXml ? String(sourceXml) : undefined,
+      });
+
+      const nextTree = data.tree || null;
+      setTreeRoot(nextTree);
+      const map = buildTreeMap(nextTree);
+      const nextPath = selectPath(map, String(data.selectedPath || pathText));
+      setSelectedPath(nextPath);
+      setExpanded((prev) => expandPath(prev, nextPath));
+
+      if (nextPath) {
+        await loadNodeDetail(selectedFile, nextPath);
+      } else {
+        setNodeDetail(null);
+        initDrafts(null);
+      }
+      if (action === "appendModule") setBanner("A new module was appended.");
+      else if (action === "deleteNode") setBanner("The node was deleted.");
+      else if (action === "pasteNode") setBanner("The copied node was pasted.");
+    } catch (error) {
+      setBanner(`Tree action failed: ${error.message}`);
+    } finally {
+      setSaving(false);
+    }
+  }, [confirmDiscard, initDrafts, loadNodeDetail, selectedFile]);
+
+  const onTreeContextAction = useCallback(async (action) => {
+    if (!contextMenu?.pathText) return;
+    const pathText = contextMenu.pathText;
+    const node = treeMap.get(pathText);
+    if (!node) {
+      setContextMenu(null);
+      return;
+    }
+
+    const hasChildren = (node.children || []).length > 0;
+    const isOpen = pathText === "root" ? true : expanded.has(pathText);
+
+    if (action === "expand") {
+      if (hasChildren) setExpanded((prev) => expandPath(prev, pathText));
+      setContextMenu(null);
+      return;
+    }
+
+    if (action === "collapse") {
+      if (hasChildren && pathText !== "root" && isOpen) {
+        setExpanded((prev) => {
+          const next = new Set(prev);
+          next.delete(pathText);
+          return next;
+        });
+      }
+      setContextMenu(null);
+      return;
+    }
+
+    if (action === "copy") {
+      setContextMenu(null);
+      setSaving(true);
+      setBanner("");
+      try {
+        const data = await apiRequest(
+          `/api/qsf/query-developer/node?name=${encodeURIComponent(selectedFile)}&path=${encodeURIComponent(pathText)}&includeOuterXml=1`,
+        );
+        const outerXml = String(data?.node?.outerXml || "").trim();
+        if (!outerXml) {
+          throw new Error("Copy source xml is empty.");
+        }
+
+        const clipboardKey = buildTreeClipboardKey(node.kind);
+        const clipboardEntry = {
+          key: clipboardKey,
+          fileName: selectedFile,
+          pathText,
+          kind: node.kind,
+          label: node.label,
+          data: outerXml,
+        };
+        setTreeClipboard(clipboardEntry);
+        try {
+          window.sessionStorage.setItem(clipboardKey, JSON.stringify(clipboardEntry));
+        } catch {
+          // ignore clipboard persistence failure
+        }
+        setBanner(`Copied: ${node.label}`);
+      } catch (error) {
+        setBanner(`Copy failed: ${error.message}`);
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
+
+    if (action === "paste") {
+      if (!treeClipboard?.pathText || treeClipboard.fileName !== selectedFile) {
+        setContextMenu(null);
+        return;
+      }
+      await onRunTreeMutation("pasteNode", pathText, treeClipboard.pathText, treeClipboard.data || "");
+      return;
+    }
+
+    if (action === "delete") {
+      if (node.kind === "root" || hasChildren) {
+        setContextMenu(null);
+        return;
+      }
+      await onRunTreeMutation("deleteNode", pathText);
+      return;
+    }
+
+    if (action === "appendChild") {
+      if (node.kind !== "system") {
+        setContextMenu(null);
+        return;
+      }
+      await onRunTreeMutation("appendModule", pathText);
+    }
+  }, [contextMenu, expanded, onRunTreeMutation, selectedFile, treeClipboard, treeMap]);
 
   const onSearch = async () => {
     const keyword = searchQuery.trim();
@@ -687,7 +978,7 @@ function App() {
               <h1>LinkOnX Tools Login</h1>
             </div>
           </div>
-          <p className="subtext">Query Developer module access requires authentication.</p>
+          <p className="subtext">User authentication is required to access the LinkOnX Tools.</p>
 
           <form onSubmit={onLogin}>
             <label>
@@ -701,7 +992,7 @@ function App() {
               />
             </label>
             <label>
-              ID
+              User ID
               <input
                 type="text"
                 autoComplete="username"
@@ -720,12 +1011,37 @@ function App() {
                 required
               />
             </label>
+            <label className="login-remember">
+              <input
+                type="checkbox"
+                checked={rememberLoginId}
+                onChange={(event) => setRememberLoginId(event.target.checked)}
+              />
+              Remember User ID
+            </label>
             {authError && <p className="error-text">{authError}</p>}
             <button type="submit" className="primary-btn" disabled={authPending}>
               {authPending ? "Signing in..." : "Sign in"}
             </button>
           </form>
         </section>
+        {showAutoLogoutDialog && (
+          <div className="session-dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby="session-dialog-title">
+            <section className="session-dialog">
+              <h3 id="session-dialog-title">Session Timed Out</h3>
+              <p>You were logged out automatically after 10 minutes of inactivity.</p>
+              <p className="session-dialog-comment">Would you like to log in again?</p>
+              <div className="session-dialog-actions">
+                <button type="button" className="primary-btn" onClick={() => setShowAutoLogoutDialog(false)}>
+                  Log In Again
+                </button>
+                <button type="button" onClick={() => setShowAutoLogoutDialog(false)}>
+                  Close
+                </button>
+              </div>
+            </section>
+          </div>
+        )}
       </div>
     );
   }
@@ -735,6 +1051,60 @@ function App() {
       <RibbonBar sections={ribbonSections} sessionLabel={sessionLabel} quickActions={ribbonQuickActions} />
 
       {banner && <div className="banner">{banner}</div>}
+      {contextMenu && contextNode && (
+        <div
+          ref={contextMenuRef}
+          className="tree-context-menu"
+          style={{
+            left: `${contextMenu.x}px`,
+            top: `${contextMenu.y}px`,
+          }}
+        >
+          {(() => {
+            const hasChildren = (contextNode.children || []).length > 0;
+            const pathText = contextMenu.pathText;
+            const isOpen = pathText === "root" ? true : expanded.has(pathText);
+            const allowedPasteKinds = CONTEXT_ALLOWED_CHILDREN[contextNode.kind] || [];
+            const canPaste = Boolean(
+              treeClipboard &&
+              treeClipboard.fileName === selectedFile &&
+              allowedPasteKinds.includes(treeClipboard.kind),
+            );
+            const canDelete = contextNode.kind !== "root" && !hasChildren;
+            return (
+              <>
+                <button type="button" onClick={() => void onTreeContextAction("expand")} disabled={!hasChildren || isOpen}>
+                  Expand
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void onTreeContextAction("collapse")}
+                  disabled={!hasChildren || !isOpen || pathText === "root"}
+                >
+                  Collapse
+                </button>
+                <button type="button" onClick={() => void onTreeContextAction("copy")} disabled={contextNode.kind === "root"}>
+                  Copy
+                </button>
+                <button type="button" onClick={() => void onTreeContextAction("paste")} disabled={!canPaste}>
+                  Paste
+                </button>
+                <button type="button" onClick={() => void onTreeContextAction("delete")} disabled={!canDelete}>
+                  Delete
+                </button>
+                {contextNode.kind === "system" && (
+                  <>
+                    <span className="tree-context-separator" role="separator" />
+                    <button type="button" onClick={() => void onTreeContextAction("appendChild")}>
+                      Append Child
+                    </button>
+                  </>
+                )}
+              </>
+            );
+          })()}
+        </div>
+      )}
 
       {activeModule === "home" ? (
         <section className="panel home-panel">
@@ -910,6 +1280,7 @@ function App() {
                           onClick={() => {
                             void onSelectNode(pathText);
                           }}
+                          onContextMenu={(event) => onOpenContextMenu(event, pathText)}
                           onDoubleClick={(event) => {
                             if (!hasChildren) return;
                             const target = event.target;
@@ -1105,338 +1476,7 @@ function App() {
   );
 }
 
-function SqlHighlightEditor({ value, onChange, disabled }) {
-  const wrapperRef = useRef(null);
-
-  const syncHighlightScroll = useCallback((inputEl, preEl) => {
-    const left = Number(inputEl?.scrollLeft || 0);
-    const top = Number(inputEl?.scrollTop || 0);
-    preEl.style.transform = `translate(${-left}px, ${-top}px)`;
-  }, []);
-
-  useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return undefined;
-
-    const inputEl = wrapper.querySelector(".sql-textarea-input");
-    const preEl = wrapper.querySelector(".sql-textarea-pre");
-    if (!inputEl || !preEl) return undefined;
-
-    const onScroll = () => syncHighlightScroll(inputEl, preEl);
-    onScroll();
-    inputEl.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      inputEl.removeEventListener("scroll", onScroll);
-      preEl.style.transform = "";
-    };
-  }, [syncHighlightScroll]);
-
-  useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    const inputEl = wrapper.querySelector(".sql-textarea-input");
-    const preEl = wrapper.querySelector(".sql-textarea-pre");
-    if (!inputEl || !preEl) return;
-
-    syncHighlightScroll(inputEl, preEl);
-  }, [value, disabled, syncHighlightScroll]);
-
-  return (
-    <div ref={wrapperRef} className="sql-highlight-editor-wrap">
-      <Editor
-        value={String(value ?? "")}
-        onValueChange={onChange}
-        highlight={highlightSqlCode}
-        padding={12}
-        className={`sql-textarea sql-highlight-editor ${disabled ? "disabled" : ""}`}
-        textareaClassName="sql-textarea-input"
-        preClassName="sql-textarea-pre"
-        disabled={disabled}
-        spellCheck={false}
-        style={{
-          fontFamily: 'Consolas, "Courier New", monospace',
-          fontSize: "0.84rem",
-          lineHeight: 1.42,
-        }}
-      />
-    </div>
-  );
-}
-
-function highlightSqlCode(code) {
-  const highlighted = Prism.highlight(String(code ?? ""), Prism.languages.sql || Prism.languages.clike, "sql");
-  return highlighted.replace(
-    /<span class="token operator">(AND|OR)<\/span>/gi,
-    '<span class="token keyword token-logical">$1</span>',
-  );
-}
-
-function isAlwaysReadOnlyProperty(prop) {
-  if (Boolean(prop?.readOnly)) return true;
-  const key = String(prop?.key || "").toLowerCase();
-  const label = String(prop?.label || "").toLowerCase();
-  const category = String(prop?.category || "").toLowerCase();
-  const isRelationGroup = category.includes("relation");
-  return isRelationGroup || key === "type" || key === "systemkey" || key === "sequenceid" || label === "type" || label === "id";
-}
-
-function normalizeBoolValue(value) {
-  if (typeof value === "boolean") return value;
-  const text = String(value ?? "").trim().toLowerCase();
-  return ["true", "t", "1", "yes", "y"].includes(text);
-}
-
-function boolToSelectValue(value) {
-  return normalizeBoolValue(value) ? "true" : "false";
-}
-
-function getSqlProviderMonogram(provider) {
-  switch (String(provider || "").toLowerCase()) {
-    case "mssql":
-      return "MS";
-    case "oracle":
-      return "OR";
-    case "mysql":
-      return "MY";
-    case "mariadb":
-      return "MD";
-    case "postgresql":
-      return "PG";
-    case "machbase":
-      return "MB";
-    case "oledb":
-      return "OD";
-    case "influx":
-      return "IF";
-    case "sqlite":
-      return "SQ";
-    default:
-      return String(provider || "").slice(0, 2).toUpperCase();
-  }
-}
-
-function getSqlProviderLogoSrc(provider) {
-  switch (String(provider || "").toLowerCase()) {
-    case "mssql":
-      return "/icons/db/mssql.svg";
-    case "oracle":
-      return "/icons/db/oracle.svg";
-    case "mysql":
-      return "/icons/db/mysql.svg";
-    case "mariadb":
-      return "/icons/db/mariadb.svg";
-    case "postgresql":
-      return "/icons/db/postgresql.svg";
-    case "influx":
-      return "/icons/db/influxdb.svg";
-    case "sqlite":
-      return "/icons/db/sqlite.svg";
-    case "oledb":
-      return "/icons/db/mssql.svg";
-    default:
-      return "";
-  }
-}
-
-function applySavedPropertyToDetail(detail, pathText, key, value) {
-  if (!detail || detail?.locator?.pathText !== pathText) return detail;
-  let changed = false;
-  const nextProperties = (detail.properties || []).map((prop) => {
-    if (String(prop?.key || "") !== key) return prop;
-    changed = true;
-    return { ...prop, value };
-  });
-  if (!changed) return detail;
-  return { ...detail, properties: nextProperties };
-}
-
-function applySavedPropertyToTree(root, pathText, key, value) {
-  if (!root || !pathText) return root;
-  const nameKeys = new Set(["System", "Module", "Function", "SqlGroup", "Name"]);
-  return mapTreeNodeByPath(root, pathText, (node) => {
-    const keyText = String(key || "");
-    let nextName = String(node?.name ?? "");
-    let nextDescription = String(node?.description ?? "");
-    let touched = false;
-
-    if (nameKeys.has(keyText)) {
-      nextName = String(value ?? "");
-      touched = true;
-    }
-    if (keyText === "Description") {
-      nextDescription = String(value ?? "");
-      touched = true;
-    }
-    if (!touched) return node;
-
-    return {
-      ...node,
-      name: nextName,
-      description: nextDescription,
-      label: formatQueryDeveloperLabel(nextName, nextDescription),
-    };
-  });
-}
-
-function mapTreeNodeByPath(root, pathText, updater) {
-  let changed = false;
-
-  const walk = (node) => {
-    if (!node) return node;
-
-    let nextNode = node;
-    if (String(node?.locator?.pathText || "") === pathText) {
-      const updated = updater(node);
-      if (updated !== node) {
-        nextNode = updated;
-        changed = true;
-      }
-    }
-
-    const children = node.children || [];
-    if (!children.length) return nextNode;
-
-    let childChanged = false;
-    const nextChildren = children.map((child) => {
-      const nextChild = walk(child);
-      if (nextChild !== child) childChanged = true;
-      return nextChild;
-    });
-    if (!childChanged) return nextNode;
-
-    changed = true;
-    return nextNode === node ? { ...node, children: nextChildren } : { ...nextNode, children: nextChildren };
-  };
-
-  const nextRoot = walk(root);
-  return changed ? nextRoot : root;
-}
-
-function formatQueryDeveloperLabel(name, description) {
-  return `${String(name || "")} Desc=[${String(description || "")}]`;
-}
-
-function buildTreeMap(root) {
-  const map = new Map();
-  if (!root) return map;
-  const stack = [root];
-  while (stack.length) {
-    const node = stack.pop();
-    const pathText = node?.locator?.pathText;
-    if (pathText) map.set(pathText, node);
-    for (const child of node.children || []) {
-      stack.push(child);
-    }
-  }
-  return map;
-}
-
-function flattenVisible(root, expanded) {
-  if (!root) return [];
-  const rows = [];
-  const walk = (node, depth) => {
-    const pathText = node?.locator?.pathText || "";
-    const children = node.children || [];
-    rows.push({ node, depth });
-    if (!children.length) return;
-    const isOpen = depth === 0 || expanded.has(pathText);
-    if (!isOpen) return;
-    for (const child of children) walk(child, depth + 1);
-  };
-  walk(root, 0);
-  return rows;
-}
-
-function defaultExpanded(root, maxDepth) {
-  const next = new Set();
-  if (!root) return next;
-  const walk = (node, depth) => {
-    const pathText = node?.locator?.pathText || "";
-    if (depth <= maxDepth && pathText && (node.children || []).length) {
-      next.add(pathText);
-    }
-    for (const child of node.children || []) walk(child, depth + 1);
-  };
-  walk(root, 0);
-  return next;
-}
-
-function selectPath(treeMap, preferredPath) {
-  if (!treeMap.size) return "";
-  if (preferredPath && treeMap.has(preferredPath)) return preferredPath;
-  for (const [pathText, node] of treeMap.entries()) {
-    if (node.kind !== "root") return pathText;
-  }
-  return treeMap.keys().next().value || "";
-}
-
-function findTreeMatches(root, keyword, caseSensitive = false) {
-  if (!root) return [];
-  const query = caseSensitive ? String(keyword || "") : String(keyword || "").toLowerCase();
-  const matches = [];
-  const walk = (node) => {
-    const text = `${node?.name || ""} ${node?.description || ""} ${node?.label || ""}`;
-    const target = caseSensitive ? text : text.toLowerCase();
-    if (target.includes(query) && node?.locator?.pathText) {
-      matches.push(node.locator.pathText);
-    }
-    for (const child of node.children || []) walk(child);
-  };
-  walk(root);
-  return matches;
-}
-
-function getQueryDeveloperTreeIcon(kind) {
-  switch (String(kind || "").toLowerCase()) {
-    case "root":
-      return "/factory-icon.svg";
-    case "system":
-      return "/icons/SqlSystem.png";
-    case "module":
-      return "/icons/SqlModule.png";
-    case "function":
-      return "/icons/SqlFunction.png";
-    case "sqlgroup":
-      return "/icons/SqlQuery.png";
-    default:
-      return "";
-  }
-}
-
-function scrollTreeNodeIntoView(container, key) {
-  if (!container || !key) return;
-  const labels = container.querySelectorAll(".tree-label[data-node-key]");
-  for (const label of labels) {
-    if (label.dataset.nodeKey !== key) continue;
-    label.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
-    break;
-  }
-}
-
-function expandPath(base, pathText) {
-  const next = new Set(base);
-  if (!pathText || pathText === "root") return next;
-  const parts = pathText.split(".");
-  for (let i = 1; i <= parts.length; i += 1) {
-    next.add(parts.slice(0, i).join("."));
-  }
-  return next;
-}
-
-function groupProperties(properties) {
-  const groups = [];
-  let current = null;
-  for (const property of properties) {
-    if (!current || current.category !== property.category) {
-      current = { category: property.category || "General", items: [] };
-      groups.push(current);
-    }
-    current.items.push(property);
-  }
-  return groups;
-}
+// Query Developer UI/helpers moved to ./queryDeveloper/* modules
 
 function formatDate(value) {
   if (!value) return "-";
@@ -1450,38 +1490,6 @@ function formatFileSize(size) {
   if (value < 1024) return `${value} B`;
   if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
   return `${(value / (1024 * 1024)).toFixed(2)} MB`;
-}
-
-function parseDownloadFileName(contentDisposition) {
-  const header = String(contentDisposition || "");
-  const utf8Match = header.match(/filename\*=UTF-8''([^;]+)/i);
-  if (utf8Match?.[1]) {
-    try {
-      return decodeURIComponent(utf8Match[1]);
-    } catch {
-      // ignore malformed encoding
-    }
-  }
-  const quotedMatch = header.match(/filename="([^"]+)"/i);
-  if (quotedMatch?.[1]) return quotedMatch[1];
-  const plainMatch = header.match(/filename=([^;]+)/i);
-  if (plainMatch?.[1]) return plainMatch[1].trim();
-  return "";
-}
-
-function buildQsfDownloadName(systemName, fallbackName) {
-  const fallbackBase = String(fallbackName || "")
-    .replace(/\.qsf$/i, "")
-    .trim();
-  const preferredBase = String(systemName || "").trim();
-  const rawBase = preferredBase || fallbackBase || "download";
-  const sanitizedBase = rawBase
-    .replace(/[\\/:*?"<>|]/g, "_")
-    .replace(/\s+/g, " ")
-    .replace(/[. ]+$/g, "")
-    .trim();
-  const finalBase = sanitizedBase || fallbackBase || "download";
-  return /\.qsf$/i.test(finalBase) ? finalBase : `${finalBase}.qsf`;
 }
 
 async function apiRequest(url, options = {}) {
@@ -1498,9 +1506,30 @@ async function apiRequest(url, options = {}) {
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
     const message = payload?.message || `Request failed: ${response.status}`;
-    throw new Error(message);
+    const error = new Error(message);
+    error.status = response.status;
+    error.payload = payload;
+    throw error;
   }
   return payload;
+}
+
+async function requestTreeAction(body) {
+  let lastError = null;
+  for (const endpoint of TREE_ACTION_ENDPOINTS) {
+    for (const method of ["POST", "PUT"]) {
+      try {
+        return await apiRequest(endpoint, { method, body });
+      } catch (error) {
+        if (Number(error?.status || 0) !== 404) {
+          throw error;
+        }
+        lastError = error;
+      }
+    }
+  }
+
+  throw lastError || new Error("Tree action endpoint not found.");
 }
 
 export default App;
