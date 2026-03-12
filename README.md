@@ -62,6 +62,20 @@ Create `server/.env` from `server/.env.example` and set production values:
 npm.cmd --prefix server run build
 ```
 
+### 3-1. Build client for IIS (output: `dist-iis`, base path: `/Tools/`)
+
+```powershell
+npm.cmd --prefix client run build:iis
+```
+
+This build is generated with Vite base path `/Tools/` and is intended to be hosted under IIS virtual path `/Tools`.
+`dist-iis` includes `web.config` that forwards `/Tools/api/*` to `http://localhost:3001/api/*` and handles SPA fallback.
+
+For IIS reverse proxy, ensure these modules are installed and enabled:
+
+- URL Rewrite
+- Application Request Routing (ARR) with Proxy enabled
+
 ### 4. Start server in production
 
 ```powershell

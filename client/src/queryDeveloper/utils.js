@@ -1,3 +1,10 @@
+const APP_BASE_PATH = normalizeBasePath(import.meta.env.BASE_URL || "/");
+
+export function buildClientPath(pathText) {
+  const normalizedPath = String(pathText || "").replace(/^\/+/, "");
+  return `${APP_BASE_PATH}${normalizedPath}`;
+}
+
 export function isAlwaysReadOnlyProperty(prop) {
   if (Boolean(prop?.readOnly)) return true;
   const key = String(prop?.key || "").toLowerCase();
@@ -45,21 +52,21 @@ export function getSqlProviderMonogram(provider) {
 export function getSqlProviderLogoSrc(provider) {
   switch (String(provider || "").toLowerCase()) {
     case "mssql":
-      return "/icons/db/mssql.svg";
+      return buildClientPath("icons/db/mssql.svg");
     case "oracle":
-      return "/icons/db/oracle.svg";
+      return buildClientPath("icons/db/oracle.svg");
     case "mysql":
-      return "/icons/db/mysql.svg";
+      return buildClientPath("icons/db/mysql.svg");
     case "mariadb":
-      return "/icons/db/mariadb.svg";
+      return buildClientPath("icons/db/mariadb.svg");
     case "postgresql":
-      return "/icons/db/postgresql.svg";
+      return buildClientPath("icons/db/postgresql.svg");
     case "influx":
-      return "/icons/db/influxdb.svg";
+      return buildClientPath("icons/db/influxdb.svg");
     case "sqlite":
-      return "/icons/db/sqlite.svg";
+      return buildClientPath("icons/db/sqlite.svg");
     case "oledb":
-      return "/icons/db/mssql.svg";
+      return buildClientPath("icons/db/mssql.svg");
     default:
       return "";
   }
@@ -216,15 +223,15 @@ export function findTreeMatches(root, keyword, caseSensitive = false) {
 export function getQueryDeveloperTreeIcon(kind) {
   switch (String(kind || "").toLowerCase()) {
     case "root":
-      return "/factory-icon.svg";
+      return buildClientPath("factory-icon.svg");
     case "system":
-      return "/icons/SqlSystem.png";
+      return buildClientPath("icons/SqlSystem.png");
     case "module":
-      return "/icons/SqlModule.png";
+      return buildClientPath("icons/SqlModule.png");
     case "function":
-      return "/icons/SqlFunction.png";
+      return buildClientPath("icons/SqlFunction.png");
     case "sqlgroup":
-      return "/icons/SqlQuery.png";
+      return buildClientPath("icons/SqlQuery.png");
     default:
       return "";
   }
@@ -317,4 +324,12 @@ export function buildQsfDownloadName(systemName, fallbackName) {
     .trim();
   const finalBase = sanitizedBase || fallbackBase || "download";
   return /\.qsf$/i.test(finalBase) ? finalBase : `${finalBase}.qsf`;
+}
+
+function normalizeBasePath(baseUrl) {
+  const raw = String(baseUrl || "/").trim();
+  if (!raw) return "/";
+  let normalized = raw.startsWith("/") ? raw : `/${raw}`;
+  if (!normalized.endsWith("/")) normalized += "/";
+  return normalized;
 }

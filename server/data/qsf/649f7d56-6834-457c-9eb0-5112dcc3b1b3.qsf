@@ -1,0 +1,438 @@
+<?xml version="1.0"?>
+<Q QF="QSF" QV="1.0.0.0" QC="2026-02-03 09:51:23.629" QU="2026-03-11 10:16:30.193" QD="LinkOn SQL Modeling File" QS="28">
+  <S _RK="649f7d56-6834-457c-9eb0-5112dcc3b1b3" _S="0" N="LinkOnWMLoader" D="LinkOn WMS Map Loader">
+    <M _S="1" N="MapCollection">
+      <F _S="2" N="Collection">
+        <SG _S="3" N="HasSupplierParser">
+          <QY P="MsSql" Q="SELECT PSR_NAME&#xD;&#xA;  FROM QWMSSPLMAP&#xD;&#xA; WHERE FACTORY  = @factory&#xD;&#xA;   AND SPL_NAME = @spl_name&#xD;&#xA;   AND MAP_TYPE = @map_type">
+            <QP N="factory" />
+            <QP N="spl_name" />
+            <QP N="map_type" />
+          </QY>
+          <QY P="Oracle" Q="SELECT PSR_NAME&#xD;&#xA;  FROM QWMSSPLMAP&#xD;&#xA; WHERE FACTORY  = @factory&#xD;&#xA;   AND SPL_NAME = @spl_name&#xD;&#xA;   AND MAP_TYPE = @map_type" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="8" N="HasWaferMap">
+          <QY P="MsSql" Q="SELECT LOT_ID, WAFER_ID&#xD;&#xA;  FROM QWMSWAFMAP&#xD;&#xA; WHERE FACTORY = @factory&#xD;&#xA;   AND LOT_ID  = @lot_id">
+            <QP N="factory" />
+            <QP N="lot_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="9" N="InsertWaferBin">
+          <QY P="MsSql" Q="INSERT INTO QWMSWAFBIN (&#xD;&#xA;   FACTORY,&#xD;&#xA;   WAFER_ID,&#xD;&#xA;   MAP_SEQ,   &#xD;&#xA;   HIST_SEQ,&#xD;&#xA;   COLS,&#xD;&#xA;   ROWS,&#xD;&#xA;   BIN_INFO,&#xD;&#xA;   BIN_1_QTY,&#xD;&#xA;   BIN_2_QTY,&#xD;&#xA;   BIN_3_QTY,&#xD;&#xA;   BIN_4_QTY,&#xD;&#xA;   BIN_5_QTY,&#xD;&#xA;   BIN_6_QTY,&#xD;&#xA;   BIN_7_QTY,&#xD;&#xA;   BIN_8_QTY,&#xD;&#xA;   BIN_9_QTY,&#xD;&#xA;   BIN_10_QTY,&#xD;&#xA;   BIN_D_QTY,   &#xD;&#xA;   CREATE_TIME,&#xD;&#xA;   CREATE_USER_ID&#xD;&#xA;   ) VALUES (&#xD;&#xA;   @factory,&#xD;&#xA;   @wafer_id,&#xD;&#xA;   @map_seq,&#xD;&#xA;   @hist_seq,&#xD;&#xA;   @cols,&#xD;&#xA;   @rows,&#xD;&#xA;   @bin_info,&#xD;&#xA;   @bin_1_qty,&#xD;&#xA;   @bin_2_qty,&#xD;&#xA;   @bin_3_qty,&#xD;&#xA;   @bin_4_qty,&#xD;&#xA;   @bin_5_qty,&#xD;&#xA;   @bin_6_qty,&#xD;&#xA;   @bin_7_qty,&#xD;&#xA;   @bin_8_qty,&#xD;&#xA;   @bin_9_qty,&#xD;&#xA;   @bin_10_qty,&#xD;&#xA;   @bin_D_qty,&#xD;&#xA;   @create_time,&#xD;&#xA;   @create_user_id&#xD;&#xA;   )">
+            <QP N="factory" />
+            <QP N="wafer_id" />
+            <QP N="map_seq" />
+            <QP N="hist_seq" />
+            <QP N="cols" />
+            <QP N="rows" />
+            <QP N="bin_info" />
+            <QP N="bin_1_qty" />
+            <QP N="bin_2_qty" />
+            <QP N="bin_3_qty" />
+            <QP N="bin_4_qty" />
+            <QP N="bin_5_qty" />
+            <QP N="bin_6_qty" />
+            <QP N="bin_7_qty" />
+            <QP N="bin_8_qty" />
+            <QP N="bin_9_qty" />
+            <QP N="bin_10_qty" />
+            <QP N="bin_D_qty" />
+            <QP N="create_time" />
+            <QP N="create_user_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="10" N="InsertWaferBinHis">
+          <QY P="MsSql" Q="INSERT INTO QWMSWAFBNH (&#xD;&#xA;   FACTORY,   &#xD;&#xA;   WAFER_ID,      &#xD;&#xA;   MAP_SEQ,&#xD;&#xA;   HIST_SEQ,&#xD;&#xA;   TRAN_TIME,&#xD;&#xA;   COLS,&#xD;&#xA;   ROWS,&#xD;&#xA;   BIN_INFO,   &#xD;&#xA;   BIN_1_QTY,&#xD;&#xA;   BIN_2_QTY,&#xD;&#xA;   BIN_3_QTY,&#xD;&#xA;   BIN_4_QTY,&#xD;&#xA;   BIN_5_QTY,&#xD;&#xA;   BIN_6_QTY,&#xD;&#xA;   BIN_7_QTY,&#xD;&#xA;   BIN_8_QTY,&#xD;&#xA;   BIN_9_QTY,&#xD;&#xA;   BIN_10_QTY,&#xD;&#xA;   BIN_D_QTY,   &#xD;&#xA;   TRAN_USER_ID&#xD;&#xA;   ) VALUES (&#xD;&#xA;   @factory,&#xD;&#xA;   @wafer_id,&#xD;&#xA;   @map_seq,&#xD;&#xA;   @hist_seq,&#xD;&#xA;   @tran_time,&#xD;&#xA;   @cols,&#xD;&#xA;   @rows,&#xD;&#xA;   @bin_info,&#xD;&#xA;   @bin_1_qty,&#xD;&#xA;   @bin_2_qty,&#xD;&#xA;   @bin_3_qty,&#xD;&#xA;   @bin_4_qty,&#xD;&#xA;   @bin_5_qty,&#xD;&#xA;   @bin_6_qty,&#xD;&#xA;   @bin_7_qty,&#xD;&#xA;   @bin_8_qty,&#xD;&#xA;   @bin_9_qty,&#xD;&#xA;   @bin_10_qty,&#xD;&#xA;   @bin_D_qty,&#xD;&#xA;   @tran_user_id&#xD;&#xA;   )">
+            <QP N="factory" />
+            <QP N="wafer_id" />
+            <QP N="map_seq" />
+            <QP N="hist_seq" />
+            <QP N="tran_time" />
+            <QP N="cols" />
+            <QP N="rows" />
+            <QP N="bin_info" />
+            <QP N="bin_1_qty" />
+            <QP N="bin_2_qty" />
+            <QP N="bin_3_qty" />
+            <QP N="bin_4_qty" />
+            <QP N="bin_5_qty" />
+            <QP N="bin_6_qty" />
+            <QP N="bin_7_qty" />
+            <QP N="bin_8_qty" />
+            <QP N="bin_9_qty" />
+            <QP N="bin_10_qty" />
+            <QP N="bin_D_qty" />
+            <QP N="tran_user_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="11" N="InsertWaferMap">
+          <QY P="MsSql" Q="INSERT INTO QWMSWAFMAP (&#xD;&#xA;   FACTORY,&#xD;&#xA;   LOT_ID,&#xD;&#xA;   WAFER_ID,&#xD;&#xA;   DEVICE_ID,&#xD;&#xA;   REFERENCE_DIE,&#xD;&#xA;   DIE_SIZE_X,&#xD;&#xA;   DIE_SIZE_Y,&#xD;&#xA;   COLS,&#xD;&#xA;   ROWS,&#xD;&#xA;   MAP_FILE_NAME,&#xD;&#xA;   HIST_SEQ,&#xD;&#xA;   CUS_ID,&#xD;&#xA;   GOOD_QTY,&#xD;&#xA;   BAD_QTY,&#xD;&#xA;   FLAT_ZONE,&#xD;&#xA;   BIN_1_QTY,&#xD;&#xA;   BIN_2_QTY,&#xD;&#xA;   BIN_3_QTY,&#xD;&#xA;   BIN_4_QTY,&#xD;&#xA;   BIN_5_QTY,&#xD;&#xA;   BIN_6_QTY,&#xD;&#xA;   BIN_7_QTY,&#xD;&#xA;   BIN_8_QTY,&#xD;&#xA;   BIN_9_QTY,&#xD;&#xA;   BIN_10_QTY,&#xD;&#xA;   BIN_D_QTY,   &#xD;&#xA;   CREATE_TIME,&#xD;&#xA;   CREATE_USER_ID&#xD;&#xA;) VALUES (&#xD;&#xA;   @factory,&#xD;&#xA;   @lot_id,&#xD;&#xA;   @wafer_id,&#xD;&#xA;   @device_id,&#xD;&#xA;   @reference_die,&#xD;&#xA;   @die_size_x,&#xD;&#xA;   @die_size_y,&#xD;&#xA;   @cols,&#xD;&#xA;   @rows,&#xD;&#xA;   @map_file_name,&#xD;&#xA;   @hist_seq,&#xD;&#xA;   @cus_id,&#xD;&#xA;   @good_qty,&#xD;&#xA;   @bad_qty,&#xD;&#xA;   @flat_zone,&#xD;&#xA;   @bin_1_qty,&#xD;&#xA;   @bin_2_qty,&#xD;&#xA;   @bin_3_qty,&#xD;&#xA;   @bin_4_qty,&#xD;&#xA;   @bin_5_qty,&#xD;&#xA;   @bin_6_qty,&#xD;&#xA;   @bin_7_qty,&#xD;&#xA;   @bin_8_qty,&#xD;&#xA;   @bin_9_qty,&#xD;&#xA;   @bin_10_qty,&#xD;&#xA;   @bin_d_qty,&#xD;&#xA;   @create_time,&#xD;&#xA;   @create_user_id&#xD;&#xA;)">
+            <QP N="factory" />
+            <QP N="lot_id" />
+            <QP N="wafer_id" />
+            <QP N="device_id" />
+            <QP N="reference_die" />
+            <QP N="die_size_x" />
+            <QP N="die_size_y" />
+            <QP N="cols" />
+            <QP N="rows" />
+            <QP N="map_file_name" />
+            <QP N="hist_seq" />
+            <QP N="cus_id" />
+            <QP N="good_qty" />
+            <QP N="bad_qty" />
+            <QP N="flat_zone" />
+            <QP N="bin_1_qty" />
+            <QP N="bin_2_qty" />
+            <QP N="bin_3_qty" />
+            <QP N="bin_4_qty" />
+            <QP N="bin_5_qty" />
+            <QP N="bin_6_qty" />
+            <QP N="bin_7_qty" />
+            <QP N="bin_8_qty" />
+            <QP N="bin_9_qty" />
+            <QP N="bin_10_qty" />
+            <QP N="bin_d_qty" />
+            <QP N="create_time" />
+            <QP N="create_user_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="12" N="InsertWaferMapHis">
+          <QY P="MsSql" Q="INSERT INTO QWMSWAFMPH (&#xD;&#xA;   FACTORY,&#xD;&#xA;   LOT_ID,&#xD;&#xA;   WAFER_ID,&#xD;&#xA;   HIST_SEQ,&#xD;&#xA;   TRAN_TIME,&#xD;&#xA;   CUS_ID,&#xD;&#xA;   GOOD_QTY,&#xD;&#xA;   BAD_QTY,&#xD;&#xA;   FLAT_ZONE,&#xD;&#xA;   BIN_1_QTY,&#xD;&#xA;   BIN_2_QTY,&#xD;&#xA;   BIN_3_QTY,&#xD;&#xA;   BIN_4_QTY,&#xD;&#xA;   BIN_5_QTY,&#xD;&#xA;   BIN_6_QTY,&#xD;&#xA;   BIN_7_QTY,&#xD;&#xA;   BIN_8_QTY,&#xD;&#xA;   BIN_9_QTY,&#xD;&#xA;   BIN_10_QTY,&#xD;&#xA;   BIN_D_QTY,   &#xD;&#xA;   TRAN_USER_ID&#xD;&#xA;) VALUES (&#xD;&#xA;   @factory,&#xD;&#xA;   @lot_id,&#xD;&#xA;   @wafer_id,&#xD;&#xA;   @hist_seq,&#xD;&#xA;   @tran_time,&#xD;&#xA;   @cus_id,&#xD;&#xA;   @good_qty,&#xD;&#xA;   @bad_qty,&#xD;&#xA;   @flat_zone,&#xD;&#xA;   @bin_1_qty,&#xD;&#xA;   @bin_2_qty,&#xD;&#xA;   @bin_3_qty,&#xD;&#xA;   @bin_4_qty,&#xD;&#xA;   @bin_5_qty,&#xD;&#xA;   @bin_6_qty,&#xD;&#xA;   @bin_7_qty,&#xD;&#xA;   @bin_8_qty,&#xD;&#xA;   @bin_9_qty,&#xD;&#xA;   @bin_10_qty,&#xD;&#xA;   @bin_d_qty,&#xD;&#xA;   @tran_user_id&#xD;&#xA;)">
+            <QP N="factory" />
+            <QP N="lot_id" />
+            <QP N="wafer_id" />
+            <QP N="hist_seq" />
+            <QP N="tran_time" />
+            <QP N="cus_id" />
+            <QP N="good_qty" />
+            <QP N="bad_qty" />
+            <QP N="flat_zone" />
+            <QP N="bin_1_qty" />
+            <QP N="bin_2_qty" />
+            <QP N="bin_3_qty" />
+            <QP N="bin_4_qty" />
+            <QP N="bin_5_qty" />
+            <QP N="bin_6_qty" />
+            <QP N="bin_7_qty" />
+            <QP N="bin_8_qty" />
+            <QP N="bin_9_qty" />
+            <QP N="bin_10_qty" />
+            <QP N="bin_d_qty" />
+            <QP N="tran_user_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="13" N="SelectWaferBinHis">
+          <QY P="MsSql" Q="SELECT MAX(HIST_SEQ) AS HIST_SEQ&#xD;&#xA;  FROM QWMSWAFBNH&#xD;&#xA; WHERE WAFER_ID = @wafer_id">
+            <QP N="wafer_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="14" N="SelectWaferMapHis">
+          <QY P="MsSql" Q="SELECT MAX(HIST_SEQ) AS HIST_SEQ&#xD;&#xA;   FROM QWMSWAFMPH&#xD;&#xA;  WHERE WAFER_ID = @wafer_id&#xD;&#xA;    AND LOT_ID = @lot_id">
+            <QP N="wafer_id" />
+            <QP N="lot_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="17" N="SelectCurrentWaferMapByLot">
+          <QY P="MsSql" Q="SELECT A.WAFER_ID, A.LOT_ID, A.CUS_ID, A.GOOD_QTY, A.BAD_QTY, A.FLAT_ZONE,&#xD;&#xA;       B.COLS, B.ROWS, B.MAP_SEQ, B.BIN_INFO, B.BIN_1_QTY, B.BIN_2_QTY, B.BIN_3_QTY, B.BIN_4_QTY, B.BIN_5_QTY, &#xD;&#xA;       B.BIN_6_QTY, B.BIN_7_QTY, B.BIN_8_QTY, B.BIN_9_QTY, B.BIN_10_QTY, B.BIN_D_QTY&#xD;&#xA;  FROM QWMSWAFBIN B&#xD;&#xA;  LEFT JOIN QWMSWAFMAP A&#xD;&#xA;    ON A.FACTORY  = B.FACTORY&#xD;&#xA;   AND A.WAFER_ID = B.WAFER_ID&#xD;&#xA; WHERE A.FACTORY  = @factory&#xD;&#xA;   AND A.LOT_ID   = @lot_id&#xD;&#xA; ORDER BY A.WAFER_ID, B.MAP_SEQ">
+            <QP N="factory" />
+            <QP N="lot_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="15" N="UpdateWaferMap">
+          <QY P="MsSql" Q="UPDATE QWMSWAFMAP SET &#xD;&#xA;       LOT_ID          		= @lot_id,&#xD;&#xA;       HIST_SEQ			    = @hist_seq,&#xD;&#xA;       CUS_ID 			  	= @cus_id,&#xD;&#xA;       GOOD_QTY        		= @good_qty,&#xD;&#xA;       BAD_QTY         		= @bad_qty,&#xD;&#xA;       FLAT_ZONE       		= @flat_zone,&#xD;&#xA;       BIN_1_QTY      		= @bin_1_qty,&#xD;&#xA;       BIN_2_QTY      		= @bin_2_qty,&#xD;&#xA;       BIN_3_QTY      		= @bin_3_qty,&#xD;&#xA;       BIN_4_QTY      		= @bin_4_qty,&#xD;&#xA;       BIN_5_QTY      		= @bin_5_qty,&#xD;&#xA;       BIN_6_QTY      		= @bin_6_qty,&#xD;&#xA;       BIN_7_QTY      		= @bin_7_qty,&#xD;&#xA;       BIN_8_QTY      		= @bin_8_qty,&#xD;&#xA;       BIN_9_QTY      		= @bin_9_qty,&#xD;&#xA;       BIN_10_QTY      		= @bin_10_qty,&#xD;&#xA;       BIN_D_QTY 	   		= @bin_d_qty,       &#xD;&#xA;       UPDATE_TIME     		= @update_time,&#xD;&#xA;       UPDATE_USER_ID  	    = @update_user_id&#xD;&#xA;     WHERE WAFER_ID    	= @wafer_id">
+            <QP N="lot_id" />
+            <QP N="hist_seq" />
+            <QP N="cus_id" />
+            <QP N="good_qty" />
+            <QP N="bad_qty" />
+            <QP N="flat_zone" />
+            <QP N="bin_1_qty" />
+            <QP N="bin_2_qty" />
+            <QP N="bin_3_qty" />
+            <QP N="bin_4_qty" />
+            <QP N="bin_5_qty" />
+            <QP N="bin_6_qty" />
+            <QP N="bin_7_qty" />
+            <QP N="bin_8_qty" />
+            <QP N="bin_9_qty" />
+            <QP N="bin_10_qty" />
+            <QP N="bin_d_qty" />
+            <QP N="update_time" />
+            <QP N="update_user_id" />
+            <QP N="wafer_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="16" N="DeleteWaferBin">
+          <QY P="MsSql" Q="DELETE&#xD;&#xA;  FROM QWMSWAFBIN&#xD;&#xA; WHERE WAFER_ID    = @wafer_id">
+            <QP N="wafer_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="4" N="HasParser">
+          <QY P="MsSql" Q="SELECT PSR_NAME&#xD;&#xA;  FROM QWMSPSRDEF&#xD;&#xA; WHERE FACTORY  = @factory&#xD;&#xA;   AND PSR_NAME = @psr_name">
+            <QP N="factory" />
+            <QP N="psr_name" />
+          </QY>
+          <QY P="Oracle" Q="SELECT PSR_NAME&#xD;&#xA;  FROM QWMSPSRDEF&#xD;&#xA; WHERE FACTORY  = @factory&#xD;&#xA;   AND PSR_NAME = @psr_name" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="5" N="HasParserActVer">
+          <QY P="MsSql" Q="SELECT PSR_NAME, PSR_VER, PSR_VER_FILE&#xD;&#xA;  FROM QWMSPSRVER&#xD;&#xA; WHERE FACTORY        = @factory&#xD;&#xA;   AND PSR_NAME       = @psr_name&#xD;&#xA;   AND PSR_VER_ACTIVE = @psr_ver_active">
+            <QP N="factory" />
+            <QP N="psr_name" />
+            <QP N="psr_ver_active" />
+          </QY>
+          <QY P="Oracle" Q="SELECT PSR_NAME, PSR_VER, PSR_VER_FILE&#xD;&#xA;  FROM QWMSPSRVER&#xD;&#xA; WHERE FACTORY        = @factory&#xD;&#xA;   AND PSR_NAME       = @psr_name&#xD;&#xA;   AND PSR_VER_ACTIVE = @psr_ver_active" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="6" N="HasStandardBinCode">
+          <QY P="MsSql" Q="SELECT BIN_CODE, BIN_GRADE, IS_COUNTABLE&#xD;&#xA;  FROM QWMSBINDEF&#xD;&#xA; WHERE FACTORY = @factory">
+            <QP N="factory" />
+          </QY>
+          <QY P="Oracle" Q="SELECT BIN_CODE, BIN_GRADE&#xD;&#xA;  FROM QWMSBINDEF&#xD;&#xA; WHERE FACTORY = @factory" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="7" N="HasSupplierBinCode">
+          <QY P="MsSql" Q="SELECT SPL_BIN_CODE, SPL_BIN_GRADE, BIN_CODE&#xD;&#xA;  FROM QWMSSPLBIN&#xD;&#xA; WHERE FACTORY   = @factory&#xD;&#xA;   AND SPL_NAME  = @spl_name&#xD;&#xA;   AND MAP_TYPE  = @map_type">
+            <QP N="factory" />
+            <QP N="spl_name" />
+            <QP N="map_type" />
+          </QY>
+          <QY P="Oracle" Q="SELECT SPL_BIN_CODE, SPL_BIN_GRADE, BIN_CODE&#xD;&#xA;  FROM QWMSSPLBIN&#xD;&#xA; WHERE FACTORY   = @factory&#xD;&#xA;   AND SPL_NAME  = @spl_name&#xD;&#xA;   AND MAP_TYPE  = @map_type" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+      </F>
+    </M>
+    <M _S="18" N="Common">
+      <F _S="20" N="MapLoaderHistory">
+        <SG _S="21" N="InsertMapLoaderHistory">
+          <QY P="MsSql" Q="INSERT INTO QWMSMLDHIS (&#xD;&#xA;   FACTORY,&#xD;&#xA;   MLD_NAME,&#xD;&#xA;   HIST_SEQ,&#xD;&#xA;   EVENT_ID,&#xD;&#xA;   TRAN_TIME,&#xD;&#xA;   STEP,&#xD;&#xA;   UP_DOWN,&#xD;&#xA;   STATUS,&#xD;&#xA;   NEED_ACTION,&#xD;&#xA;   NEXT_NEED_ACTION,&#xD;&#xA;   EVT_H_1,&#xD;&#xA;   EVT_D_1,   &#xD;&#xA;   EVT_H_2,&#xD;&#xA;   EVT_D_2,&#xD;&#xA;   EVT_H_3,&#xD;&#xA;   EVT_D_3,&#xD;&#xA;   EVT_H_4,&#xD;&#xA;   EVT_D_4,&#xD;&#xA;   EVT_H_5,&#xD;&#xA;   EVT_D_5,&#xD;&#xA;   EVT_H_6,&#xD;&#xA;   EVT_D_6,&#xD;&#xA;   EVT_H_7,&#xD;&#xA;   EVT_D_7,&#xD;&#xA;   EVT_H_8,&#xD;&#xA;   EVT_D_8,&#xD;&#xA;   EVT_H_9,&#xD;&#xA;   EVT_D_9,&#xD;&#xA;   EVT_H_10,&#xD;&#xA;   EVT_D_10,&#xD;&#xA;   EVT_H_11,&#xD;&#xA;   EVT_D_11,   &#xD;&#xA;   EVT_H_12,&#xD;&#xA;   EVT_D_12,&#xD;&#xA;   EVT_H_13,&#xD;&#xA;   EVT_D_13,&#xD;&#xA;   EVT_H_14,&#xD;&#xA;   EVT_D_14,&#xD;&#xA;   EVT_H_15,&#xD;&#xA;   EVT_D_15,&#xD;&#xA;   EVT_H_16,&#xD;&#xA;   EVT_D_16,&#xD;&#xA;   EVT_H_17,&#xD;&#xA;   EVT_D_17,&#xD;&#xA;   EVT_H_18,&#xD;&#xA;   EVT_D_18,&#xD;&#xA;   EVT_H_19,&#xD;&#xA;   EVT_D_19,&#xD;&#xA;   EVT_H_20,&#xD;&#xA;   EVT_D_20,&#xD;&#xA;   TRAN_USER_ID,&#xD;&#xA;   TRAN_COMMENT      &#xD;&#xA;) &#xD;&#xA;VALUES( &#xD;&#xA;   @factory,&#xD;&#xA;   @mld_name,&#xD;&#xA;   @hist_seq,&#xD;&#xA;   @event_id,&#xD;&#xA;   @tran_time,&#xD;&#xA;   @step,&#xD;&#xA;   @up_down,&#xD;&#xA;   @ctn_status,&#xD;&#xA;   @need_action,&#xD;&#xA;   @next_action,   &#xD;&#xA;   @evt_h_1,&#xD;&#xA;   @evt_d_1,   &#xD;&#xA;   @evt_h_2,&#xD;&#xA;   @evt_d_2,&#xD;&#xA;   @evt_h_3,&#xD;&#xA;   @evt_d_3,&#xD;&#xA;   @evt_h_4,&#xD;&#xA;   @evt_d_4,&#xD;&#xA;   @evt_h_5,&#xD;&#xA;   @evt_d_5,&#xD;&#xA;   @evt_h_6,&#xD;&#xA;   @evt_d_6,&#xD;&#xA;   @evt_h_7,&#xD;&#xA;   @evt_d_7,&#xD;&#xA;   @evt_h_8,&#xD;&#xA;   @evt_d_8,&#xD;&#xA;   @evt_h_9,&#xD;&#xA;   @evt_d_9,&#xD;&#xA;   @evt_h_10,&#xD;&#xA;   @evt_d_10,&#xD;&#xA;   @evt_h_11,&#xD;&#xA;   @evt_d_11,   &#xD;&#xA;   @evt_h_12,&#xD;&#xA;   @evt_d_12,&#xD;&#xA;   @evt_h_13,&#xD;&#xA;   @evt_d_13,&#xD;&#xA;   @evt_h_14,&#xD;&#xA;   @evt_d_14,&#xD;&#xA;   @evt_h_15,&#xD;&#xA;   @evt_d_15,&#xD;&#xA;   @evt_h_16,&#xD;&#xA;   @evt_d_16,&#xD;&#xA;   @evt_h_17,&#xD;&#xA;   @evt_d_17,&#xD;&#xA;   @evt_h_18,&#xD;&#xA;   @evt_d_18,&#xD;&#xA;   @evt_h_19,&#xD;&#xA;   @evt_d_19,&#xD;&#xA;   @evt_h_20,&#xD;&#xA;   @evt_d_20,&#xD;&#xA;   @tran_user_id,&#xD;&#xA;   @tran_comment&#xD;&#xA;);">
+            <QP N="factory" />
+            <QP N="mld_name" />
+            <QP N="hist_seq" />
+            <QP N="event_id" />
+            <QP N="tran_time" />
+            <QP N="step" />
+            <QP N="up_down" />
+            <QP N="ctn_status" />
+            <QP N="need_action" />
+            <QP N="next_action" />
+            <QP N="evt_h_1" />
+            <QP N="evt_d_1" />
+            <QP N="evt_h_2" />
+            <QP N="evt_d_2" />
+            <QP N="evt_h_3" />
+            <QP N="evt_d_3" />
+            <QP N="evt_h_4" />
+            <QP N="evt_d_4" />
+            <QP N="evt_h_5" />
+            <QP N="evt_d_5" />
+            <QP N="evt_h_6" />
+            <QP N="evt_d_6" />
+            <QP N="evt_h_7" />
+            <QP N="evt_d_7" />
+            <QP N="evt_h_8" />
+            <QP N="evt_d_8" />
+            <QP N="evt_h_9" />
+            <QP N="evt_d_9" />
+            <QP N="evt_h_10" />
+            <QP N="evt_d_10" />
+            <QP N="evt_h_11" />
+            <QP N="evt_d_11" />
+            <QP N="evt_h_12" />
+            <QP N="evt_d_12" />
+            <QP N="evt_h_13" />
+            <QP N="evt_d_13" />
+            <QP N="evt_h_14" />
+            <QP N="evt_d_14" />
+            <QP N="evt_h_15" />
+            <QP N="evt_d_15" />
+            <QP N="evt_h_16" />
+            <QP N="evt_d_16" />
+            <QP N="evt_h_17" />
+            <QP N="evt_d_17" />
+            <QP N="evt_h_18" />
+            <QP N="evt_d_18" />
+            <QP N="evt_h_19" />
+            <QP N="evt_d_19" />
+            <QP N="evt_h_20" />
+            <QP N="evt_d_20" />
+            <QP N="tran_user_id" />
+            <QP N="tran_comment" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="22" N="ListMapLoader">
+          <QY P="MsSql" Q="SELECT FACTORY, MLD_NAME&#xD;&#xA;  FROM QWMSMLDDEF&#xD;&#xA; WHERE DELETE_FLAG = 'N'    &#xD;&#xA; ORDER BY WML_NAME" />
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="23" N="SelectMapLoaderHistorySeq">
+          <QY P="MsSql" Q="SELECT NEXT VALUE FOR SEQ_MAPLOADER_HIS" />
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+        <SG _S="24" N="SelectMapLoaderInfoForHistory">
+          <QY P="MsSql" Q="SELECT FACTORY, MLD_NAME, SPL_NAME, STEP, ALARM, UP_DOWN, STATUS, NEED_ACTION, NEXT_NEED_ACTION, DELETE_FLAG   &#xD;&#xA;  FROM QWMSMLDDEF &#xD;&#xA; WHERE FACTORY  = @factory&#xD;&#xA;   AND MLD_NAME = @mld_name">
+            <QP N="factory" />
+            <QP N="mld_name" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+      </F>
+      <F _S="25" N="EventSearch">
+        <SG _S="26" N="SearchMapLoaderEvent">
+          <QY P="MsSql" Q="SELECT EVENT_DESC,&#xD;&#xA;       DATA_1_PRT, DATA_2_PRT, DATA_3_PRT, DATA_4_PRT, DATA_5_PRT,&#xD;&#xA;       DATA_6_PRT, DATA_7_PRT, DATA_8_PRT, DATA_9_PRT, DATA_10_PRT,    &#xD;&#xA;       DATA_11_PRT, DATA_12_PRT, DATA_13_PRT, DATA_14_PRT, DATA_15_PRT,&#xD;&#xA;       DATA_16_PRT, DATA_17_PRT, DATA_18_PRT, DATA_19_PRT, DATA_20_PRT,&#xD;&#xA;       ALT_COMMENT&#xD;&#xA;  FROM QWMSMLDEVT&#xD;&#xA; WHERE FACTORY  = @factory&#xD;&#xA;   AND EVENT_ID = @event_id">
+            <QP N="factory" />
+            <QP N="event_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+      </F>
+    </M>
+  </S>
+</Q>

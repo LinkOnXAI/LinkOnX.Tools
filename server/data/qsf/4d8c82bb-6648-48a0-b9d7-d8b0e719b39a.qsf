@@ -1,0 +1,1219 @@
+<?xml version="1.0"?>
+<Q QN="QSF" QV="1.0.0.0" QC="2019.09.15 14:33:23.406" QU="2024-12-23 11:58:19.084" QD="LinkOn SQL File" QS="3312">
+  <S _S="0" N="LinkOnBIService" D="LinkOn BIS" _RK="4d8c82bb-6648-48a0-b9d7-d8b0e719b39a">
+    <M _S="100" N="Common">
+      <F _S="101" N="Validation" D="Q">
+        <SG _S="102" N="HasFactory" D="O">
+          <QY P="MsSql" Q="SELECT FACTORY, EAP_RELOAD_LIMIT, CMF_1 AS EXT_LOGIN_FUN&#13;&#10;  FROM QSYSFACDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+          <QY P="Oracle"/>
+          <QY P="MySql"/>
+          <QY P="MariaDb"/>
+          <QY P="PostgreSql"/>
+          <QY P="Machbase"/>
+          <QY P="OleDb"/>
+          <QY P="Influx"/>
+          <QY P="SQLite"/>
+        </SG>
+      </F>
+      <F _S="738" N="EventSearch" D="Q">
+        <SG _S="763" N="SearchUserEvent" D="O">
+          <QY P="MsSql" Q="SELECT EVENT_DESC, &#13;&#10;       DATA_1_PRT, DATA_2_PRT, DATA_3_PRT, DATA_4_PRT, DATA_5_PRT,&#13;&#10;       DATA_6_PRT, DATA_7_PRT, DATA_8_PRT, DATA_9_PRT, DATA_10_PRT,&#13;&#10;       DATA_11_PRT, DATA_12_PRT, DATA_13_PRT, DATA_14_PRT, DATA_15_PRT,&#13;&#10;       DATA_16_PRT, DATA_17_PRT, DATA_18_PRT, DATA_19_PRT, DATA_20_PRT&#13;&#10;  FROM QSECUSREVT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND SYSTEM   = @system&#13;&#10;   AND EVENT_ID = @event_id&#13;&#10;   AND ACTION   = @action">
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="event_id"/>
+            <QP N="action"/>
+          </QY>
+        </SG>
+        <SG _S="2830" N="SearchUserEventAll" D="O">
+          <QY P="MsSql" Q="SELECT EVENT_ID, EVENT_DESC, ACTION&#13;&#10;  FROM QSECUSREVT&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="739" N="SearchServerEvent" D="O">
+          <QY P="MsSql" Q="SELECT EVENT_DESC,&#13;&#10;       DATA_1_PRT, DATA_2_PRT, DATA_3_PRT, DATA_4_PRT, DATA_5_PRT,&#13;&#10;       DATA_6_PRT, DATA_7_PRT, DATA_8_PRT, DATA_9_PRT, DATA_10_PRT,    &#13;&#10;       DATA_11_PRT, DATA_12_PRT, DATA_13_PRT, DATA_14_PRT, DATA_15_PRT,&#13;&#10;       DATA_16_PRT, DATA_17_PRT, DATA_18_PRT, DATA_19_PRT, DATA_20_PRT,&#13;&#10;       ALT_COMMENT&#13;&#10;  FROM QSYSSVREVT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND EVENT_ID = @event_id">
+            <QP N="factory"/>
+            <QP N="event_id"/>
+          </QY>
+        </SG>
+        <SG _S="2832" N="SearchServerEventAll" D="O">
+          <QY P="MsSql" Q="SELECT EVENT_ID, EVENT_DESC&#13;&#10;  FROM QSYSSVREVT&#13;&#10; WHERE FACTORY  = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="816" N="SearchEapEvent" D="O">
+          <QY P="MsSql" Q="SELECT EVENT_DESC,&#13;&#10;       DATA_1_PRT, DATA_2_PRT, DATA_3_PRT, DATA_4_PRT, DATA_5_PRT,&#13;&#10;       DATA_6_PRT, DATA_7_PRT, DATA_8_PRT, DATA_9_PRT, DATA_10_PRT,    &#13;&#10;       DATA_11_PRT, DATA_12_PRT, DATA_13_PRT, DATA_14_PRT, DATA_15_PRT,&#13;&#10;       DATA_16_PRT, DATA_17_PRT, DATA_18_PRT, DATA_19_PRT, DATA_20_PRT,&#13;&#10;       ALT_COMMENT&#13;&#10;  FROM QRASEAPEVT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND EVENT_ID = @event_id">
+            <QP N="factory"/>
+            <QP N="event_id"/>
+          </QY>
+        </SG>
+        <SG _S="2833" N="SearchEapEventAll" D="O">
+          <QY P="MsSql" Q="SELECT EVENT_ID, EVENT_DESC&#13;&#10;  FROM QRASEAPEVT&#13;&#10; WHERE FACTORY  = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="1460" N="SearchEquipmentEvent" D="O">
+          <QY P="MsSql" Q="SELECT EVENT_DESC,&#13;&#10;       DATA_1_PRT, DATA_2_PRT, DATA_3_PRT, DATA_4_PRT, DATA_5_PRT,&#13;&#10;       DATA_6_PRT, DATA_7_PRT, DATA_8_PRT, DATA_9_PRT, DATA_10_PRT,    &#13;&#10;       DATA_11_PRT, DATA_12_PRT, DATA_13_PRT, DATA_14_PRT, DATA_15_PRT,&#13;&#10;       DATA_16_PRT, DATA_17_PRT, DATA_18_PRT, DATA_19_PRT, DATA_20_PRT,&#13;&#10;       ALT_COMMENT&#13;&#10;  FROM QRASEQPEVT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND EVENT_ID = @event_id">
+            <QP N="factory"/>
+            <QP N="event_id"/>
+          </QY>
+        </SG>
+        <SG _S="2831" N="SearchEquipmentEventAll" D="Q">
+          <QY P="MsSql" Q="SELECT EVENT_ID, EVENT_DESC&#13;&#10;  FROM QRASEQPEVT&#13;&#10; WHERE FACTORY  = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="764" N="UserHistory" D="Q">
+        <SG _S="1295" N="InsertUserHistory" D="">
+          <QY P="MsSql" Q="INSERT INTO QSECUSRHIS(&#13;&#10;   FACTORY,&#13;&#10;   USER_ID,&#13;&#10;   HIST_SEQ,&#13;&#10;   EVENT_ID,&#13;&#10;   ACTION,&#13;&#10;   SYSTEM,&#13;&#10;   HOST_IP,&#13;&#10;   HOST_NAME,&#13;&#10;   TRAN_TIME,&#13;&#10;   EVT_H_1,&#13;&#10;   EVT_D_1,&#13;&#10;   EVT_H_2,&#13;&#10;   EVT_D_2,&#13;&#10;   EVT_H_3,&#13;&#10;   EVT_D_3,&#13;&#10;   EVT_H_4,&#13;&#10;   EVT_D_4,&#13;&#10;   EVT_H_5,&#13;&#10;   EVT_D_5,&#13;&#10;   EVT_H_6,&#13;&#10;   EVT_D_6,&#13;&#10;   EVT_H_7,&#13;&#10;   EVT_D_7,&#13;&#10;   EVT_H_8,&#13;&#10;   EVT_D_8,&#13;&#10;   EVT_H_9,&#13;&#10;   EVT_D_9,&#13;&#10;   EVT_H_10,&#13;&#10;   EVT_D_10,    &#13;&#10;   EVT_H_11,&#13;&#10;   EVT_D_11,&#13;&#10;   EVT_H_12,&#13;&#10;   EVT_D_12,&#13;&#10;   EVT_H_13,&#13;&#10;   EVT_D_13,&#13;&#10;   EVT_H_14,&#13;&#10;   EVT_D_14,&#13;&#10;   EVT_H_15,&#13;&#10;   EVT_D_15,&#13;&#10;   EVT_H_16,&#13;&#10;   EVT_D_16,&#13;&#10;   EVT_H_17,&#13;&#10;   EVT_D_17,&#13;&#10;   EVT_H_18,&#13;&#10;   EVT_D_18,&#13;&#10;   EVT_H_19,&#13;&#10;   EVT_D_19,&#13;&#10;   EVT_H_20,&#13;&#10;   EVT_D_20,&#13;&#10;   TRAN_USER_ID,&#13;&#10;   TRAN_COMMENT&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_id,&#13;&#10;   (NEXT VALUE FOR SEQ_USR_HIS),&#13;&#10;   @event_id, &#13;&#10;   @action, &#13;&#10;   @system,&#13;&#10;   @host_ip,&#13;&#10;   @host_name,&#13;&#10;   @tran_time,&#13;&#10;   @evt_h_1,&#13;&#10;   @evt_d_1,   &#13;&#10;   @evt_h_2,&#13;&#10;   @evt_d_2,&#13;&#10;   @evt_h_3,&#13;&#10;   @evt_d_3,&#13;&#10;   @evt_h_4,&#13;&#10;   @evt_d_4,&#13;&#10;   @evt_h_5,&#13;&#10;   @evt_d_5,&#13;&#10;   @evt_h_6,&#13;&#10;   @evt_d_6,&#13;&#10;   @evt_h_7,&#13;&#10;   @evt_d_7,&#13;&#10;   @evt_h_8,&#13;&#10;   @evt_d_8,&#13;&#10;   @evt_h_9,&#13;&#10;   @evt_d_9,&#13;&#10;   @evt_h_10,&#13;&#10;   @evt_d_10,&#13;&#10;   @evt_h_11,&#13;&#10;   @evt_d_11,   &#13;&#10;   @evt_h_12,&#13;&#10;   @evt_d_12,&#13;&#10;   @evt_h_13,&#13;&#10;   @evt_d_13,&#13;&#10;   @evt_h_14,&#13;&#10;   @evt_d_14,&#13;&#10;   @evt_h_15,&#13;&#10;   @evt_d_15,&#13;&#10;   @evt_h_16,&#13;&#10;   @evt_d_16,&#13;&#10;   @evt_h_17,&#13;&#10;   @evt_d_17,&#13;&#10;   @evt_h_18,&#13;&#10;   @evt_d_18,&#13;&#10;   @evt_h_19,&#13;&#10;   @evt_d_19,&#13;&#10;   @evt_h_20,&#13;&#10;   @evt_d_20,   &#13;&#10;   @tran_user_id,&#13;&#10;   @tran_comment&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+            <QP N="event_id"/>
+            <QP N="action"/>
+            <QP N="system"/>
+            <QP N="host_ip"/>
+            <QP N="host_name"/>
+            <QP N="tran_time"/>
+            <QP N="evt_h_1"/>
+            <QP N="evt_d_1"/>
+            <QP N="evt_h_2"/>
+            <QP N="evt_d_2"/>
+            <QP N="evt_h_3"/>
+            <QP N="evt_d_3"/>
+            <QP N="evt_h_4"/>
+            <QP N="evt_d_4"/>
+            <QP N="evt_h_5"/>
+            <QP N="evt_d_5"/>
+            <QP N="evt_h_6"/>
+            <QP N="evt_d_6"/>
+            <QP N="evt_h_7"/>
+            <QP N="evt_d_7"/>
+            <QP N="evt_h_8"/>
+            <QP N="evt_d_8"/>
+            <QP N="evt_h_9"/>
+            <QP N="evt_d_9"/>
+            <QP N="evt_h_10"/>
+            <QP N="evt_d_10"/>
+            <QP N="evt_h_11"/>
+            <QP N="evt_d_11"/>
+            <QP N="evt_h_12"/>
+            <QP N="evt_d_12"/>
+            <QP N="evt_h_13"/>
+            <QP N="evt_d_13"/>
+            <QP N="evt_h_14"/>
+            <QP N="evt_d_14"/>
+            <QP N="evt_h_15"/>
+            <QP N="evt_d_15"/>
+            <QP N="evt_h_16"/>
+            <QP N="evt_d_16"/>
+            <QP N="evt_h_17"/>
+            <QP N="evt_d_17"/>
+            <QP N="evt_h_18"/>
+            <QP N="evt_d_18"/>
+            <QP N="evt_h_19"/>
+            <QP N="evt_d_19"/>
+            <QP N="evt_h_20"/>
+            <QP N="evt_d_20"/>
+            <QP N="tran_user_id"/>
+            <QP N="tran_comment"/>
+          </QY>
+        </SG>
+      </F>
+    </M>
+    <M _S="486" N="Dialog">
+      <F _S="630" N="UserGroupSelector">
+        <SG _S="633" N="ListUserGroup">
+          <QY P="MsSql" Q="SELECT USER_GRP, USER_GRP_DESC&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY = @factory&#13;&#10; ORDER BY USER_GRP">
+            <QP P="factory"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="869" N="UserGroupFunctionSelector">
+        <SG _S="870" N="ListFunction">
+          <QY P="MsSql" Q="SELECT FUN, FUN_DESC, TRAN_USED&#13;&#10;  FROM QSECURGFUN&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app&#13;&#10; ORDER BY FUN">
+            <QP P="factory"/>
+            <QP P="app"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="871" N="UserGroupAuthoritySelector">
+        <SG _S="873" N="ListUserGroup">
+          <QY P="MsSql" Q="SELECT USER_GRP, USER_GRP_DESC, ALL_AUTHORITY&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY = @factory&#13;&#10; ORDER BY USER_GRP">
+            <QP P="factory"/>
+          </QY>
+        </SG>
+        <SG _S="874" N="ListAuthority">
+          <QY P="MsSql" Q="SELECT A.FUN, B.FUN_DESC, A.TRAN_ENABLED, B.TRAN_USED&#13;&#10;  FROM QSECURGAUT A&#13;&#10;  LEFT JOIN QSECURGFUN B&#13;&#10;    ON A.FACTORY  = B.FACTORY&#13;&#10;   AND A.APP      = B.APP&#13;&#10;   AND A.FUN      = B.FUN&#13;&#10; WHERE A.FACTORY  = @factory&#13;&#10;   AND A.USER_GRP = @user_grp&#13;&#10;   AND A.APP      = @app&#13;&#10; ORDER BY A.FUN">
+            <QP P="factory"/>
+            <QP P="user_grp"/>
+            <QP P="app"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="2915" N="UserSelector">
+        <SG _S="2916" N="SearchUserList">
+          <QY P="MsSql" Q="SELECT USER_ID, USER_NAME, USER_DESC&#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10; ORDER BY USER_ID">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+      </F>
+    </M>
+    <M _S="158" N="System">
+      <F _S="159" N="UserLogIn" D="Q">
+        <SG _S="2750" N="SearchUserGrp" D="O">
+          <QY P="MsSql" Q="SELECT USER_GRP, ALL_AUTHORITY&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="875" N="ListAuthority" D="O">
+          <QY P="MsSql" Q="SELECT APP, FUN, TRAN_ENABLED&#13;&#10;  FROM QSECURGAUT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp&#13;&#10; ORDER BY FUN">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="2826" N="UserValidation" D="O">
+          <QY P="MsSql" Q="SELECT USER_ID, &#13;&#10;PASSWORD, &#13;&#10;USER_NAME, &#13;&#10;USER_GRP, &#13;&#10;SYS_AUTHORITY, &#13;&#10;ISNULL(DELETE_FLAG, 'N')  DEL_FLAG, &#13;&#10;EXPIRE_DATE,&#13;&#10;CMF_10 AS IS_LS&#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID    = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="3192" N="LsInsertUser">
+          <QY P="MsSql" Q="INSERT INTO QSECUSRDEF(&#13;&#10;   FACTORY,&#13;&#10;   USER_ID,&#13;&#10;   USER_NAME,&#13;&#10;   USER_DESC,&#13;&#10;   PASSWORD,&#13;&#10;   USER_GRP, &#13;&#10;   EXPIRE_DATE,&#13;&#10;   PHONE_OFFICE,&#13;&#10;   PHONE_MOBILE, &#13;&#10;   EMAIL_ID,&#13;&#10;   DELETE_FLAG,&#13;&#10;   CMF_10,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_id,&#13;&#10;   @user_name,&#13;&#10;   @user_desc,&#13;&#10;   @password,&#13;&#10;   @user_grp,&#13;&#10;   @exp_date,&#13;&#10;   @phone_office,&#13;&#10;   @phone_mobile,&#13;&#10;   @email_id,&#13;&#10;   'N',&#13;&#10;   'Y',&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+            <QP N="user_name"/>
+            <QP N="user_desc"/>
+            <QP N="password"/>
+            <QP N="user_grp"/>
+            <QP N="exp_date"/>
+            <QP N="phone_office"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="3294" N="MobisInsertUser">
+          <QY P="MsSql" Q="INSERT INTO QSECUSRDEF(&#13;&#10;   FACTORY,&#13;&#10;   USER_ID,&#13;&#10;   USER_NAME,&#13;&#10;   USER_DESC,&#13;&#10;   USER_GRP, &#13;&#10;   EXPIRE_DATE,&#13;&#10;   PHONE_OFFICE,&#13;&#10;   PHONE_MOBILE, &#13;&#10;   EMAIL_ID,&#13;&#10;   DELETE_FLAG,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_id,&#13;&#10;   @user_name,&#13;&#10;   @user_desc,&#13;&#10;   @user_grp,&#13;&#10;   @exp_date,&#13;&#10;   @phone_office,&#13;&#10;   @phone_mobile,&#13;&#10;   @email_id,&#13;&#10;   'N',&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+            <QP N="user_name"/>
+            <QP N="user_desc"/>
+            <QP N="user_grp"/>
+            <QP N="exp_date"/>
+            <QP N="phone_office"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="3295" N="MobisUpdateUser">
+          <QY P="MsSql" Q="UPDATE QSECUSRDEF SET&#13;&#10;   USER_NAME      = @user_name,&#13;&#10;   PHONE_MOBILE   = @phone_mobile,&#13;&#10;   EMAIL_ID       = @email_id,&#13;&#10;   UPDATE_USER_ID = @update_user_id,&#13;&#10;   UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="user_name"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="3296" N="MobisUpdateUserForNew">
+          <QY P="MsSql" Q="UPDATE QSECUSRDEF SET&#13;&#10;   USER_NAME      = @user_name,&#13;&#10;   USER_DESC      = @user_desc,&#13;&#10;   USER_GRP       = @user_grp,&#13;&#10;   EXPIRE_DATE = @exp_date,&#13;&#10;   PHONE_OFFICE   = @phone_office,&#13;&#10;   PHONE_MOBILE   = @phone_mobile,&#13;&#10;   EMAIL_ID       = @email_id,&#13;&#10;   DELETE_FLAG    = 'N',&#13;&#10;   UPDATE_USER_ID = @update_user_id,&#13;&#10;   UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="user_name"/>
+            <QP N="user_desc"/>
+            <QP N="user_grp"/>
+            <QP N="exp_date"/>
+            <QP N="phone_office"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="3305" N="UserLogInWisol">
+        <SG _S="3307" N="InsertUser">
+          <QY P="MsSql" Q="INSERT INTO QSECUSRDEF(&#13;&#10;   FACTORY,&#13;&#10;   USER_ID,&#13;&#10;   USER_NAME,&#13;&#10;   USER_DESC,&#13;&#10;   USER_GRP, &#13;&#10;   PHONE_OFFICE,&#13;&#10;   PHONE_MOBILE, &#13;&#10;   EMAIL_ID,&#13;&#10;   DELETE_FLAG,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_id,&#13;&#10;   @user_name,&#13;&#10;   @user_desc,&#13;&#10;   @user_grp,&#13;&#10;   @phone_office,&#13;&#10;   @phone_mobile,&#13;&#10;   @email_id,&#13;&#10;   'N',&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+            <QP N="user_name"/>
+            <QP N="user_desc"/>
+            <QP N="user_grp"/>
+            <QP N="phone_office"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+          <QY P="Oracle"/>
+          <QY P="MySql"/>
+          <QY P="MariaDb"/>
+          <QY P="PostgreSql"/>
+          <QY P="Machbase"/>
+          <QY P="OleDb"/>
+          <QY P="Influx"/>
+        </SG>
+        <SG _S="3308" N="UpdateUser">
+          <QY P="MsSql" Q="UPDATE QSECUSRDEF SET&#13;&#10;   USER_NAME      = @user_name,   &#13;&#10;   PHONE_MOBILE   = @phone_mobile,&#13;&#10;   EMAIL_ID       = @email_id,&#13;&#10;   UPDATE_USER_ID = @update_user_id,&#13;&#10;   UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="user_name"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+          <QY P="Oracle"/>
+          <QY P="MySql"/>
+          <QY P="MariaDb"/>
+          <QY P="PostgreSql"/>
+          <QY P="Machbase"/>
+          <QY P="OleDb"/>
+          <QY P="Influx"/>
+        </SG>
+        <SG _S="3309" N="UpdateUserForNew">
+          <QY P="MsSql" Q="UPDATE QSECUSRDEF SET&#13;&#10;   USER_NAME      = @user_name,&#13;&#10;   USER_DESC      = @user_desc,&#13;&#10;   USER_GRP       = @user_grp,&#13;&#10;   PHONE_OFFICE   = @phone_office,&#13;&#10;   PHONE_MOBILE   = @phone_mobile,&#13;&#10;   EMAIL_ID       = @email_id,&#13;&#10;   DELETE_FLAG    = 'N',&#13;&#10;   UPDATE_USER_ID = @update_user_id,&#13;&#10;   UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="user_name"/>
+            <QP N="user_desc"/>
+            <QP N="user_grp"/>
+            <QP N="phone_office"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+          <QY P="Oracle"/>
+          <QY P="MySql"/>
+          <QY P="MariaDb"/>
+          <QY P="PostgreSql"/>
+          <QY P="Machbase"/>
+          <QY P="OleDb"/>
+          <QY P="Influx"/>
+        </SG>
+      </F>
+      <F _S="2827" N="PasswordChange">
+        <SG _S="2828" N="SearchUser">
+          <QY P="MsSql" Q="SELECT USER_ID, PASSWORD, SYS_AUTHORITY&#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="2829" N="UpdateUser">
+          <QY P="MsSql" Q="UPDATE QSECUSRDEF SET&#13;&#10;   PASSWORD       = @password,&#13;&#10;   EXPIRE_DATE = @exp_date,&#13;&#10;   UPDATE_USER_ID = @update_user_id,&#13;&#10;   UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="password"/>
+            <QP N="exp_date"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="3163" N="PlugInDriverDownload">
+        <SG _S="3164" N="ListPlugInDriver">
+          <QY P="MsSql" Q="SELECT DRIVER&#13;&#10;  FROM QSYSPIDDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+      </F>
+    </M>
+    <M _S="2" N="Setup">
+      <F _S="3" N="Factory" D="Q">
+        <SG _S="500" N="HasFactory" D="Q">
+          <QY P="MsSql" Q="SELECT FACTORY&#13;&#10;  FROM QSYSFACDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="22" N="ListFactory" D="Q">
+          <QY P="MsSql" Q="SELECT FACTORY, FAC_DESC, CREATE_TIME&#13;&#10;  FROM QSYSFACDEF&#13;&#10; ORDER BY FACTORY"/>
+        </SG>
+        <SG _S="24" N="SearchFactory" D="O">
+          <QY P="MsSql" Q="SELECT FACTORY, FAC_DESC,&#13;&#10;       SVR_CPU_DANGER_RATE, SVR_CPU_CAUTION_RATE, SVR_MEMORY_DANGER_RATE, SVR_MEMORY_CAUTION_RATE, SVR_DISK_DANGER_RATE, SVR_DISK_CAUTION_RATE,&#13;&#10;       EAP_CPU_DANGER_RATE, EAP_CPU_CAUTION_RATE, EAP_MEMORY_DANGER_RATE, EAP_MEMORY_CAUTION_RATE, EAP_DISK_DANGER_RATE, EAP_DISK_CAUTION_RATE,&#13;&#10;       EAP_RELOAD_LIMIT, CMF_1, CMF_2, CMF_3, CMF_4, CMF_5, CMF_6, CMF_7, CMF_8, CMF_9, CMF_10&#13;&#10;  FROM QSYSFACDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+          <QY P="Oracle"/>
+          <QY P="MySql"/>
+          <QY P="MariaDb"/>
+          <QY P="PostgreSql"/>
+          <QY P="Machbase"/>
+          <QY P="OleDb"/>
+          <QY P="Influx"/>
+          <QY P="SQLite"/>
+        </SG>
+        <SG _S="711" N="CountUserEvent" D="Q">
+          <QY P="MsSql" Q="SELECT COUNT(EVENT_ID) AS COUNT&#13;&#10;  FROM QSECUSREVT&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="712" N="CountServerEvent" D="Q">
+          <QY P="MsSql" Q="SELECT COUNT(EVENT_ID) AS COUNT&#13;&#10;  FROM QSYSSVREVT&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="713" N="CountEapEvent" D="Q">
+          <QY P="MsSql" Q="SELECT COUNT(EVENT_ID) AS COUNT&#13;&#10;  FROM QRASEAPEVT&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="2719" N="CountApplication" D="Q">
+          <QY P="MsSql" Q="SELECT COUNT(APP) AS COUNT&#13;&#10;  FROM QSECURGAPP&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="628" N="CountServer" D="Q">
+          <QY P="MsSql" Q="SELECT COUNT(SERVER) AS COUNT&#13;&#10;  FROM QSYSSVRDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="714" N="CountPackage" D="Q">
+          <QY P="MsSql" Q="SELECT COUNT(PACKAGE) AS COUNT&#13;&#10;  FROM QSYSPKGDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="715" N="CountModel" D="Q">
+          <QY P="MsSql" Q="SELECT COUNT(MODEL) AS COUNT&#13;&#10;  FROM QSYSMDLDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="716" N="CountLibrary" D="Q">
+          <QY P="MsSql" Q="SELECT COUNT(LIBRARY) AS COUNT&#13;&#10;  FROM QSYSLIBDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="25" N="InsertFactory" D="Q">
+          <QY P="MsSql" Q="INSERT INTO QSYSFACDEF (&#13;&#10;   FACTORY,&#13;&#10;   FAC_DESC,&#13;&#10;   SVR_CPU_DANGER_RATE,&#13;&#10;   SVR_CPU_CAUTION_RATE,&#13;&#10;   SVR_MEMORY_DANGER_RATE,&#13;&#10;   SVR_MEMORY_CAUTION_RATE,&#13;&#10;   SVR_DISK_DANGER_RATE,&#13;&#10;   SVR_DISK_CAUTION_RATE,   &#13;&#10;   EAP_CPU_DANGER_RATE,&#13;&#10;   EAP_CPU_CAUTION_RATE,&#13;&#10;   EAP_MEMORY_DANGER_RATE,&#13;&#10;   EAP_MEMORY_CAUTION_RATE,&#13;&#10;   EAP_DISK_DANGER_RATE,&#13;&#10;   EAP_DISK_CAUTION_RATE,&#13;&#10;   EAP_RELOAD_LIMIT,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @fac_desc,&#13;&#10;   @svr_cpu_danger_rate,&#13;&#10;   @svr_cpu_caution_rate,&#13;&#10;   @svr_memory_danger_rate,&#13;&#10;   @svr_memory_caution_rate,&#13;&#10;   @svr_disk_danger_rate,&#13;&#10;   @svr_disk_caution_rate,&#13;&#10;   @eap_cpu_danger_rate,&#13;&#10;   @eap_cpu_caution_rate,&#13;&#10;   @eap_memory_danger_rate,&#13;&#10;   @eap_memory_caution_rate,&#13;&#10;   @eap_disk_danger_rate,&#13;&#10;   @eap_disk_caution_rate,&#13;&#10;   @eap_reload_limit,&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="fac_desc"/>
+            <QP N="svr_cpu_danger_rate"/>
+            <QP N="svr_cpu_caution_rate"/>
+            <QP N="svr_memory_danger_rate"/>
+            <QP N="svr_memory_caution_rate"/>
+            <QP N="svr_disk_danger_rate"/>
+            <QP N="svr_disk_caution_rate"/>
+            <QP N="eap_cpu_danger_rate"/>
+            <QP N="eap_cpu_caution_rate"/>
+            <QP N="eap_memory_danger_rate"/>
+            <QP N="eap_memory_caution_rate"/>
+            <QP N="eap_disk_danger_rate"/>
+            <QP N="eap_disk_caution_rate"/>
+            <QP N="eap_reload_limit"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="2715" N="InsertUserGroup" D="Q">
+          <QY P="MsSql" Q="INSERT INTO QSECUSRGRP(&#13;&#10;   FACTORY,&#13;&#10;   USER_GRP,&#13;&#10;   USER_GRP_DESC,&#13;&#10;   ALL_AUTHORITY,   &#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_grp,&#13;&#10;   @user_grp_desc,&#13;&#10;   @all_authority,   &#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+            <QP N="user_grp_desc"/>
+            <QP N="all_authority"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="2714" N="InsertUser" D="Q">
+          <QY P="MsSql" Q="INSERT INTO QSECUSRDEF(&#13;&#10;   FACTORY,&#13;&#10;   USER_ID,&#13;&#10;   USER_DESC,&#13;&#10;   PASSWORD,&#13;&#10;   USER_GRP, &#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_id,&#13;&#10;   @user_desc,&#13;&#10;   @password,&#13;&#10;   @user_grp,&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+            <QP N="user_desc"/>
+            <QP N="password"/>
+            <QP N="user_grp"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="7" N="UpdateFactory" D="Q">
+          <QY P="MsSql" Q="UPDATE QSYSFACDEF SET&#13;&#10;  FAC_DESC                = @fac_desc,&#13;&#10;  SVR_CPU_DANGER_RATE     = @svr_cpu_danger_rate,&#13;&#10;  SVR_CPU_CAUTION_RATE    = @svr_cpu_caution_rate,&#13;&#10;  SVR_MEMORY_DANGER_RATE  = @svr_memory_danger_rate,&#13;&#10;  SVR_MEMORY_CAUTION_RATE = @svr_memory_caution_rate,&#13;&#10;  SVR_DISK_DANGER_RATE    = @svr_disk_danger_rate,&#13;&#10;  SVR_DISK_CAUTION_RATE   = @svr_disk_caution_rate,&#13;&#10;  EAP_CPU_DANGER_RATE     = @eap_cpu_danger_rate,&#13;&#10;  EAP_CPU_CAUTION_RATE    = @eap_cpu_caution_rate,&#13;&#10;  EAP_MEMORY_DANGER_RATE  = @eap_memory_danger_rate,&#13;&#10;  EAP_MEMORY_CAUTION_RATE = @eap_memory_caution_rate,&#13;&#10;  EAP_DISK_DANGER_RATE    = @eap_disk_danger_rate,&#13;&#10;  EAP_DISK_CAUTION_RATE   = @eap_disk_caution_rate,&#13;&#10;  EAP_RELOAD_LIMIT        = @eap_reload_limit,&#13;&#10;  UPDATE_USER_ID          = @update_user_id,&#13;&#10;  UPDATE_TIME             = @update_time&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="fac_desc"/>
+            <QP N="svr_cpu_danger_rate"/>
+            <QP N="svr_cpu_caution_rate"/>
+            <QP N="svr_memory_danger_rate"/>
+            <QP N="svr_memory_caution_rate"/>
+            <QP N="svr_disk_danger_rate"/>
+            <QP N="svr_disk_caution_rate"/>
+            <QP N="eap_cpu_danger_rate"/>
+            <QP N="eap_cpu_caution_rate"/>
+            <QP N="eap_memory_danger_rate"/>
+            <QP N="eap_memory_caution_rate"/>
+            <QP N="eap_disk_danger_rate"/>
+            <QP N="eap_disk_caution_rate"/>
+            <QP N="eap_reload_limit"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="3311" N="UpdateFactoryExtLogInFunction">
+          <QY P="MsSql" Q="UPDATE QSYSFACDEF SET&#13;&#10;  CMF_1                = @cmf_1&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="cmf_1"/>
+            <QP N="factory"/>
+          </QY>
+          <QY P="Oracle"/>
+          <QY P="MySql"/>
+          <QY P="MariaDb"/>
+          <QY P="PostgreSql"/>
+          <QY P="Machbase"/>
+          <QY P="OleDb"/>
+          <QY P="Influx"/>
+          <QY P="SQLite"/>
+        </SG>
+        <SG _S="8" N="DeleteFactory" D="Q">
+          <QY P="MsSql" Q="DELETE FROM QSYSFACDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="2717" N="DeleteUser" D="Q">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="2716" N="DeleteUserGroup" D="Q">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY  = @factory">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="645" N="UserEvent">
+        <SG _S="647" N="HasUserEvent">
+          <QY P="MsSql" Q="SELECT EVENT_ID&#13;&#10;  FROM QSECUSREVT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND SYSTEM   = @system&#13;&#10;   AND EVENT_ID = @event_id&#13;&#10;   AND ACTION   = @action">
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="event_id"/>
+            <QP N="action"/>
+          </QY>
+        </SG>
+        <SG _S="648" N="ListUserEvent">
+          <QY P="MsSql" Q="SELECT EVENT_ID, EVENT_DESC, ACTION&#13;&#10;  FROM QSECUSREVT&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND SYSTEM  = @system&#13;&#10; ORDER BY EVENT_ID, ACTION">
+            <QP N="factory"/>
+            <QP N="system"/>
+          </QY>
+        </SG>
+        <SG _S="649" N="SearchUserEvent">
+          <QY P="MsSql" Q="SELECT EVENT_ID, EVENT_DESC, ACTION,&#13;&#10;       DATA_1_PRT, DATA_2_PRT, DATA_3_PRT, DATA_4_PRT, DATA_5_PRT, DATA_6_PRT, DATA_7_PRT, DATA_8_PRT, DATA_9_PRT, DATA_10_PRT,&#13;&#10;       DATA_11_PRT, DATA_12_PRT, DATA_13_PRT, DATA_14_PRT, DATA_15_PRT, DATA_16_PRT, DATA_17_PRT, DATA_18_PRT, DATA_19_PRT, DATA_20_PRT&#13;&#10;  FROM QSECUSREVT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND SYSTEM   = @system&#13;&#10;   AND EVENT_ID = @event_id&#13;&#10;   AND ACTION   = @action">
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="event_id"/>
+            <QP N="action"/>
+          </QY>
+        </SG>
+        <SG _S="650" N="InsertUserEvent">
+          <QY P="MsSql" Q="INSERT INTO QSECUSREVT(&#13;&#10;   FACTORY,&#13;&#10;   SYSTEM,&#13;&#10;   EVENT_ID,&#13;&#10;   EVENT_DESC,&#13;&#10;   ACTION,&#13;&#10;   DATA_1_PRT,   &#13;&#10;   DATA_2_PRT,   &#13;&#10;   DATA_3_PRT,   &#13;&#10;   DATA_4_PRT,   &#13;&#10;   DATA_5_PRT,   &#13;&#10;   DATA_6_PRT,   &#13;&#10;   DATA_7_PRT,   &#13;&#10;   DATA_8_PRT,   &#13;&#10;   DATA_9_PRT,   &#13;&#10;   DATA_10_PRT,   &#13;&#10;   DATA_11_PRT,   &#13;&#10;   DATA_12_PRT,   &#13;&#10;   DATA_13_PRT,   &#13;&#10;   DATA_14_PRT,   &#13;&#10;   DATA_15_PRT,   &#13;&#10;   DATA_16_PRT,   &#13;&#10;   DATA_17_PRT,   &#13;&#10;   DATA_18_PRT,   &#13;&#10;   DATA_19_PRT,   &#13;&#10;   DATA_20_PRT,   &#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @SYSTEM,&#13;&#10;   @event_id,&#13;&#10;   @event_desc,&#13;&#10;   @action, &#13;&#10;   @data_1_prt,  &#13;&#10;   @data_2_prt,  &#13;&#10;   @data_3_prt,  &#13;&#10;   @data_4_prt,  &#13;&#10;   @data_5_prt,  &#13;&#10;   @data_6_prt,  &#13;&#10;   @data_7_prt,  &#13;&#10;   @data_8_prt,  &#13;&#10;   @data_9_prt,  &#13;&#10;   @data_10_prt,  &#13;&#10;   @data_11_prt,  &#13;&#10;   @data_12_prt,  &#13;&#10;   @data_13_prt,  &#13;&#10;   @data_14_prt,  &#13;&#10;   @data_15_prt,  &#13;&#10;   @data_16_prt,  &#13;&#10;   @data_17_prt,  &#13;&#10;   @data_18_prt,  &#13;&#10;   @data_19_prt,  &#13;&#10;   @data_20_prt,  &#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="event_id"/>
+            <QP N="event_desc"/>
+            <QP N="action"/>
+            <QP N="data_1_prt"/>
+            <QP N="data_2_prt"/>
+            <QP N="data_3_prt"/>
+            <QP N="data_4_prt"/>
+            <QP N="data_5_prt"/>
+            <QP N="data_6_prt"/>
+            <QP N="data_7_prt"/>
+            <QP N="data_8_prt"/>
+            <QP N="data_9_prt"/>
+            <QP N="data_10_prt"/>
+            <QP N="data_11_prt"/>
+            <QP N="data_12_prt"/>
+            <QP N="data_13_prt"/>
+            <QP N="data_14_prt"/>
+            <QP N="data_15_prt"/>
+            <QP N="data_16_prt"/>
+            <QP N="data_17_prt"/>
+            <QP N="data_18_prt"/>
+            <QP N="data_19_prt"/>
+            <QP N="data_20_prt"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="651" N="UpdateUserEvent">
+          <QY P="MsSql" Q="UPDATE QSECUSREVT SET&#13;&#10;   EVENT_DESC     = @event_desc,&#13;&#10;   DATA_1_PRT     = @data_1_prt,&#13;&#10;   DATA_2_PRT     = @data_2_prt,&#13;&#10;   DATA_3_PRT     = @data_3_prt,&#13;&#10;   DATA_4_PRT     = @data_4_prt,&#13;&#10;   DATA_5_PRT     = @data_5_prt,&#13;&#10;   DATA_6_PRT     = @data_6_prt,&#13;&#10;   DATA_7_PRT     = @data_7_prt,&#13;&#10;   DATA_8_PRT     = @data_8_prt,&#13;&#10;   DATA_9_PRT     = @data_9_prt,&#13;&#10;   DATA_10_PRT    = @data_10_prt,&#13;&#10;   DATA_11_PRT    = @data_11_prt,&#13;&#10;   DATA_12_PRT    = @data_12_prt,&#13;&#10;   DATA_13_PRT    = @data_13_prt,&#13;&#10;   DATA_14_PRT    = @data_14_prt,&#13;&#10;   DATA_15_PRT    = @data_15_prt,&#13;&#10;   DATA_16_PRT    = @data_16_prt,&#13;&#10;   DATA_17_PRT    = @data_17_prt,&#13;&#10;   DATA_18_PRT    = @data_18_prt,&#13;&#10;   DATA_19_PRT    = @data_19_prt,&#13;&#10;   DATA_20_PRT    = @data_20_prt,&#13;&#10;   UPDATE_USER_ID = @update_user_id,&#13;&#10;   UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND system     = @system&#13;&#10;   AND EVENT_ID   = @event_id&#13;&#10;   AND ACTION     = @action">
+            <QP N="event_desc"/>
+            <QP N="data_1_prt"/>
+            <QP N="data_2_prt"/>
+            <QP N="data_3_prt"/>
+            <QP N="data_4_prt"/>
+            <QP N="data_5_prt"/>
+            <QP N="data_6_prt"/>
+            <QP N="data_7_prt"/>
+            <QP N="data_8_prt"/>
+            <QP N="data_9_prt"/>
+            <QP N="data_10_prt"/>
+            <QP N="data_11_prt"/>
+            <QP N="data_12_prt"/>
+            <QP N="data_13_prt"/>
+            <QP N="data_14_prt"/>
+            <QP N="data_15_prt"/>
+            <QP N="data_16_prt"/>
+            <QP N="data_17_prt"/>
+            <QP N="data_18_prt"/>
+            <QP N="data_19_prt"/>
+            <QP N="data_20_prt"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="event_id"/>
+            <QP N="action"/>
+          </QY>
+        </SG>
+        <SG _S="652" N="DeleteUserEvent">
+          <QY P="MsSql" Q="DELETE FROM QSECUSREVT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND SYSTEM   = @system&#13;&#10;   AND EVENT_ID = @event_id&#13;&#10;   AND ACTION   = @action">
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="event_id"/>
+            <QP N="action"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="834" N="UserGroupApplication">
+        <SG _S="835" N="HasApplication">
+          <QY P="MsSql" Q="SELECT APP&#13;&#10;  FROM QSECURGAPP&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app">
+            <QP N="factory"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+        <SG _S="836" N="ListApplication">
+          <QY P="MsSql" Q="SELECT APP, APP_DESC&#13;&#10;  FROM QSECURGAPP&#13;&#10; WHERE FACTORY = @factory&#13;&#10; ORDER BY APP">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="837" N="SearchApplication">
+          <QY P="MsSql" Q="SELECT APP, APP_DESC&#13;&#10;  FROM QSECURGAPP&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app">
+            <QP N="factory"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+        <SG _S="838" N="InsertApplication">
+          <QY P="MsSql" Q="INSERT INTO QSECURGAPP (&#13;&#10;   FACTORY,&#13;&#10;   APP,&#13;&#10;   APP_DESC,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @app,&#13;&#10;   @app_desc,&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="app"/>
+            <QP N="app_desc"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="839" N="UpdateApplication">
+          <QY P="MsSql" Q="UPDATE QSECURGAPP SET&#13;&#10;  APP_DESC       = @app_desc,&#13;&#10;  UPDATE_USER_ID = @update_user_id,&#13;&#10;  UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY   = @factory&#13;&#10;   AND APP       = @app">
+            <QP N="app_desc"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+        <SG _S="840" N="DeleteApplication">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QSECURGAPP&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app">
+            <QP N="factory"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+        <SG _S="846" N="CountFunction">
+          <QY P="MsSql" Q="SELECT COUNT(APP) AS COUNT&#13;&#10;  FROM QSECURGFUN&#13;&#10; WHERE FACTORY     = @factory&#13;&#10;   AND APP         = @app">
+            <QP N="factory"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="2530" N="UserGroupFunction">
+        <SG _S="2531" N="HasApplication">
+          <QY P="MsSql" Q="SELECT APP&#13;&#10;  FROM QSECURGAPP&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app">
+            <QP N="factory"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+        <SG _S="2532" N="HasFunction">
+          <QY P="MsSql" Q="SELECT FUN&#13;&#10;  FROM QSECURGFUN&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app&#13;&#10;   AND FUN  = @fun">
+            <QP N="factory"/>
+            <QP N="app"/>
+            <QP N="fun"/>
+          </QY>
+        </SG>
+        <SG _S="2534" N="ListFunction">
+          <QY P="MsSql" Q="SELECT FUN, FUN_DESC, TRAN_USED&#13;&#10;  FROM QSECURGFUN&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app&#13;&#10; ORDER BY FUN">
+            <QP N="factory"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+        <SG _S="2536" N="SearchFunction">
+          <QY P="MsSql" Q="SELECT APP, FUN, FUN_DESC, TRAN_USED&#13;&#10;  FROM QSECURGFUN&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app&#13;&#10;   AND FUN = @fun">
+            <QP N="factory"/>
+            <QP N="app"/>
+            <QP N="fun"/>
+          </QY>
+        </SG>
+        <SG _S="2538" N="InsertFunction">
+          <QY P="MsSql" Q="INSERT INTO QSECURGFUN (&#13;&#10;   FACTORY,&#13;&#10;   APP,&#13;&#10;   FUN,&#13;&#10;   FUN_DESC,&#13;&#10;   TRAN_USED,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @app,&#13;&#10;   @fun,&#13;&#10;   @fun_desc,&#13;&#10;   @tran_used,&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="app"/>
+            <QP N="fun"/>
+            <QP N="fun_desc"/>
+            <QP N="tran_used"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="2540" N="UpdateFunction">
+          <QY P="MsSql" Q="UPDATE QSECURGFUN SET&#13;&#10;  FUN_DESC       = @fun_desc,&#13;&#10;  TRAN_USED      = @tran_used,&#13;&#10;  UPDATE_USER_ID = @update_user_id,&#13;&#10;  UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY   = @factory&#13;&#10;   AND APP       = @app&#13;&#10;   AND FUN = @fun">
+            <QP N="fun_desc"/>
+            <QP N="tran_used"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="app"/>
+            <QP N="fun"/>
+          </QY>
+        </SG>
+        <SG _S="2542" N="DeleteFunction">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QSECURGFUN&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app&#13;&#10;   AND FUN  = @fun">
+            <QP N="factory"/>
+            <QP N="app"/>
+            <QP N="fun"/>
+          </QY>
+        </SG>
+        <SG _S="2544" N="CountAuthority">
+          <QY P="MsSql" Q="SELECT COUNT(USER_GRP) AS COUNT&#13;&#10;  FROM QSECURGAUT&#13;&#10; WHERE FACTORY     = @factory&#13;&#10;   AND APP         = @app&#13;&#10;   AND FUN  = @fun">
+            <QP N="factory"/>
+            <QP N="app"/>
+            <QP N="fun"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="140" N="UserGroup">
+        <SG _S="506" N="HasUserGroup">
+          <QY P="MsSql" Q="SELECT USER_GRP&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="141" N="ListUserGroup">
+          <QY P="MsSql" Q="SELECT USER_GRP, USER_GRP_DESC, ALL_AUTHORITY&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY = @factory&#13;&#10; ORDER BY USER_GRP">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="142" N="SearchUserGroup">
+          <QY P="MsSql" Q="SELECT USER_GRP, USER_GRP_DESC, ALL_AUTHORITY&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="143" N="InsertUserGroup">
+          <QY P="MsSql" Q="INSERT INTO QSECUSRGRP(&#13;&#10;   FACTORY,&#13;&#10;   USER_GRP,&#13;&#10;   USER_GRP_DESC,&#13;&#10;   ALL_AUTHORITY,   &#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_grp,&#13;&#10;   @user_grp_desc,&#13;&#10;   @all_authority,   &#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+            <QP N="user_grp_desc"/>
+            <QP N="all_authority"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="144" N="UpdateUserGroup">
+          <QY P="MsSql" Q="UPDATE QSECUSRGRP SET&#13;&#10;   USER_GRP_DESC  = @user_grp_desc,&#13;&#10;   ALL_AUTHORITY  = @all_authority,&#13;&#10;   UPDATE_USER_ID = @update_user_id,&#13;&#10;   UPDATE_TIME    = @update_time&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND USER_GRP   = @user_grp">
+            <QP N="user_grp_desc"/>
+            <QP N="all_authority"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="145" N="DeleteUserGroup">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="509" N="CountUser">
+          <QY P="MsSql" Q="SELECT COUNT(USER_ID) AS COUNT&#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="2528" N="CountAuthority">
+          <QY P="MsSql" Q="SELECT COUNT(*) AS COUNT&#13;&#10;  FROM QSECURGAUT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="857" N="UserGroupAuthority">
+        <SG _S="867" N="HasUserGroup">
+          <QY P="MsSql" Q="SELECT USER_GRP&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="858" N="HasApplication">
+          <QY P="MsSql" Q="SELECT APP&#13;&#10;  FROM QSECURGAPP&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND APP     = @app">
+            <QP N="factory"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+        <SG _S="860" N="ListApplication">
+          <QY P="MsSql" Q="SELECT APP, APP_DESC&#13;&#10;  FROM QSECURGAPP&#13;&#10; WHERE FACTORY = @factory&#13;&#10; ORDER BY APP">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="861" N="ListAuthority">
+          <QY P="MsSql" Q="SELECT A.FUN, B.FUN_DESC, A.TRAN_ENABLED, B.TRAN_USED&#13;&#10;  FROM QSECURGAUT A&#13;&#10;  LEFT JOIN QSECURGFUN B&#13;&#10;    ON A.FACTORY  = B.FACTORY&#13;&#10;   AND A.APP      = B.APP&#13;&#10;   AND A.FUN      = B.FUN&#13;&#10; WHERE A.FACTORY  = @factory&#13;&#10;   AND A.USER_GRP = @user_grp&#13;&#10;   AND A.APP      = @app&#13;&#10; ORDER BY A.FUN">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+        <SG _S="863" N="InsertAuthority">
+          <QY P="MsSql" Q="INSERT INTO QSECURGAUT (&#13;&#10;   FACTORY,&#13;&#10;   USER_GRP,&#13;&#10;   APP,&#13;&#10;   FUN,&#13;&#10;   TRAN_ENABLED,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_grp,&#13;&#10;   @app,&#13;&#10;   @fun,&#13;&#10;   @tran_enabled,&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+            <QP N="app"/>
+            <QP N="fun"/>
+            <QP N="tran_enabled"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="865" N="DeleteAuthority">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QSECURGAUT&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp&#13;&#10;   AND APP      = @app">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+            <QP N="app"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="1402" N="UserGroupAlert">
+        <SG _S="1408" N="HasUserGroup">
+          <QY P="MsSql" Q="SELECT USER_GRP&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="1405" N="ListUserGroupAlert" UMG="No">
+          <QY P="MsSql" Q="SELECT A.EVENT_ID, (CASE WHEN A.EVENT_TYPE = 'Server' THEN B.EVENT_DESC WHEN A.EVENT_TYPE = 'EAP' THEN C.EVENT_DESC WHEN A.EVENT_TYPE = 'Equipment' THEN D.EVENT_DESC END)&#13;&#10;  FROM QSECURGALT A&#13;&#10;  LEFT JOIN QSYSSVREVT B&#13;&#10;    ON A.FACTORY  = B.FACTORY&#13;&#10;   AND A.EVENT_ID = B.EVENT_ID&#13;&#10;  LEFT JOIN QRASEAPEVT C&#13;&#10;    ON A.FACTORY  = C.FACTORY&#13;&#10;   AND A.EVENT_ID = C.EVENT_ID&#13;&#10;  LEFT JOIN QRASEQPEVT D&#13;&#10;    ON A.FACTORY  = D.FACTORY&#13;&#10;   AND A.FACTORY  = D.EVENT_ID&#13;&#10; WHERE A.FACTORY    = @factory&#13;&#10;   AND A.USER_GRP   = @user_grp&#13;&#10;   AND A.EVENT_TYPE = @event_type">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+            <QP N="event_type"/>
+          </QY>
+        </SG>
+        <SG _S="1410" N="InsertAlert">
+          <QY P="MsSql" Q="INSERT INTO QSECURGALT (&#13;&#10;   FACTORY,&#13;&#10;   USER_GRP,&#13;&#10;   EVENT_TYPE,&#13;&#10;   EVENT_ID,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_grp,&#13;&#10;   @event_type,&#13;&#10;   @event_id,&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+            <QP N="event_type"/>
+            <QP N="event_id"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="1409" N="DeleteAlert">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QSECURGALT&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND USER_GRP   = @user_grp&#13;&#10;   AND EVENT_TYPE = @event_type">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+            <QP N="event_type"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="146" N="User">
+        <SG _S="508" N="HasUserGroup">
+          <QY P="MsSql" Q="SELECT USER_GRP&#13;&#10;  FROM QSECUSRGRP&#13;&#10; WHERE FACTORY  = @factory&#13;&#10;   AND USER_GRP = @user_grp">
+            <QP N="factory"/>
+            <QP N="user_grp"/>
+          </QY>
+        </SG>
+        <SG _S="507" N="HasUser">
+          <QY P="MsSql" Q="SELECT USER_ID, PASSWORD, EXPIRE_DATE&#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="147" N="ListUser">
+          <QY P="MsSql" Q="SELECT USER_ID, USER_NAME, USER_DESC, USER_GRP, PHONE_OFFICE, PHONE_MOBILE, EMAIL_ID&#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10; ORDER BY USER_ID">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="148" N="SearchUser">
+          <QY P="MsSql" Q="SELECT USER_ID, USER_NAME, USER_DESC, USER_GRP, PHONE_OFFICE, PHONE_MOBILE, EMAIL_ID&#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="149" N="InsertUser">
+          <QY P="MsSql" Q="INSERT INTO QSECUSRDEF(&#13;&#10;   FACTORY,&#13;&#10;   USER_ID,&#13;&#10;   USER_NAME,&#13;&#10;   USER_DESC,&#13;&#10;   PASSWORD,&#13;&#10;   USER_GRP, &#13;&#10;   PHONE_OFFICE,&#13;&#10;   PHONE_MOBILE, &#13;&#10;   EMAIL_ID,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME,&#13;&#10;   EXPIRE_DATE&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @user_id,&#13;&#10;   @user_name,&#13;&#10;   @user_desc,&#13;&#10;   @password,&#13;&#10;   @user_grp,&#13;&#10;   @phone_office,&#13;&#10;   @phone_mobile,&#13;&#10;   @email_id,&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time,&#13;&#10;   @expire_date&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+            <QP N="user_name"/>
+            <QP N="user_desc"/>
+            <QP N="password"/>
+            <QP N="user_grp"/>
+            <QP N="phone_office"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="expire_date"/>
+          </QY>
+        </SG>
+        <SG _S="150" N="UpdateUser">
+          <QY P="MsSql" Q="UPDATE QSECUSRDEF SET&#13;&#10;   USER_NAME      = @user_name,&#13;&#10;   USER_DESC      = @user_desc,&#13;&#10;   USER_GRP       = @user_grp,&#13;&#10;   PHONE_OFFICE   = @phone_office,&#13;&#10;   PHONE_MOBILE   = @phone_mobile,&#13;&#10;   EMAIL_ID       = @email_id,&#13;&#10;   PASSWORD       = @password,&#13;&#10;   UPDATE_USER_ID = @update_user_id,&#13;&#10;   UPDATE_TIME    = @update_time,&#13;&#10;   EXPIRE_DATE    = @expire_date&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="user_name"/>
+            <QP N="user_desc"/>
+            <QP N="user_grp"/>
+            <QP N="phone_office"/>
+            <QP N="phone_mobile"/>
+            <QP N="email_id"/>
+            <QP N="password"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="expire_date"/>
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="151" N="DeleteUser">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QSECUSRDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="3304" N="DeleteRmsUser">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QRMSUSRROL&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="2663" N="CountRecipeUser">
+          <QY P="MsSql" Q="SELECT USER_ID&#13;&#10;  FROM FRMSUSRDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="3302" N="HasRmsTypeOwner">
+          <QY P="MsSql" Q="SELECT USER_ID&#13;&#10;  FROM QRMSTYPUSR&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+        <SG _S="3303" N="HasRmsApprover">
+          <QY P="MsSql" Q="SELECT USER_ID&#13;&#10;  FROM QRMSAPLUSR&#13;&#10; WHERE FACTORY = @factory&#13;&#10;   AND USER_ID = @user_id">
+            <QP N="factory"/>
+            <QP N="user_id"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="3277" N="GcmTable">
+        <SG _S="3279" N="HasGcmTable">
+          <QY P="MsSql" Q="SELECT TABLE_NAME &#13;&#10;  FROM QGCMTBLDEF&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND TABLE_NAME = @table_name">
+            <QP N="factory"/>
+            <QP N="table_name"/>
+          </QY>
+        </SG>
+        <SG _S="3280" N="ListGcmTable">
+          <QY P="MsSql" Q="SELECT TABLE_NAME, TABLE_DESC&#13;&#10;  FROM QGCMTBLDEF&#13;&#10; WHERE FACTORY = @factory&#13;&#10; ORDER BY TABLE_NAME">
+            <QP N="factory"/>
+          </QY>
+        </SG>
+        <SG _S="3281" N="SearchGcmTable">
+          <QY P="MsSql" Q="SELECT TABLE_NAME,  TABLE_DESC, &#13;&#10;       DATA_1_USE,  DATA_1_PRT,  DATA_1_FMT,  DATA_1_SIZE,  DATA_1_KEY,&#13;&#10;       DATA_2_USE,  DATA_2_PRT,  DATA_2_FMT,  DATA_2_SIZE,  DATA_2_KEY,&#13;&#10;       DATA_3_USE,  DATA_3_PRT,  DATA_3_FMT,  DATA_3_SIZE,  DATA_3_KEY,&#13;&#10;       DATA_4_USE,  DATA_4_PRT,  DATA_4_FMT,  DATA_4_SIZE,  DATA_4_KEY,&#13;&#10;       DATA_5_USE,  DATA_5_PRT,  DATA_5_FMT,  DATA_5_SIZE,  DATA_5_KEY,&#13;&#10;       DATA_6_USE,  DATA_6_PRT,  DATA_6_FMT,  DATA_6_SIZE,  DATA_6_KEY,&#13;&#10;       DATA_7_USE,  DATA_7_PRT,  DATA_7_FMT,  DATA_7_SIZE,  DATA_7_KEY,&#13;&#10;       DATA_8_USE,  DATA_8_PRT,  DATA_8_FMT,  DATA_8_SIZE,  DATA_8_KEY,&#13;&#10;       DATA_9_USE,  DATA_9_PRT,  DATA_9_FMT,  DATA_9_SIZE,  DATA_9_KEY,&#13;&#10;       DATA_10_USE, DATA_10_PRT, DATA_10_FMT, DATA_10_SIZE, DATA_10_KEY&#13;&#10;  FROM QGCMTBLDEF&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND TABLE_NAME = @table_name">
+            <QP N="factory"/>
+            <QP N="table_name"/>
+          </QY>
+        </SG>
+        <SG _S="3282" N="CountGcmData">
+          <QY P="MsSql" Q="SELECT COUNT(TABLE_NAME) AS COUNT&#13;&#10;  FROM QGCMTBLDAT&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND TABLE_NAME = @table_name">
+            <QP N="factory"/>
+            <QP N="table_name"/>
+          </QY>
+        </SG>
+        <SG _S="3283" N="InsertGcmTable">
+          <QY P="MsSql" Q="INSERT INTO QGCMTBLDEF (&#13;&#10;   FACTORY,&#13;&#10;   TABLE_NAME,&#13;&#10;   TABLE_DESC,&#13;&#10;   DATA_1_USE,  DATA_1_PRT,   DATA_1_FMT,   DATA_1_SIZE,   DATA_1_KEY,&#13;&#10;   DATA_2_USE,  DATA_2_PRT,   DATA_2_FMT,   DATA_2_SIZE,   DATA_2_KEY,&#13;&#10;   DATA_3_USE,  DATA_3_PRT,   DATA_3_FMT,   DATA_3_SIZE,   DATA_3_KEY,&#13;&#10;   DATA_4_USE,  DATA_4_PRT,   DATA_4_FMT,   DATA_4_SIZE,   DATA_4_KEY,&#13;&#10;   DATA_5_USE,  DATA_5_PRT,   DATA_5_FMT,   DATA_5_SIZE,   DATA_5_KEY,&#13;&#10;   DATA_6_USE,  DATA_6_PRT,   DATA_6_FMT,   DATA_6_SIZE,   DATA_6_KEY,&#13;&#10;   DATA_7_USE,  DATA_7_PRT,   DATA_7_FMT,   DATA_7_SIZE,   DATA_7_KEY,&#13;&#10;   DATA_8_USE,  DATA_8_PRT,   DATA_8_FMT,   DATA_8_SIZE,   DATA_8_KEY,&#13;&#10;   DATA_9_USE,  DATA_9_PRT,   DATA_9_FMT,   DATA_9_SIZE,   DATA_9_KEY,&#13;&#10;   DATA_10_USE, DATA_10_PRT,  DATA_10_FMT,  DATA_10_SIZE,  DATA_10_KEY,&#13;&#10;   CREATE_USER_ID,&#13;&#10;   CREATE_TIME,&#13;&#10;   UPDATE_USER_ID,&#13;&#10;   UPDATE_TIME&#13;&#10;) VALUES (&#13;&#10;   @factory,&#13;&#10;   @table_name,&#13;&#10;   @table_desc,&#13;&#10;   @data_1_use,  @data_1_prt,   @data_1_fmt,   @data_1_size,   @data_1_key,&#13;&#10;   @data_2_use,  @data_2_prt,   @data_2_fmt,   @data_2_size,   @data_2_key,&#13;&#10;   @data_3_use,  @data_3_prt,   @data_3_fmt,   @data_3_size,   @data_3_key,&#13;&#10;   @data_4_use,  @data_4_prt,   @data_4_fmt,   @data_4_size,   @data_4_key,&#13;&#10;   @data_5_use,  @data_5_prt,   @data_5_fmt,   @data_5_size,   @data_5_key,&#13;&#10;   @data_6_use,  @data_6_prt,   @data_6_fmt,   @data_6_size,   @data_6_key,&#13;&#10;   @data_7_use,  @data_7_prt,   @data_7_fmt,   @data_7_size,   @data_7_key,&#13;&#10;   @data_8_use,  @data_8_prt,   @data_8_fmt,   @data_8_size,   @data_8_key,&#13;&#10;   @data_9_use,  @data_9_prt,   @data_9_fmt,   @data_9_size,   @data_9_key,&#13;&#10;   @data_10_use, @data_10_prt,  @data_10_fmt,  @data_10_size,  @data_10_key,&#13;&#10;   @create_user_id,&#13;&#10;   @create_time,&#13;&#10;   @update_user_id,&#13;&#10;   @update_time&#13;&#10;)">
+            <QP N="factory"/>
+            <QP N="table_name"/>
+            <QP N="table_desc"/>
+            <QP N="data_1_use"/>
+            <QP N="data_1_prt"/>
+            <QP N="data_1_fmt"/>
+            <QP N="data_1_size"/>
+            <QP N="data_1_key"/>
+            <QP N="data_2_use"/>
+            <QP N="data_2_prt"/>
+            <QP N="data_2_fmt"/>
+            <QP N="data_2_size"/>
+            <QP N="data_2_key"/>
+            <QP N="data_3_use"/>
+            <QP N="data_3_prt"/>
+            <QP N="data_3_fmt"/>
+            <QP N="data_3_size"/>
+            <QP N="data_3_key"/>
+            <QP N="data_4_use"/>
+            <QP N="data_4_prt"/>
+            <QP N="data_4_fmt"/>
+            <QP N="data_4_size"/>
+            <QP N="data_4_key"/>
+            <QP N="data_5_use"/>
+            <QP N="data_5_prt"/>
+            <QP N="data_5_fmt"/>
+            <QP N="data_5_size"/>
+            <QP N="data_5_key"/>
+            <QP N="data_6_use"/>
+            <QP N="data_6_prt"/>
+            <QP N="data_6_fmt"/>
+            <QP N="data_6_size"/>
+            <QP N="data_6_key"/>
+            <QP N="data_7_use"/>
+            <QP N="data_7_prt"/>
+            <QP N="data_7_fmt"/>
+            <QP N="data_7_size"/>
+            <QP N="data_7_key"/>
+            <QP N="data_8_use"/>
+            <QP N="data_8_prt"/>
+            <QP N="data_8_fmt"/>
+            <QP N="data_8_size"/>
+            <QP N="data_8_key"/>
+            <QP N="data_9_use"/>
+            <QP N="data_9_prt"/>
+            <QP N="data_9_fmt"/>
+            <QP N="data_9_size"/>
+            <QP N="data_9_key"/>
+            <QP N="data_10_use"/>
+            <QP N="data_10_prt"/>
+            <QP N="data_10_fmt"/>
+            <QP N="data_10_size"/>
+            <QP N="data_10_key"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+          </QY>
+        </SG>
+        <SG _S="3284" N="UpdateGcmTable">
+          <QY P="MsSql" Q="UPDATE QGCMTBLDEF SET&#13;&#10;  TABLE_DESC      = @table_desc,&#13;&#10;  DATA_1_USE      = @data_1_use,     DATA_1_PRT  = @data_1_prt,  DATA_1_FMT  = @data_1_fmt,  DATA_1_SIZE  = @data_1_size,  DATA_1_KEY  = @data_1_key,&#13;&#10;  DATA_2_USE      = @data_2_use,     DATA_2_PRT  = @data_2_prt,  DATA_2_FMT  = @data_2_fmt,  DATA_2_SIZE  = @data_2_size,  DATA_2_KEY  = @data_2_key,&#13;&#10;  DATA_3_USE      = @data_3_use,     DATA_3_PRT  = @data_3_prt,  DATA_3_FMT  = @data_3_fmt,  DATA_3_SIZE  = @data_3_size,  DATA_3_KEY  = @data_3_key,&#13;&#10;  DATA_4_USE      = @data_4_use,     DATA_4_PRT  = @data_4_prt,  DATA_4_FMT  = @data_4_fmt,  DATA_4_SIZE  = @data_4_size,  DATA_4_KEY  = @data_4_key,&#13;&#10;  DATA_5_USE      = @data_5_use,     DATA_5_PRT  = @data_5_prt,  DATA_5_FMT  = @data_5_fmt,  DATA_5_SIZE  = @data_5_size,  DATA_5_KEY  = @data_5_key,&#13;&#10;  DATA_6_USE      = @data_6_use,     DATA_6_PRT  = @data_6_prt,  DATA_6_FMT  = @data_6_fmt,  DATA_6_SIZE  = @data_6_size,  DATA_6_KEY  = @data_6_key,&#13;&#10;  DATA_7_USE      = @data_7_use,     DATA_7_PRT  = @data_7_prt,  DATA_7_FMT  = @data_7_fmt,  DATA_7_SIZE  = @data_7_size,  DATA_7_KEY  = @data_7_key,&#13;&#10;  DATA_8_USE      = @data_8_use,     DATA_8_PRT  = @data_8_prt,  DATA_8_FMT  = @data_8_fmt,  DATA_8_SIZE  = @data_8_size,  DATA_8_KEY  = @data_8_key,&#13;&#10;  DATA_9_USE      = @data_9_use,     DATA_9_PRT  = @data_9_prt,  DATA_9_FMT  = @data_9_fmt,  DATA_9_SIZE  = @data_9_size,  DATA_9_KEY  = @data_9_key,&#13;&#10;  DATA_10_USE     = @data_10_use,    DATA_10_PRT = @data_10_prt, DATA_10_FMT = @data_10_fmt, DATA_10_SIZE = @data_10_size, DATA_10_KEY = @data_10_key,&#13;&#10;  UPDATE_USER_ID  = @update_user_id,&#13;&#10;  UPDATE_TIME     = @update_time&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND TABLE_NAME = @table_name">
+            <QP N="table_desc"/>
+            <QP N="data_1_use"/>
+            <QP N="data_1_prt"/>
+            <QP N="data_1_fmt"/>
+            <QP N="data_1_size"/>
+            <QP N="data_1_key"/>
+            <QP N="data_2_use"/>
+            <QP N="data_2_prt"/>
+            <QP N="data_2_fmt"/>
+            <QP N="data_2_size"/>
+            <QP N="data_2_key"/>
+            <QP N="data_3_use"/>
+            <QP N="data_3_prt"/>
+            <QP N="data_3_fmt"/>
+            <QP N="data_3_size"/>
+            <QP N="data_3_key"/>
+            <QP N="data_4_use"/>
+            <QP N="data_4_prt"/>
+            <QP N="data_4_fmt"/>
+            <QP N="data_4_size"/>
+            <QP N="data_4_key"/>
+            <QP N="data_5_use"/>
+            <QP N="data_5_prt"/>
+            <QP N="data_5_fmt"/>
+            <QP N="data_5_size"/>
+            <QP N="data_5_key"/>
+            <QP N="data_6_use"/>
+            <QP N="data_6_prt"/>
+            <QP N="data_6_fmt"/>
+            <QP N="data_6_size"/>
+            <QP N="data_6_key"/>
+            <QP N="data_7_use"/>
+            <QP N="data_7_prt"/>
+            <QP N="data_7_fmt"/>
+            <QP N="data_7_size"/>
+            <QP N="data_7_key"/>
+            <QP N="data_8_use"/>
+            <QP N="data_8_prt"/>
+            <QP N="data_8_fmt"/>
+            <QP N="data_8_size"/>
+            <QP N="data_8_key"/>
+            <QP N="data_9_use"/>
+            <QP N="data_9_prt"/>
+            <QP N="data_9_fmt"/>
+            <QP N="data_9_size"/>
+            <QP N="data_9_key"/>
+            <QP N="data_10_use"/>
+            <QP N="data_10_prt"/>
+            <QP N="data_10_fmt"/>
+            <QP N="data_10_size"/>
+            <QP N="data_10_key"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time"/>
+            <QP N="factory"/>
+            <QP N="table_name"/>
+          </QY>
+        </SG>
+        <SG _S="3285" N="DeleteGcmTable">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QGCMTBLDEF&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND TABLE_NAME = @table_name">
+            <QP N="factory"/>
+            <QP N="table_name"/>
+          </QY>
+        </SG>
+      </F>
+      <F _S="3278" N="GcmData">
+        <SG _S="3286" N="HasGcmTable">
+          <QY P="MsSql" Q="SELECT TABLE_NAME&#10;  FROM QGCMTBLDEF&#10; WHERE FACTORY    = @factory&#10;   AND TABLE_NAME = @table_name">
+            <QP N="factory&#10;"/>
+            <QP N="table_name"/>
+          </QY>
+        </SG>
+        <SG _S="3287" N="HasGcmData">
+          <QY P="MsSql" Q="SELECT TABLE_NAME&#10;  FROM QGCMTBLDAT&#10; WHERE FACTORY    = @factory&#10;   AND TABLE_NAME = @table_name&#10;   AND DATA_KEY   = @data_key">
+            <QP N="factory&#10;"/>
+            <QP N="table_name&#10;"/>
+            <QP N="data_key"/>
+          </QY>
+        </SG>
+        <SG _S="3288" N="ListGcmData">
+          <QY P="MsSql" Q="SELECT TABLE_NAME, &#13;&#10;       DATA_KEY, DATA_1, DATA_2, DATA_3, DATA_4, DATA_5, DATA_6, DATA_7, DATA_8, DATA_9, DATA_10&#10;  FROM QGCMTBLDAT&#10; WHERE FACTORY    = @factory&#10;   AND TABLE_NAME = @table_name">
+            <QP N="factory&#10;"/>
+            <QP N="table_name"/>
+          </QY>
+        </SG>
+        <SG _S="3289" N="SearchGcmTable">
+          <QY P="MsSql" Q="SELECT DATA_1_USE,  DATA_1_PRT,  DATA_1_FMT,  DATA_1_SIZE,  DATA_1_KEY,&#13;&#10;       DATA_2_USE,  DATA_2_PRT,  DATA_2_FMT,  DATA_2_SIZE,  DATA_2_KEY,&#13;&#10;       DATA_3_USE,  DATA_3_PRT,  DATA_3_FMT,  DATA_3_SIZE,  DATA_3_KEY,&#13;&#10;       DATA_4_USE,  DATA_4_PRT,  DATA_4_FMT,  DATA_4_SIZE,  DATA_4_KEY,&#13;&#10;       DATA_5_USE,  DATA_5_PRT,  DATA_5_FMT,  DATA_5_SIZE,  DATA_5_KEY,&#13;&#10;       DATA_6_USE,  DATA_6_PRT,  DATA_6_FMT,  DATA_6_SIZE,  DATA_6_KEY,&#13;&#10;       DATA_7_USE,  DATA_7_PRT,  DATA_7_FMT,  DATA_7_SIZE,  DATA_7_KEY,&#13;&#10;       DATA_8_USE,  DATA_8_PRT,  DATA_8_FMT,  DATA_8_SIZE,  DATA_8_KEY,&#13;&#10;       DATA_9_USE,  DATA_9_PRT,  DATA_9_FMT,  DATA_9_SIZE,  DATA_9_KEY,&#13;&#10;       DATA_10_USE, DATA_10_PRT, DATA_10_FMT, DATA_10_SIZE, DATA_10_KEY&#13;&#10;  FROM QGCMTBLDEF&#13;&#10; WHERE FACTORY    = @factory&#13;&#10;   AND TABLE_NAME = @table_name">
+            <QP N="factory"/>
+            <QP N="table_name"/>
+          </QY>
+        </SG>
+        <SG _S="3290" N="SearchGcmData">
+          <QY P="MsSql" Q="SELECT TABLE_NAME, &#10;       DATA_KEY, DATA_1, DATA_2, DATA_3, DATA_4, DATA_5, DATA_6, DATA_7, DATA_8, DATA_9, DATA_10&#10;  FROM QGCMTBLDAT&#10; WHERE FACTORY    = @factory&#10;   AND TABLE_NAME = @table_name&#10;   AND DATA_KEY   = @data_key">
+            <QP N="factory&#10;"/>
+            <QP N="table_name&#10;"/>
+            <QP N="data_key"/>
+          </QY>
+        </SG>
+        <SG _S="3291" N="InsertGcmData">
+          <QY P="MsSql" Q="INSERT INTO QGCMTBLDAT (&#10;   FACTORY,&#10;   TABLE_NAME,&#13;&#10;   DATA_KEY,&#10;   DATA_1,&#10;   DATA_2,&#10;   DATA_3,&#10;   DATA_4,&#10;   DATA_5,&#10;   DATA_6,&#10;   DATA_7,&#10;   DATA_8,&#10;   DATA_9,&#10;   DATA_10,&#10;   CREATE_USER_ID,&#10;   CREATE_TIME,&#10;   UPDATE_USER_ID,&#10;   UPDATE_TIME&#10;) VALUES (&#10;   @factory,&#10;   @table_name,&#10;   @data_key,&#10;   @data_1,&#10;   @data_2,&#10;   @data_3,&#10;   @data_4,&#10;   @data_5,&#10;   @data_6,&#10;   @data_7,&#10;   @data_8,&#10;   @data_9,&#10;   @data_10,&#10;   @create_user_id,&#10;   @create_time,&#10;   @update_user_id,&#10;   @update_time&#10;)">
+            <QP N="factory"/>
+            <QP N="table_name"/>
+            <QP N="data_key"/>
+            <QP N="data_1"/>
+            <QP N="data_2"/>
+            <QP N="data_3"/>
+            <QP N="data_4"/>
+            <QP N="data_5"/>
+            <QP N="data_6"/>
+            <QP N="data_7"/>
+            <QP N="data_8"/>
+            <QP N="data_9"/>
+            <QP N="data_10"/>
+            <QP N="create_user_id"/>
+            <QP N="create_time"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time&#10;"/>
+          </QY>
+        </SG>
+        <SG _S="3292" N="UpdateGcmData">
+          <QY P="MsSql" Q="UPDATE QGCMTBLDAT SET&#10;  DATA_1          = @data_1,&#10;  DATA_2          = @data_2,&#10;  DATA_3          = @data_3,&#10;  DATA_4          = @data_4,&#10;  DATA_5          = @data_5,&#10;  DATA_6          = @data_6,&#10;  DATA_7          = @data_7,&#10;  DATA_8          = @data_8,&#10;  DATA_9          = @data_9,&#10;  DATA_10         = @data_10,&#10;  UPDATE_USER_ID  = @update_user_id,&#10;  UPDATE_TIME     = @update_time&#10; WHERE FACTORY    = @factory&#10;   AND TABLE_NAME = @table_name&#10;   AND DATA_KEY   = @data_key">
+            <QP N="data_1"/>
+            <QP N="data_2"/>
+            <QP N="data_3"/>
+            <QP N="data_4"/>
+            <QP N="data_5"/>
+            <QP N="data_6"/>
+            <QP N="data_7"/>
+            <QP N="data_8"/>
+            <QP N="data_9"/>
+            <QP N="data_10"/>
+            <QP N="update_user_id"/>
+            <QP N="update_time&#10;"/>
+            <QP N="factory&#10;"/>
+            <QP N="table_name&#10;"/>
+            <QP N="data_key"/>
+          </QY>
+        </SG>
+        <SG _S="3293" N="DeleteGcmData">
+          <QY P="MsSql" Q="DELETE &#13;&#10;  FROM QGCMTBLDAT&#10; WHERE FACTORY    = @factory&#10;   AND TABLE_NAME = @table_name&#10;   AND DATA_KEY   = @data_key">
+            <QP N="factory&#10;"/>
+            <QP N="table_name&#10;"/>
+            <QP N="data_key"/>
+          </QY>
+        </SG>
+      </F>
+    </M>
+    <M _S="199" N="Report">
+      <F _S="811" N="UserHistory">
+        <SG _S="3298" N="SearchUserHistory">
+          <QY P="MsSql" Q="SELECT HIS.HIST_SEQ, HIS.TRAN_TIME, HIS.USER_ID, ISNULL(DEF.USER_NAME, ' ') AS USER_NAME,&#13;&#10;       HIS.SYSTEM, HIS.EVENT_ID, HIS.ACTION, HIS.HOST_IP, HIS.HOST_NAME,&#13;&#10;       HIS.EVT_H_1, HIS.EVT_D_1, HIS.EVT_H_2, HIS.EVT_D_2, HIS.EVT_H_3, HIS.EVT_D_3, HIS.EVT_H_4, HIS.EVT_D_4, HIS.EVT_H_5, HIS.EVT_D_5, &#13;&#10;       HIS.EVT_H_6, HIS.EVT_D_6, HIS.EVT_H_7, HIS.EVT_D_7, HIS.EVT_H_8, HIS.EVT_D_8, HIS.EVT_H_9, HIS.EVT_D_9, HIS.EVT_H_10, HIS.EVT_D_10,       &#13;&#10;       HIS.EVT_H_11, HIS.EVT_D_11, HIS.EVT_H_12, HIS.EVT_D_12, HIS.EVT_H_13, HIS.EVT_D_13, HIS.EVT_H_14, HIS.EVT_D_14, HIS.EVT_H_15, HIS.EVT_D_15, &#13;&#10;       HIS.EVT_H_16, HIS.EVT_D_16, HIS.EVT_H_17, HIS.EVT_D_17, HIS.EVT_H_18, HIS.EVT_D_18, HIS.EVT_H_19, HIS.EVT_D_19, HIS.EVT_H_20, HIS.EVT_D_20,&#13;&#10;       HIS.TRAN_COMMENT&#13;&#10;  FROM QSECUSRHIS HIS&#13;&#10;  LEFT JOIN QSECUSRDEF DEF&#13;&#10;    ON HIS.FACTORY      = DEF.FACTORY&#13;&#10;   AND HIS.USER_ID      = DEF.USER_ID&#13;&#10; WHERE HIS.FACTORY      = @factory&#13;&#10;   AND HIS.SYSTEM       = @system&#13;&#10;   AND HIS.USER_ID      = ISNULL(@user_id, HIS.USER_ID)&#13;&#10;   AND HIS.C_TRAN_TIME &gt;= CONVERT (DATETIME, (STUFF(STUFF(STUFF(STUFF(@tran_from_time, 9, 0, ' '), 12, 0, ':'), 15, 0, ':'), 18, 0, '.'))) &#13;&#10;   AND HIS.C_TRAN_TIME &lt;= CONVERT (DATETIME, (STUFF(STUFF(STUFF(STUFF(@tran_to_time, 9, 0, ' '), 12, 0, ':'), 15, 0, ':'), 18, 0, '.')))&#13;&#10; ORDER BY HIS.C_TRAN_TIME DESC">
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="user_id"/>
+            <QP N="tran_from_time"/>
+            <QP N="tran_to_time"/>
+          </QY>
+        </SG>
+        <SG _S="3299" N="SearchUserHistoryPaging">
+          <QY P="MsSql" Q="SELECT HIS.HIST_SEQ, HIS.TRAN_TIME, HIS.USER_ID, ISNULL(DEF.USER_NAME, ' ') AS USER_NAME,&#13;&#10;       HIS.SYSTEM, HIS.EVENT_ID, HIS.ACTION, HIS.HOST_IP, HIS.HOST_NAME,&#13;&#10;       HIS.EVT_H_1, HIS.EVT_D_1, HIS.EVT_H_2, HIS.EVT_D_2, HIS.EVT_H_3, HIS.EVT_D_3, HIS.EVT_H_4, HIS.EVT_D_4, HIS.EVT_H_5, HIS.EVT_D_5, &#13;&#10;       HIS.EVT_H_6, HIS.EVT_D_6, HIS.EVT_H_7, HIS.EVT_D_7, HIS.EVT_H_8, HIS.EVT_D_8, HIS.EVT_H_9, HIS.EVT_D_9, HIS.EVT_H_10, HIS.EVT_D_10,       &#13;&#10;       HIS.EVT_H_11, HIS.EVT_D_11, HIS.EVT_H_12, HIS.EVT_D_12, HIS.EVT_H_13, HIS.EVT_D_13, HIS.EVT_H_14, HIS.EVT_D_14, HIS.EVT_H_15, HIS.EVT_D_15, &#13;&#10;       HIS.EVT_H_16, HIS.EVT_D_16, HIS.EVT_H_17, HIS.EVT_D_17, HIS.EVT_H_18, HIS.EVT_D_18, HIS.EVT_H_19, HIS.EVT_D_19, HIS.EVT_H_20, HIS.EVT_D_20,&#13;&#10;       HIS.TRAN_COMMENT&#13;&#10;  FROM QSECUSRHIS HIS&#13;&#10;  LEFT JOIN QSECUSRDEF DEF&#13;&#10;    ON HIS.FACTORY      = DEF.FACTORY&#13;&#10;   AND HIS.USER_ID      = DEF.USER_ID&#13;&#10; WHERE HIS.FACTORY      = @factory&#13;&#10;   AND HIS.SYSTEM       = @system&#13;&#10;   AND HIS.USER_ID      = ISNULL(@user_id, HIS.USER_ID)&#13;&#10;   AND HIS.C_TRAN_TIME &gt;= CONVERT (DATETIME, (STUFF(STUFF(STUFF(STUFF(@tran_from_time, 9, 0, ' '), 12, 0, ':'), 15, 0, ':'), 18, 0, '.'))) &#13;&#10;   AND HIS.C_TRAN_TIME &lt;= CONVERT (DATETIME, (STUFF(STUFF(STUFF(STUFF(@tran_to_time, 9, 0, ' '), 12, 0, ':'), 15, 0, ':'), 18, 0, '.')))&#13;&#10; ORDER BY HIS.C_TRAN_TIME DESC&#13;&#10;OFFSET (CONVERT(int, @PAGE_NO)-1) * CONVERT(int, @PAGE_SIZE) ROW FETCH NEXT CONVERT(int, @PAGE_SIZE) ROW ONLY">
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="user_id"/>
+            <QP N="tran_from_time"/>
+            <QP N="tran_to_time"/>
+            <QP N="PAGE_NO"/>
+            <QP N="PAGE_SIZE"/>
+          </QY>
+        </SG>
+        <SG _S="3300" N="SearchUserHistoryCount">
+          <QY P="MsSql" Q="SELECT COUNT(*) AS CNT&#13;&#10;  FROM QSECUSRHIS&#13;&#10; WHERE FACTORY      = @factory&#13;&#10;   AND SYSTEM       = @system&#13;&#10;   AND USER_ID      = ISNULL(@user_id, USER_ID)&#13;&#10;   AND C_TRAN_TIME &gt;= CONVERT (DATETIME, (STUFF(STUFF(STUFF(STUFF(@tran_from_time, 9, 0, ' '), 12, 0, ':'), 15, 0, ':'), 18, 0, '.'))) &#13;&#10;   AND C_TRAN_TIME &lt;= CONVERT (DATETIME, (STUFF(STUFF(STUFF(STUFF(@tran_to_time, 9, 0, ' '), 12, 0, ':'), 15, 0, ':'), 18, 0, '.')))">
+            <QP N="factory"/>
+            <QP N="system"/>
+            <QP N="user_id"/>
+            <QP N="tran_from_time"/>
+            <QP N="tran_to_time"/>
+          </QY>
+        </SG>
+      </F>
+    </M>
+    <M _S="1419" N="DataPurge">
+      <F _S="1420" N="DataPurge">
+        <SG _S="1427" N="SearchFactory">
+          <QY P="MsSql" Q="SELECT FACTORY&#13;&#10; FROM QSYSFACDEF"/>
+        </SG>
+        <SG _S="1421" N="DeleteUserHistory" UMG="No">
+          <QY P="MsSql" Q="WITH TMP_DELETE AS (&#13;&#10; SELECT TRAN_TIME, ROW_NUMBER() OVER(ORDER BY TRAN_TIME) AS ROWNUM &#13;&#10;  FROM QSECUSRHIS&#13;&#10;  WHERE FACTORY = @factory&#13;&#10;  AND TRAN_TIME &lt; @tran_time&#13;&#10;)&#13;&#10;DELETE FROM TMP_DELETE WHERE ROWNUM &lt;= @delete_cnt">
+            <QP N="factory"/>
+            <QP N="tran_time"/>
+            <QP N="delete_cnt"/>
+          </QY>
+        </SG>
+      </F>
+    </M>
+  </S>
+</Q>

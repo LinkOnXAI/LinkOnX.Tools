@@ -4,6 +4,7 @@ import { RibbonBar } from "./components/RibbonBar";
 import { RibbonIcon } from "./components/RibbonIcon";
 import { OptionDialog } from "./components/OptionDialog";
 import { MenuEditor } from "./menuEditor/MenuEditor";
+import { ToolsManual } from "./manual/ToolsManual";
 import { QueryDeveloperPanel } from "./queryDeveloper/QueryDeveloperPanel";
 import {
   SQL_PROVIDERS,
@@ -35,6 +36,7 @@ const TOOL_MODULES = [
   { id: "codeGenerator", label: "Code Generator" },
   { id: "queryDeveloper", label: "Query Developer" },
   { id: "menuEditor", label: "Menu Editor" },
+  { id: "manual", label: "User Manual" },
   { id: "clientConfig", label: "Client Config" },
   { id: "laboratory", label: "Laboratory" },
 ];
@@ -51,9 +53,14 @@ const DEVELOPMENT_SHORTCUTS = [
   { id: "laboratory", label: "Laboratory", icon: "LB", description: "Use experimental and test utilities." },
 ];
 
+const HELP_SHORTCUTS = [
+  { id: "manual", label: "User Manual", icon: "UM", description: "Open the web-based user manual for LinkOnX Tools." },
+];
+
 const HOME_SHORTCUT_GROUPS = [
   { title: "Declaration", items: DECLARATION_SHORTCUTS },
   { title: "Development", items: DEVELOPMENT_SHORTCUTS },
+  { title: "Help", items: HELP_SHORTCUTS },
 ];
 
 const MAIN_LOGO_SRC = buildClientPath("linkonx-main-logo.svg");
@@ -68,6 +75,8 @@ function App() {
   const [showOption, setShowOption] = useState(false);
   const [authPending, setAuthPending] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [factoryOptions, setFactoryOptions] = useState([]);
+  const [factoryLoading, setFactoryLoading] = useState(false);
   const [credentials, setCredentials] = useState(() => {
     try {
       const remembered = window.localStorage.getItem(LOGIN_REMEMBER_KEY) === "true";
@@ -301,6 +310,32 @@ function App() {
         setUser(null);
       } finally {
         if (alive) setBooting(false);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      setFactoryLoading(true);
+      try {
+        const data = await apiRequest("/api/auth/factories");
+        if (!alive) return;
+        const options = Array.isArray(data?.factories)
+          ? data.factories.map((item) => String(item || "").trim()).filter(Boolean)
+          : [];
+        setFactoryOptions(options);
+        if (options.length > 0) {
+          setCredentials((prev) => ({ ...prev, factory: options[0] }));
+        }
+      } catch {
+        if (!alive) return;
+        setFactoryOptions([]);
+      } finally {
+        if (alive) setFactoryLoading(false);
       }
     })();
     return () => {
@@ -939,26 +974,6 @@ function App() {
     : "";
 
   const ribbonQuickActions = [
-    ...(activeModule === "queryDeveloper"
-      ? [
-          {
-            label: "Refresh",
-            icon: "R",
-            onClick: () => {
-              void loadFiles(true);
-            },
-            disabled: filesLoading || fileLoading,
-          },
-          {
-            label: "Save",
-            icon: "S",
-            onClick: () => {
-              void onSave();
-            },
-            disabled: !nodeDirty || saving || fileLoading,
-          },
-        ]
-      : []),
     {
       label: "Logout",
       icon: "LO",
@@ -1006,13 +1021,27 @@ function App() {
           <form onSubmit={onLogin}>
             <label>
               Factory
-              <input
-                type="text"
-                autoComplete="organization"
-                value={credentials.factory}
-                onChange={(event) => setCredentials((prev) => ({ ...prev, factory: event.target.value }))}
-                required
-              />
+              {factoryOptions.length > 0 ? (
+                <select
+                  value={credentials.factory || factoryOptions[0] || ""}
+                  onChange={(event) => setCredentials((prev) => ({ ...prev, factory: event.target.value }))}
+                  required
+                  disabled={factoryLoading || authPending}
+                >
+                  {factoryOptions.map((factory) => (
+                    <option key={factory} value={factory}>{factory}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  autoComplete="organization"
+                  value={credentials.factory}
+                  onChange={(event) => setCredentials((prev) => ({ ...prev, factory: event.target.value }))}
+                  required
+                  disabled={factoryLoading || authPending}
+                />
+              )}
             </label>
             <label>
               User ID
@@ -1110,6 +1139,8 @@ function App() {
         </section>
       ) : activeModule === "menuEditor" ? (
         <MenuEditor />
+      ) : activeModule === "manual" ? (
+        <ToolsManual />
       ) : activeModule !== "queryDeveloper" ? (
         <section className="panel module-placeholder">
           <h2>{activeModuleInfo.label}</h2>
@@ -1121,6 +1152,10 @@ function App() {
           filesLoading={filesLoading}
           fileLoading={fileLoading}
           selectedFile={selectedFile}
+          onRefresh={() => {
+            void loadFiles(true);
+          }}
+          refreshDisabled={filesLoading || fileLoading}
           onDownloadSelectedFile={onDownloadSelectedFile}
           onSelectFile={onSelectFile}
           treePaneRef={treePaneRef}

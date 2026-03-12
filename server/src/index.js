@@ -32,6 +32,7 @@ const mssqlConnectionString = String(
     "Data Source=192.168.0.111,1433;Initial Catalog=LINKON;User ID=linkon;Password=p@ssw0rd!2",
 ).trim();
 const authUserTable = String(process.env.AUTH_USER_TABLE || "QSECUSRDEF").trim();
+const authFactoryTable = String(process.env.AUTH_FACTORY_TABLE || "QSYSFACDEF").trim();
 const qsfRootDir = path.resolve(
   String(process.env.QSF_ROOT_DIR || path.join(process.cwd(), "data", "qsf")),
 );
@@ -41,6 +42,7 @@ const loginRateLimitEnabled = isProduction
   ? parseBoolean(process.env.LOGIN_RATE_LIMIT_ENABLED, true)
   : false;
 const parsedAuthUserTable = parseSchemaTable(authUserTable);
+const parsedAuthFactoryTable = parseSchemaTable(authFactoryTable);
 
 let dbPool = null;
 
@@ -171,6 +173,21 @@ WHERE LTRIM(RTRIM(USER_ID)) = @userId
     factory: userFactory,
     role: "query-developer",
   });
+});
+
+app.get("/api/auth/factories", async (_req, res) => {
+  const pool = await getDbPool();
+  const factoryQuery = `
+SELECT DISTINCT LTRIM(RTRIM(FACTORY)) AS FACTORY
+FROM ${quotedAuthFactoryTable()}
+WHERE LTRIM(RTRIM(ISNULL(FACTORY, N''))) <> N''
+ORDER BY LTRIM(RTRIM(FACTORY))
+`;
+  const result = await pool.request().query(factoryQuery);
+  const factories = (result.recordset || [])
+    .map((row) => String(row?.FACTORY || "").trim())
+    .filter(Boolean);
+  return res.json({ factories });
 });
 
 app.post("/api/auth/logout", (_req, res) => {
@@ -699,6 +716,10 @@ function parseSchemaTable(value) {
 
 function quotedAuthUserTable() {
   return `[${parsedAuthUserTable.schema}].[${parsedAuthUserTable.table}]`;
+}
+
+function quotedAuthFactoryTable() {
+  return `[${parsedAuthFactoryTable.schema}].[${parsedAuthFactoryTable.table}]`;
 }
 
 function buildMssqlConfig(connectionString) {

@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<Q QF="QSF" QV="1.0.0.0" QC="2024-11-05 09:47:20.633" QU="2025-01-16 12:58:03.744" QD="LinkOn SQL Modeling File" QS="21">
+  <S _RK="d1232946-d3ae-49f9-9516-16a9b9a09e0e" _S="0" N="SiteWisolMesSync" D="Wisol MES Sync">
+    <M _S="1" N="MesSync">
+      <F _S="13" N="M" D="Dev Check">
+        <SG _S="14" N="SelectList">
+          <QY P="MsSql" Q="SELECT R2.OPERATION_ID, R3.OPERATION_NAME, R1.MATERIAL_ID, R1.MATERIAL_NAME&#xD;&#xA;	FROM (SELECT A.SITE_ID, A.ROUTE_ID, A.MATERIAL_ID, B.MATERIAL_NAME &#xD;&#xA;			FROM V_RMS_MATERIAL_ROUTES A&#xD;&#xA;				LEFT JOIN V_RMS_MATERIALS B ON&#xD;&#xA;					A.SITE_ID = B.SITE_ID&#xD;&#xA;					AND A.MATERIAL_ID = B.MATERIAL_ID&#xD;&#xA;			WHERE A.SITE_ID = @factory&#xD;&#xA;		) R1, V_RMS_ROUTES R2  &#xD;&#xA;		LEFT JOIN V_RMS_OPERATIONS R3 ON&#xD;&#xA;			R3.SITE_ID = R2.SITE_ID&#xD;&#xA;			AND R3.OPERATION_ID = R2.OPERATION_ID&#xD;&#xA;	WHERE R1.SITE_ID = R2.SITE_ID&#xD;&#xA;	 AND R1.ROUTE_ID = R2.ROUTE_ID 	&#xD;&#xA;        AND R2.OPERATION_ID IN (&#xD;&#xA;				SELECT DISTINCT OPERATION_ID FROM V_RMS_EQUIPMENT_MRO&#xD;&#xA;					WHERE EQUIPMENT_ID IN (&#xD;&#xA;						??COND??&#xD;&#xA;					)&#xD;&#xA;			)&#xD;&#xA;ORDER BY OPERATION_ID, MATERIAL_ID;">
+            <QP N="factory" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+      </F>
+      <F _S="2" N="M_Test" D="Oeration - Material">
+        <SG _S="9" N="SelectList">
+          <QY P="MsSql" Q="SELECT OPER.OPER_ID, OPER_DESC, MAT.MAT_ID, MAT.MAT_DESC&#xD;&#xA;  FROM (&#xD;&#xA;SELECT FACTORY, OPER_ID, OPER_DESC&#xD;&#xA;  FROM TEST_MES_OPER&#xD;&#xA; WHERE FACTORY = @factory&#xD;&#xA;       ??COND??&#xD;&#xA;	   ) OPER&#xD;&#xA;  LEFT JOIN TEST_MES_MATERIAL MAT&#xD;&#xA;    ON OPER.FACTORY = MAT.FACTORY&#xD;&#xA;   AND OPER.OPER_ID = MAT.OPER_ID&#xD;&#xA; ORDER BY OPER.OPER_ID, MAT.MAT_ID">
+            <QP N="factory" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+      </F>
+      <F _S="5" N="ME" D="Oeration - Material - Equipment">
+        <SG _S="10" N="SelectList">
+          <QY P="MsSql" Q="SELECT OPER.OPER_ID, OPER_DESC, MAT.MAT_ID, MAT.MAT_DESC, OPER.EQP_NAME&#xD;&#xA;  FROM (&#xD;&#xA;SELECT FACTORY, OPER_ID, OPER_DESC, EQP_NAME&#xD;&#xA;  FROM TEST_MES_OPER&#xD;&#xA; WHERE FACTORY = @factory&#xD;&#xA;       ??COND??&#xD;&#xA;	   ) OPER&#xD;&#xA;  LEFT JOIN TEST_MES_MATERIAL MAT&#xD;&#xA;    ON OPER.FACTORY = MAT.FACTORY&#xD;&#xA;   AND OPER.OPER_ID = MAT.OPER_ID&#xD;&#xA; ORDER BY OPER.OPER_ID, MAT.MAT_ID">
+            <QP N="factory" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+      </F>
+      <F _S="11" N="MR" D="Operation - Material - Route">
+        <SG _S="12" N="SelectList">
+          <QY P="MsSql" Q="SELECT OPER.OPER_ID, OPER_DESC, MAT.MAT_ID, MAT.MAT_DESC, OPER.ROUTE_ID&#xD;&#xA;  FROM (&#xD;&#xA;SELECT FACTORY, OPER_ID, OPER_DESC, ROUTE_ID&#xD;&#xA;  FROM TEST_MES_OPER&#xD;&#xA; WHERE FACTORY = @factory&#xD;&#xA;       ??COND??&#xD;&#xA;	   ) OPER&#xD;&#xA;  LEFT JOIN TEST_MES_MATERIAL MAT&#xD;&#xA;    ON OPER.FACTORY = MAT.FACTORY&#xD;&#xA;   AND OPER.OPER_ID = MAT.OPER_ID&#xD;&#xA; ORDER BY OPER.OPER_ID, MAT.MAT_ID">
+            <QP N="factory" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+      </F>
+    </M>
+    <M _S="18" N="View">
+      <F _S="19" N="Material">
+        <SG _S="20" N="SelectList">
+          <QY P="MsSql" Q="SELECT MATERIAL_ID, MATERIAL_NAME &#xA;FROM V_RMS_MATERIALS &#xA;WHERE SITE_ID = @factory&#xD;&#xA;ORDER BY MATERIAL_ID">
+            <QP N="factory" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+          <QY P="SQLite" />
+        </SG>
+      </F>
+    </M>
+    <M _S="15" N="User">
+      <F _S="16" N="UserLogin">
+        <SG _S="17" N="UserValidation">
+          <QY P="MsSql" Q="SELECT USER_ID, &#xD;&#xA;PASSWORD, &#xD;&#xA;USER_NAME,&#xD;&#xA;PHONE_OFFICE,&#xD;&#xA;PHONE_MOBILE,&#xD;&#xA;EMAIL_ID,&#xD;&#xA;ISNULL(DELETE_FLAG, 'N')  DELETE_FLAG&#xD;&#xA;  FROM V_RMS_USERS&#xD;&#xA; WHERE USER_ID    = @user_id">
+            <QP N="user_id" />
+          </QY>
+          <QY P="Oracle" />
+          <QY P="MySql" />
+          <QY P="MariaDb" />
+          <QY P="PostgreSql" />
+          <QY P="Machbase" />
+          <QY P="OleDb" />
+          <QY P="Influx" />
+        </SG>
+      </F>
+    </M>
+  </S>
+</Q>

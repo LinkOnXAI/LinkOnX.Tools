@@ -426,6 +426,37 @@ function applyQueryDeveloperNodeUpdate(documentNode, elementPath, payload) {
 }
 
 function appendDefaultModuleToSystem(documentNode, targetPath) {
+  return appendDefaultChildNode(documentNode, targetPath, {
+    parentTag: "S",
+    childTag: "M",
+    defaultName: "DefaultModule",
+    invalidTargetMessage: "Append Child is allowed only on a System node.",
+  });
+}
+
+function appendDefaultFunctionToModule(documentNode, targetPath) {
+  return appendDefaultChildNode(documentNode, targetPath, {
+    parentTag: "M",
+    childTag: "F",
+    defaultName: "DefaultFunction",
+    invalidTargetMessage: "Append Child is allowed only on a Module node.",
+  });
+}
+
+function appendDefaultSqlGroupToFunction(documentNode, targetPath) {
+  return appendDefaultChildNode(documentNode, targetPath, {
+    parentTag: "F",
+    childTag: "SG",
+    defaultName: "DefaultSqlCode",
+    invalidTargetMessage: "Append Child is allowed only on a Function node.",
+    extraAttributes: {
+      UMG: "Yes",
+      IPC: "F",
+    },
+  });
+}
+
+function appendDefaultChildNode(documentNode, targetPath, options) {
   const rootNode = documentNode?.documentElement;
   if (!rootNode || rootNode.tagName !== "Q") {
     throw new Error("Invalid qsf xml format.");
@@ -433,24 +464,140 @@ function appendDefaultModuleToSystem(documentNode, targetPath) {
 
   const path = normalizeElementPath(targetPath);
   if (!path.length) {
-    throw new Error("System node is required.");
+    throw new Error("Target node is required.");
   }
 
-  const systemNode = findElementByPath(rootNode, path);
-  if (systemNode.tagName !== "S") {
-    throw new Error("Append Child is allowed only on a System node.");
+  const parentTag = String(options?.parentTag || "").trim();
+  const childTag = String(options?.childTag || "").trim();
+  const defaultName = String(options?.defaultName || "").trim();
+  const invalidTargetMessage = String(options?.invalidTargetMessage || "Append Child target is invalid.");
+  const extraAttributes = options?.extraAttributes && typeof options.extraAttributes === "object"
+    ? options.extraAttributes
+    : {};
+  if (!parentTag || !childTag) {
+    throw new Error("Append Child configuration is invalid.");
   }
 
-  const nextSequence = allocateNextQuerySequence(rootNode);
-  const moduleNode = documentNode.createElement("M");
-  moduleNode.setAttribute("_S", nextSequence);
-  moduleNode.setAttribute("N", "DefaultModule");
-  systemNode.appendChild(moduleNode);
+  const parentNode = findElementByPath(rootNode, path);
+  if (parentNode.tagName !== parentTag) {
+    throw new Error(invalidTargetMessage);
+  }
 
-  const childIndex = getElementChildren(systemNode).length - 1;
+  const allowedTags = QUERY_DEVELOPER_CHILD_TAGS[parentTag] || [];
+  if (!allowedTags.includes(childTag)) {
+    throw new Error("Append Child is not allowed for this node.");
+  }
+
+  const childNode = createDefaultNodeByTag(documentNode, rootNode, childTag, {
+    defaultName,
+    extraAttributes,
+  });
+  parentNode.appendChild(childNode);
+
+  const childIndex = getElementChildren(parentNode).length - 1;
   return {
     selectedPath: elementPathToText([...path, childIndex]),
     changed: ["AppendChild"],
+  };
+}
+
+function insertBeforeDefaultSiblingNode(documentNode, targetPath) {
+  return insertDefaultSiblingNode(documentNode, targetPath, "before");
+}
+
+function insertAfterDefaultSiblingNode(documentNode, targetPath) {
+  return insertDefaultSiblingNode(documentNode, targetPath, "after");
+}
+
+function insertDefaultSiblingNode(documentNode, targetPath, direction) {
+  const rootNode = documentNode?.documentElement;
+  if (!rootNode || rootNode.tagName !== "Q") {
+    throw new Error("Invalid qsf xml format.");
+  }
+
+  const path = normalizeElementPath(targetPath);
+  if (!path.length) {
+    throw new Error("Target node is required.");
+  }
+
+  const targetNode = findElementByPath(rootNode, path);
+  const targetTag = String(targetNode.tagName || "").trim();
+  if (!["M", "F", "SG"].includes(targetTag)) {
+    throw new Error("Insert Before/After is allowed only for child nodes under System.");
+  }
+
+  const parentPath = path.slice(0, -1);
+  const parentNode = findElementByPath(rootNode, parentPath);
+  const siblingAllowedTags = QUERY_DEVELOPER_CHILD_TAGS[parentNode.tagName] || [];
+  if (!siblingAllowedTags.includes(targetTag)) {
+    throw new Error("Insert Before/After is not allowed for this node.");
+  }
+
+  const siblings = getElementChildren(parentNode);
+  const targetIndex = path[path.length - 1];
+  if (targetIndex < 0 || targetIndex >= siblings.length) {
+    throw new Error("Invalid locator path.");
+  }
+
+  const normalizedDirection = String(direction || "").trim().toLowerCase();
+  const insertIndex = normalizedDirection === "before" ? targetIndex : targetIndex + 1;
+  if (!["before", "after"].includes(normalizedDirection)) {
+    throw new Error("Invalid insert direction.");
+  }
+
+  const insertedNode = createDefaultNodeByTag(documentNode, rootNode, targetTag);
+  parentNode.insertBefore(insertedNode, siblings[insertIndex] || null);
+
+  return {
+    selectedPath: elementPathToText([...parentPath, insertIndex]),
+    changed: [normalizedDirection === "before" ? "InsertBefore" : "InsertAfter"],
+  };
+}
+
+function createDefaultNodeByTag(documentNode, rootNode, tagName, overrides = {}) {
+  const tag = String(tagName || "").trim();
+  if (!tag) {
+    throw new Error("Invalid node tag.");
+  }
+
+  const { defaultName, extraAttributes } = resolveDefaultNodeTemplate(tag, overrides);
+  const node = documentNode.createElement(tag);
+  node.setAttribute("_S", allocateNextQuerySequence(rootNode));
+  if (defaultName) {
+    node.setAttribute("N", defaultName);
+  }
+  for (const [attrName, attrValue] of Object.entries(extraAttributes)) {
+    const key = String(attrName || "").trim();
+    if (!key) continue;
+    node.setAttribute(key, String(attrValue ?? ""));
+  }
+  return node;
+}
+
+function resolveDefaultNodeTemplate(tagName, overrides = {}) {
+  const tag = String(tagName || "").trim();
+  const defaultTemplate = {
+    defaultName: "",
+    extraAttributes: {},
+  };
+
+  if (tag === "M") {
+    defaultTemplate.defaultName = "DefaultModule";
+  } else if (tag === "F") {
+    defaultTemplate.defaultName = "DefaultFunction";
+  } else if (tag === "SG") {
+    defaultTemplate.defaultName = "DefaultSqlCode";
+    defaultTemplate.extraAttributes = { UMG: "Yes", IPC: "F" };
+  }
+
+  const mergedExtra = {
+    ...(defaultTemplate.extraAttributes || {}),
+    ...(overrides?.extraAttributes && typeof overrides.extraAttributes === "object" ? overrides.extraAttributes : {}),
+  };
+  const mergedName = String(overrides?.defaultName ?? defaultTemplate.defaultName ?? "").trim();
+  return {
+    defaultName: mergedName,
+    extraAttributes: mergedExtra,
   };
 }
 
@@ -479,8 +626,13 @@ function deleteQueryDeveloperNode(documentNode, targetPath) {
   }
 
   parentNode.removeChild(targetNode);
+  const remainingChildren = getElementChildren(parentNode);
+  const hasPreviousSibling = childIndex - 1 >= 0 && childIndex - 1 < remainingChildren.length;
+  const nextSelectedPath = hasPreviousSibling
+    ? elementPathToText([...parentPath, childIndex - 1])
+    : elementPathToText(parentPath);
   return {
-    selectedPath: elementPathToText(parentPath),
+    selectedPath: nextSelectedPath,
     changed: ["DeleteNode"],
   };
 }
@@ -510,15 +662,43 @@ function pasteQueryDeveloperNode(documentNode, sourcePayload, targetPath) {
   }
 
   const targetNode = findElementByPath(rootNode, target);
-  const allowedTags = QUERY_DEVELOPER_CHILD_TAGS[targetNode.tagName] || [];
-  if (!allowedTags.includes(sourceNode.tagName)) {
-    throw new Error("Paste is not allowed for this target node.");
-  }
 
   const clonedNode = cloneNodeIntoDocument(documentNode, sourceNode);
   renumberSequenceAttributes(rootNode, clonedNode);
-  targetNode.appendChild(clonedNode);
+  const sourceTag = String(sourceNode.tagName || "").trim();
+  const targetTag = String(targetNode.tagName || "").trim();
 
+  if (sourceTag === targetTag) {
+    if (!target.length) {
+      throw new Error("Root node cannot be pasted as sibling.");
+    }
+    const parentPath = target.slice(0, -1);
+    const parentNode = findElementByPath(rootNode, parentPath);
+    const siblingAllowedTags = QUERY_DEVELOPER_CHILD_TAGS[parentNode.tagName] || [];
+    if (!siblingAllowedTags.includes(sourceTag)) {
+      throw new Error("Paste is not allowed for this target node.");
+    }
+
+    const siblings = getElementChildren(parentNode);
+    const targetIndex = target[target.length - 1];
+    if (targetIndex < 0 || targetIndex >= siblings.length) {
+      throw new Error("Invalid locator path.");
+    }
+
+    const insertIndex = targetIndex + 1;
+    parentNode.insertBefore(clonedNode, siblings[insertIndex] || null);
+    return {
+      selectedPath: elementPathToText([...parentPath, insertIndex]),
+      changed: ["PasteNode"],
+    };
+  }
+
+  const childAllowedTags = QUERY_DEVELOPER_CHILD_TAGS[targetTag] || [];
+  if (!childAllowedTags.includes(sourceTag)) {
+    throw new Error("Paste is not allowed for this target node.");
+  }
+
+  targetNode.appendChild(clonedNode);
   const childIndex = getElementChildren(targetNode).length - 1;
   return {
     selectedPath: elementPathToText([...target, childIndex]),
@@ -878,6 +1058,18 @@ function applyQueryDeveloperTreeAction(documentNode, action, targetPath, sourceP
   const normalizedTargetPath = normalizeElementPath(targetPath);
   if (normalizedAction === "appendmodule") {
     return appendDefaultModuleToSystem(documentNode, normalizedTargetPath);
+  }
+  if (normalizedAction === "appendfunction") {
+    return appendDefaultFunctionToModule(documentNode, normalizedTargetPath);
+  }
+  if (normalizedAction === "appendsqlgroup") {
+    return appendDefaultSqlGroupToFunction(documentNode, normalizedTargetPath);
+  }
+  if (normalizedAction === "insertbeforenode") {
+    return insertBeforeDefaultSiblingNode(documentNode, normalizedTargetPath);
+  }
+  if (normalizedAction === "insertafternode") {
+    return insertAfterDefaultSiblingNode(documentNode, normalizedTargetPath);
   }
   if (normalizedAction === "deletenode") {
     return deleteQueryDeveloperNode(documentNode, normalizedTargetPath);

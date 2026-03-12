@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Split from "react-split";
 import "./QueryDeveloperPanel.css";
+import { RibbonIcon } from "../components/RibbonIcon";
 import { SqlHighlightEditor } from "./SqlHighlightEditor";
 import { CONTEXT_ALLOWED_CHILDREN, SQL_PROVIDERS, TREE_NODE_DEPTH_INDENT_PX } from "./constants";
 import {
@@ -31,6 +32,8 @@ export function QueryDeveloperPanel({
   filesLoading,
   fileLoading,
   selectedFile,
+  onRefresh,
+  refreshDisabled,
   onDownloadSelectedFile,
   onSelectFile,
   treePaneRef,
@@ -252,8 +255,18 @@ export function QueryDeveloperPanel({
 
         <section className="panel query-developer-panel">
           <div className="module-head">
-            <h2>Query Developer</h2>
-            <p className="subtext">Edit .qsf files used by the service.</p>
+            <button
+              type="button"
+              className="qd-module-refresh-btn"
+              onClick={() => void onRefresh?.()}
+              disabled={Boolean(refreshDisabled)}
+              title="Refresh"
+              aria-label="Refresh"
+            >
+              <span className="qd-module-refresh-icon" aria-hidden="true">
+                <RibbonIcon label="Refresh" fallback="R" />
+              </span>
+            </button>
           </div>
 
           <Split

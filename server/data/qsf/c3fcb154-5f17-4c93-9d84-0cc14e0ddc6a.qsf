@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<Q QF="QSF" QV="1.0.0.0" QC="2023-12-26 14:28:52.464" QU="2023-12-26 14:30:06.839" QD="LinkOn SQL Modeling File" QS="7">
+  <S _RK="c3fcb154-5f17-4c93-9d84-0cc14e0ddc6a" _S="0" N="LinkOnTLService" D="LinkOn TLS">
+    <M _S="1" N="View">
+      <F _S="2" N="DatabaseViewer">
+        <SG _S="4" N="ListTableList" UMG="No">
+          <QY P="MsSql" Q="SELECT name&#xD;&#xA;  FROM sys.objects &#xD;&#xA; WHERE type = 'U'&#xD;&#xA; ORDER BY name" />
+        </SG>
+        <SG _S="5" N="SearchTableColumn">
+          <QY P="MsSql" Q=" SELECT c.column_id AS ColumnId,&#xD;&#xA;        c.name AS ColumnName,&#xD;&#xA;        UPPER(ty.name) AS DataType,&#xD;&#xA;        CASE&#xD;&#xA;          WHEN ty.name IN ('nchar', 'nvarchar', 'ntext') THEN c.max_length / 2&#xD;&#xA;          ELSE c.max_length &#xD;&#xA;          END AS DataSize,&#xD;&#xA;        c.precision AS DataPrecision,&#xD;&#xA;        c.scale AS DecimalPlaces,&#xD;&#xA;        CASE&#xD;&#xA;          WHEN ic.column_id IS NOT NULL THEN 'PK'&#xD;&#xA;          ELSE ' '&#xD;&#xA;          END AS IsPrimaryKey,&#xD;&#xA;        CASE&#xD;&#xA;          WHEN c.is_nullable = 0 THEN 'No'&#xD;&#xA; 		  ELSE 'Yes'&#xD;&#xA;          END AS IsNullable,&#xD;&#xA;        d.definition AS DefaultValue&#xD;&#xA;   FROM sys.tables t&#xD;&#xA;  INNER JOIN sys.columns c&#xD;&#xA;     ON t.object_id         = c.object_id&#xD;&#xA;  INNER JOIN sys.types ty&#xD;&#xA;     ON c.system_type_id    = ty.user_type_id&#xD;&#xA;   LEFT JOIN sys.default_constraints d&#xD;&#xA;     ON c.default_object_id = d.object_id&#xD;&#xA;   LEFT JOIN sys.index_columns ic&#xD;&#xA;     ON c.column_id         = ic.column_id&#xD;&#xA;    AND c.object_id         = ic.object_id&#xD;&#xA;   LEFT JOIN sys.indexes i&#xD;&#xA;     ON ic.index_id         = i.index_id&#xD;&#xA;    AND ic.object_id        = i.object_id&#xD;&#xA;  WHERE t.name              = @name&#xD;&#xA;  ORDER BY c.column_id">
+            <QP N="name" />
+          </QY>
+        </SG>
+        <SG _S="6" N="SearchTableIndex">
+          <QY P="MsSql" Q="SELECT i.name AS IndexName,&#xD;&#xA;       CASE WHEN i.is_primary_key = 1 THEN 'Yes' ELSE 'No' END AS IsPrimaryKey,&#xD;&#xA;	   CASE WHEN i.is_unique = 1 THEN 'Yes' ELSE 'No' END AS IsUnique,&#xD;&#xA;       c.name AS ColumnName&#xD;&#xA;  FROM sys.indexes i&#xD;&#xA; INNER JOIN sys.index_columns ic&#xD;&#xA;    ON i.object_id = ic.object_id&#xD;&#xA;   AND i.index_id = ic.index_id&#xD;&#xA; INNER JOIN sys.columns c&#xD;&#xA;    ON ic.object_id = c.object_id&#xD;&#xA;   AND ic.column_id = c.column_id&#xD;&#xA; WHERE i.object_id = OBJECT_ID(@object_id)">
+            <QP N="object_id" />
+          </QY>
+        </SG>
+      </F>
+    </M>
+  </S>
+</Q>
