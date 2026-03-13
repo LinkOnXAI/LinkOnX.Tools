@@ -4,6 +4,7 @@ import { RibbonBar } from "./components/RibbonBar";
 import { RibbonIcon } from "./components/RibbonIcon";
 import { OptionDialog } from "./components/OptionDialog";
 import { MenuEditor } from "./menuEditor/MenuEditor";
+import { LanguageEditor } from "./languageEditor/LanguageEditor";
 import { ToolsManual } from "./manual/ToolsManual";
 import { QueryDeveloperPanel } from "./queryDeveloper/QueryDeveloperPanel";
 import {
@@ -1139,6 +1140,8 @@ function App() {
         </section>
       ) : activeModule === "menuEditor" ? (
         <MenuEditor />
+      ) : activeModule === "language" ? (
+        <LanguageEditor />
       ) : activeModule === "manual" ? (
         <ToolsManual />
       ) : activeModule !== "queryDeveloper" ? (
