@@ -5,6 +5,11 @@ const ROOT_META_ORDER = ["QF", "QV", "QC", "QU", "QD", "QS"];
 const NEW_ICON_SRC = "/icons/menuEditor/new_16x16.png";
 const OPEN_ICON_SRC = "/icons/menuEditor/open_16x16.png";
 const SAVE_ICON_SRC = "/icons/menuEditor/save_16x16.png";
+const SAVE_AS_ICON_SRC = "/icons/languageEditor/saveas_16x16.png";
+const UPDATE_ICON_SRC = "/icons/languageEditor/ToolCheck.png";
+const DELETE_ICON_SRC = "/icons/languageEditor/ToolRemove.png";
+const GOTO_ERROR_ICON_SRC = "/icons/languageEditor/ToolGotoError.png";
+const GEN_ENUM_ICON_SRC = "/icons/languageEditor/ToolEnumGenerate.png";
 
 const CAPTION_PROPERTY_GROUPS = [
   { key: "general", title: "[01] General", rows: [{ key: "DEF", label: "Default", multiline: false }] },
@@ -515,11 +520,40 @@ export function LanguageEditor() {
             >
               <img src={SAVE_ICON_SRC} alt="" />
             </button>
-            <button type="button" className="LanguageEditor-inline-action-btn" onClick={() => { void onSaveLanguageFile(true); }} disabled={!isDirty}>Save As</button>
-            <button type="button" className="LanguageEditor-inline-action-btn" onClick={onUpdateEntry}>Update</button>
-            <button type="button" className="LanguageEditor-inline-action-btn" onClick={onDeleteEntry} disabled={!canDelete}>Delete</button>
-            <button type="button" className="LanguageEditor-inline-action-btn" onClick={onGotoError} disabled={!canGotoError}>Goto Error</button>
-            <button type="button" className="LanguageEditor-inline-action-btn" onClick={() => { void onGenerateEnum(); }} disabled={!canGenEnum}>Gen Enum</button>
+            <button
+              type="button"
+              className="LanguageEditor-file-action-btn"
+              onClick={() => {
+                void onSaveLanguageFile(true);
+              }}
+              title="Save As .lng file"
+              aria-label="Save As .lng file"
+              disabled={!isDirty}
+            >
+              <img src={SAVE_AS_ICON_SRC} alt="" />
+            </button>
+            <button
+              type="button"
+              className="LanguageEditor-file-action-btn"
+              onClick={onGotoError}
+              title="Goto Error"
+              aria-label="Goto Error"
+              disabled={!canGotoError}
+            >
+              <img src={GOTO_ERROR_ICON_SRC} alt="" />
+            </button>
+            <button
+              type="button"
+              className="LanguageEditor-file-action-btn"
+              onClick={() => {
+                void onGenerateEnum();
+              }}
+              title="Gen Enum"
+              aria-label="Gen Enum"
+              disabled={!canGenEnum}
+            >
+              <img src={GEN_ENUM_ICON_SRC} alt="" />
+            </button>
           </div>
           <div className="LanguageEditor-inline-file-name" title={selectedFile?.name || ""}>
             {selectedFile?.name || ""}
@@ -631,6 +665,27 @@ export function LanguageEditor() {
           <section className="LanguageEditor-prop-panel">
             <div className="LanguageEditor-prop-head">
               <h3>Properties</h3>
+              <div className="LanguageEditor-prop-head-actions">
+                <button
+                  type="button"
+                  className="LanguageEditor-prop-action-btn"
+                  onClick={onUpdateEntry}
+                  title="Update"
+                  aria-label="Update"
+                >
+                  <img src={UPDATE_ICON_SRC} alt="" />
+                </button>
+                <button
+                  type="button"
+                  className="LanguageEditor-prop-action-btn"
+                  onClick={onDeleteEntry}
+                  title="Delete"
+                  aria-label="Delete"
+                  disabled={!canDelete}
+                >
+                  <img src={DELETE_ICON_SRC} alt="" />
+                </button>
+              </div>
             </div>
             <div className="LanguageEditor-prop-scroll" ref={propertyScrollRef}>
               {propertyGroups.map((group) => (
