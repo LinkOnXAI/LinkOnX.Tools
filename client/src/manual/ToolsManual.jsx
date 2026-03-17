@@ -67,11 +67,12 @@ const MANUAL_SECTIONS = [
     id: "menuEditor",
     title: "Menu Editor",
     image: "manual/screenshots/menu-editor-overview.png",
-    description: "Use this screen to create and maintain .mnu menu tree nodes and related properties.",
+    description: "Use this screen to create and maintain .mnu menu trees with icon-based node rows and property editing.",
     points: [
       "Menu path: Home > Declaration > Menu Editor or Ribbon Declaration > Menu Editor.",
       "Toolbar: create new file, open existing .mnu file, and save current edits.",
       "Tree panel: search by Name / Caption and move between matched nodes.",
+      "Tree interaction: use Arrow Up/Down to move rows and Arrow Left/Right to collapse or expand selected node.",
       "Tree interaction: double-click node to expand/collapse and use Delete key to run Remove on selected node.",
       "Properties panel: edit selected node attributes for MNU, MSY, MIT, and PIT.",
     ],
@@ -103,7 +104,7 @@ const MANUAL_SECTIONS = [
     menuItems: [
       { name: "Home > Declaration > Menu Editor", description: "Open Menu Editor from Home shortcut card." },
       { name: "Ribbon > Declaration > Menu Editor", description: "Switch to Menu Editor from ribbon declaration group." },
-      { name: "Tree Node Types (MNU / MSY / MIT / PIT)", description: "MNU: menu root, MSY: system, MIT: menu item, PIT: popup item." },
+      { name: "Tree Node Icons (MNU / MSY / MIT / PIT)", description: "MNU: menu root, MSY: system, MIT: menu item, PIT: popup item (icon markers)." },
     ],
     popupMenuTitle: "Popup Menu",
     popupMenuItems: [
@@ -125,13 +126,24 @@ const MANUAL_SECTIONS = [
   },
   {
     id: "languageEditor",
-    title: "Language Editor",
-    image: "manual/screenshots/language-editor-overview.png",
+    title: "Language",
+    images: [
+      {
+        src: "manual/screenshots/language-editor-caption-overview.png",
+        alt: "Language Editor Caption tab screen capture",
+      },
+      {
+        src: "manual/screenshots/language-editor-message-overview.png",
+        alt: "Language Editor Message tab screen capture",
+      },
+    ],
     description: "Use this screen to create and maintain .lng language files (Caption / Message).",
     points: [
       "Menu path: Home > Declaration > Language or Ribbon Declaration > Language.",
       "Toolbar: new/open/save/save-as and quick actions for Goto Error / Gen Enum.",
-      "Tabs: switch between Caption and Message tree lists.",
+      "Tabs: switch between Caption and Message lists with column headers (Caption: DEF/ENG, Message: Message ID/DEF/ENG).",
+      "Row icons: caption rows show ToolLanguage icon and message rows show ToolMessage icon in first column.",
+      "Find: moves focus to the first matched row and aligns the matched row to the top visible area.",
       "Properties panel: edit selected row values and use header buttons to Update / Delete.",
     ],
     buttonGroups: [
@@ -142,8 +154,8 @@ const MANUAL_SECTIONS = [
           { name: "Open (.lng)", iconImage: "icons/menuEditor/open_16x16.png", description: "Open and load local .lng file." },
           { name: "Save (.lng)", iconImage: "icons/menuEditor/save_16x16.png", description: "Save current language data to file." },
           { name: "Save As (.lng)", iconImage: "icons/languageEditor/saveas_16x16.png", description: "Save current data as a new .lng file." },
-          { name: "Goto Error", iconImage: "icons/languageEditor/ToolGotoError.png", description: "Move to duplicate key entry (Caption DEF / Message MID)." },
-          { name: "Gen Enum", iconImage: "icons/languageEditor/ToolEnumGenerate.png", description: "Generate enum text from Message items." },
+          { name: "Goto Error", iconImage: "icons/languageEditor/ToolGotoError.png", description: "Move through duplicate key entries (Caption DEF / Message MID) in sequence." },
+          { name: "Gen Enum", iconImage: "icons/languageEditor/ToolEnumGenerate.png", description: "Generate QMessageId enum text from Message rows and copy it to clipboard." },
         ],
       },
       {
@@ -171,15 +183,25 @@ const MANUAL_SECTIONS = [
   },
   {
     id: "clientConfigEditor",
-    title: "Client Config Editor",
-    image: "manual/screenshots/client-config-editor-overview.png",
+    title: "Client Config",
+    images: [
+      {
+        src: "manual/screenshots/client-config-client-overview.png",
+        alt: "Client Config Editor Client Configuration tab screen capture",
+      },
+      {
+        src: "manual/screenshots/client-config-site-overview.png",
+        alt: "Client Config Editor Site Configuration tab screen capture",
+      },
+    ],
     description: "Use this screen to create/open/save .cfg files and manage Client/Site configuration values.",
     points: [
       "Menu path: Home > Declaration > Client Config or Ribbon Declaration > Client Config.",
       "Toolbar: create new .cfg file, open existing file, and save/save-as current data.",
       "Main tabs: switch between Client Configuration and Site Configuration.",
-      "Client Configuration: choose category and edit grouped properties.",
-      "Site Configuration: select site row, edit values by service tab, then apply with Update/Delete.",
+      "Client Configuration: choose category (Default / Log / Application update) and edit grouped properties.",
+      "Application update: Network Deployed default is No, and URL/period fields are shown only when Yes is selected.",
+      "Site Configuration: select site row, edit BIS/EMS/RMS/DTS/DLS/WMS/EES/RPS values, then apply with Update/Delete.",
     ],
     buttonGroups: [
       {
@@ -194,8 +216,8 @@ const MANUAL_SECTIONS = [
       {
         title: "Main Tab Buttons",
         items: [
-          { name: "Client Configuration", iconText: "C", description: "Edit default client options such as language, font, log, and update settings." },
-          { name: "Site Configuration", iconText: "S", description: "Edit site rows and service configuration by BIS/EMS/RMS/DTS/DLS/WMS/EES/RPS tabs." },
+          { name: "Client Configuration", iconText: "C", description: "Edit default client options such as language, font, skin, log, security, and update settings." },
+          { name: "Site Configuration", iconText: "S", description: "Edit site rows and service configuration values (middleware/channel/ftp and related fields) by tab." },
         ],
       },
       {
@@ -240,9 +262,23 @@ export function ToolsManual() {
         {MANUAL_SECTIONS.map((section, index) => (
           <article key={section.id} className="tools-manual-section">
             <h3>{index + 1}. {section.title}</h3>
-            <div className="tools-manual-shot">
-              <img src={buildManualPath(section.image)} alt={`${section.title} screen capture`} loading="lazy" />
-            </div>
+            {Array.isArray(section.images) && section.images.length > 0 ? (
+              <div className="tools-manual-shot-stack">
+                {section.images.map((item, imageIndex) => (
+                  <div key={`${section.id}-image-${imageIndex}`} className="tools-manual-shot">
+                    <img
+                      src={buildManualPath(item.src)}
+                      alt={item.alt || `${section.title} screen capture ${imageIndex + 1}`}
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="tools-manual-shot">
+                <img src={buildManualPath(section.image)} alt={`${section.title} screen capture`} loading="lazy" />
+              </div>
+            )}
             <div className="tools-manual-desc">
               <p>{section.description}</p>
               <ul>

@@ -19,7 +19,7 @@ const SITE_FIELD_ALIASES = { site: ["SIT"], factory: ["FAB"], description: ["DEC
 const CLIENT_CATEGORIES = [
   { id: "general", label: "Default" },
   { id: "log", label: "Log" },
-  { id: "appUpdate", label: "Application update" },
+  { id: "appUpdate", label: "Application Update" },
 ];
 const CLIENT_GROUPS = {
   general: [

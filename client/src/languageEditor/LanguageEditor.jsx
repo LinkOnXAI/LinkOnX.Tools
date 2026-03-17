@@ -24,7 +24,7 @@ const CAPTION_PROPERTY_GROUPS = [
       { key: "CHN", label: "Chinese", multiline: false },
     ],
   },
-  { key: "description", title: "[02] Description", rows: [{ key: "DEC", label: "Description", multiline: true }] },
+  { key: "description", title: "[03] Description", rows: [{ key: "DEC", label: "Description", multiline: true }] },
 ];
 
 const MESSAGE_PROPERTY_GROUPS = [

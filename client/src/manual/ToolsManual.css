@@ -62,6 +62,11 @@
   background: #eef3f9;
 }
 
+.tools-manual-shot-stack {
+  display: grid;
+  gap: 0.65rem;
+}
+
 .tools-manual-shot img {
   display: block;
   width: 100%;

@@ -5,13 +5,13 @@ const TREE_NODE_TAGS = new Set(["MNU", "MSY", "MIT", "PIT"]);
 
 const CATEGORY_ORDER = ["General", "Font", "Menu", "Assembly", "Image", "User Tag", "Etc"];
 const CATEGORY_DISPLAY = {
-  General: "[01] General",
-  Font: "[02] Font",
-  Menu: "[03] Menu",
-  Assembly: "[04] Assembly",
-  Image: "[05] Image",
-  "User Tag": "[06] User Tag",
-  Etc: "[07] Etc",
+  General: "General",
+  Font: "Font",
+  Menu: "Menu",
+  Assembly: "Assembly",
+  Image: "Image",
+  "User Tag": "User Tag",
+  Etc: "Etc",
 };
 
 const ATTRIBUTE_PRIORITY = [
@@ -1160,9 +1160,9 @@ export function MenuEditor() {
               <h3>Properties</h3>
             </div>
             <div ref={propertyScrollRef} className="MenuEditor-prop-scroll">
-              {selectedNode ? propertyGroups.map((group) => (
+              {selectedNode ? propertyGroups.map((group, groupIndex) => (
                 <div key={group.category} className="MenuEditor-prop-group">
-                  <div className="MenuEditor-prop-category">{formatCategoryDisplay(group.category)}</div>
+                    <div className="MenuEditor-prop-category">{formatCategoryDisplay(group.category, groupIndex + 1)}</div>
                   {group.rows.map((row) => (
                     <div key={row.key} className="MenuEditor-prop-row">
                       <label title={row.displayKey}>{row.label}</label>
@@ -1775,8 +1775,11 @@ function groupPropertyRows(rows) {
   return ordered;
 }
 
-function formatCategoryDisplay(category) {
-  return CATEGORY_DISPLAY[category] || category;
+function formatCategoryDisplay(category, displayOrder = 0) {
+  const name = CATEGORY_DISPLAY[category] || category;
+  const safeIndex = Number.isFinite(displayOrder) && displayOrder > 0 ? displayOrder : 0;
+  const prefix = safeIndex > 0 ? `[${String(safeIndex).padStart(2, "0")}] ` : "";
+  return `${prefix}${name}`;
 }
 
 function resolveMenuImagePreviewSrc(root, node, key, value) {
