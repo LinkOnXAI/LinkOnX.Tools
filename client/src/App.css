@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --surface: rgba(255, 255, 255, 0.86);
   --surface-border: rgba(0, 0, 0, 0.08);
   --ink: #10222d;
@@ -418,6 +418,349 @@ body.app-theme-dark .session-dialog .session-dialog-comment {
   color: #e2e8f0;
 }
 
+body.app-theme-vs2010 {
+  --classic-surface: rgba(217, 223, 232, 0.94);
+  --classic-panel: #d5dce8;
+  --classic-border: #95a4bd;
+  --classic-ink: #24344f;
+  --classic-ink-soft: #4a5f80;
+  --classic-ribbon-start: #b8c2d4;
+  --classic-ribbon-end: #a9b4c8;
+  --classic-ctrl-bg: linear-gradient(180deg, #f1f4f9 0%, #dde5f1 100%);
+  --classic-ctrl-bg-hover: linear-gradient(180deg, #f9fbff 0%, #e8eef7 100%);
+  --classic-ctrl-border: #8fa0ba;
+  --classic-ctrl-text: #1f3c65;
+  --classic-accent: #f2d36d;
+  --classic-accent-soft: #f7e9b7;
+  --classic-strong: #2c4369;
+  --classic-row-hover: #d1dcee;
+  --classic-row-selected: #c2d1e7;
+  background:
+    linear-gradient(180deg, #b9c3d4 0%, #a9b5c9 55%, #a3afc5 100%);
+  background-attachment: fixed;
+}
+
+body.app-theme-sevenclassic {
+  --classic-surface: rgba(244, 244, 244, 0.95);
+  --classic-panel: #f2f2f2;
+  --classic-border: #bfc2c7;
+  --classic-ink: #2f3338;
+  --classic-ink-soft: #5f6770;
+  --classic-ribbon-start: #efefef;
+  --classic-ribbon-end: #e1e1e1;
+  --classic-ctrl-bg: linear-gradient(180deg, #ffffff 0%, #f1f1f1 100%);
+  --classic-ctrl-bg-hover: linear-gradient(180deg, #fdfefe 0%, #eaf5fb 100%);
+  --classic-ctrl-border: #aeb4bb;
+  --classic-ctrl-text: #2e3f4d;
+  --classic-accent: #56b2de;
+  --classic-accent-soft: #d8eef9;
+  --classic-strong: #3d4a57;
+  --classic-row-hover: #e8f3f9;
+  --classic-row-selected: #d7ebf7;
+  background:
+    linear-gradient(180deg, #f0f0f0 0%, #e4e4e4 100%);
+  background-attachment: fixed;
+}
+
+body.app-theme-office2013gray {
+  --classic-surface: rgba(238, 242, 250, 0.95);
+  --classic-panel: #eef2f8;
+  --classic-border: #a9b7cc;
+  --classic-ink: #22354f;
+  --classic-ink-soft: #4a6282;
+  --classic-ribbon-start: #e6ecf6;
+  --classic-ribbon-end: #d8e1ee;
+  --classic-ctrl-bg: linear-gradient(180deg, #fbfdff 0%, #e7eef8 100%);
+  --classic-ctrl-bg-hover: linear-gradient(180deg, #ffffff 0%, #dbe7f8 100%);
+  --classic-ctrl-border: #8fa5c3;
+  --classic-ctrl-text: #204a7e;
+  --classic-accent: #1f4f94;
+  --classic-accent-soft: #cdddf4;
+  --classic-strong: #173e73;
+  --classic-row-hover: #dde8f8;
+  --classic-row-selected: #ceddf3;
+  background:
+    linear-gradient(180deg, #e8edf5 0%, #dbe3ef 100%);
+  background-attachment: fixed;
+}
+
+body.app-theme-office2019darkgray {
+  --classic-surface: rgba(92, 92, 92, 0.95);
+  --classic-panel: #676767;
+  --classic-border: #4a4a4a;
+  --classic-ink: #ffffff;
+  --classic-ink-soft: #e2e2e2;
+  --classic-ribbon-start: #595959;
+  --classic-ribbon-end: #515151;
+  --classic-ctrl-bg: linear-gradient(180deg, #666666 0%, #575757 100%);
+  --classic-ctrl-bg-hover: linear-gradient(180deg, #717171 0%, #626262 100%);
+  --classic-ctrl-border: #3a3a3a;
+  --classic-ctrl-text: #ffffff;
+  --classic-accent: #454545;
+  --classic-accent-soft: #595959;
+  --classic-strong: #f2f2f2;
+  --classic-row-hover: #737373;
+  --classic-row-selected: #808080;
+  background:
+    linear-gradient(180deg, #555555 0%, #4e4e4e 100%);
+  background-attachment: fixed;
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) {
+  color: var(--classic-ink);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .app-shell {
+  --surface: var(--classic-surface);
+  --surface-border: var(--classic-border);
+  --ink: var(--classic-ink);
+  --ink-soft: var(--classic-ink-soft);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .panel {
+  background: var(--classic-panel);
+  border-color: var(--classic-border);
+  color: var(--classic-ink);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .banner {
+  background: var(--classic-accent-soft);
+  border-color: var(--classic-accent);
+  color: var(--classic-strong);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon {
+  background: linear-gradient(180deg, var(--classic-ribbon-start) 0%, var(--classic-ribbon-end) 100%);
+  border-color: var(--classic-border);
+  box-shadow: inset 0 1px 0 #ffffff, 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-section,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .toolbar-group,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-right {
+  border-color: var(--classic-border);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .section-title,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .toolbar-group-title {
+  color: var(--classic-ink-soft);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .toolbar-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .collapse-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-toggle-all,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .system-download-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .qd-module-refresh-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .prop-update-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .tree-search-icon-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-tree-search-icon-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-search-icon-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-search-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-file-action-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-prop-action-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-inline-action-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-file-action-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-image-select-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-icon-btn {
+  background: var(--classic-ctrl-bg);
+  border-color: var(--classic-ctrl-border);
+  color: var(--classic-ctrl-text);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.7);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .toolbar-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .collapse-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-toggle-all:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .system-download-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .qd-module-refresh-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .prop-update-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .tree-search-icon-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-tree-search-icon-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-search-icon-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-search-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-file-action-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-prop-action-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-inline-action-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-file-action-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-image-select-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-icon-btn:hover:not(:disabled) {
+  background: var(--classic-ctrl-bg-hover);
+  border-color: var(--classic-accent);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.14);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-btn .icon,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .toolbar-btn .icon,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-user-icon,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-shortcut-icon {
+  background: linear-gradient(180deg, #ffffff 0%, var(--classic-accent-soft) 100%);
+  border-color: var(--classic-ctrl-border);
+  color: var(--classic-ctrl-text);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-shortcut-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
+  border-color: var(--classic-ctrl-border);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-shortcut-card:hover:not(:disabled) {
+  border-color: var(--classic-accent);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.14);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-user-chip {
+  background: linear-gradient(180deg, #ffffff 0%, #eef3fb 100%);
+  border-color: var(--classic-ctrl-border);
+  color: var(--classic-ink);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-toggle-all::after,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .collapse-btn::after {
+  background: var(--classic-ctrl-text);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .file-list li button.active,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-btn.active,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tab-btn.active {
+  border-color: var(--classic-accent);
+  background: var(--classic-accent-soft);
+  color: var(--classic-strong);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .message-list,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .msg-form,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .prop-grid,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-textarea,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .tree-search,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-tree-panel,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-prop-panel,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-tree-search,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-prop-scroll,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-panel,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-prop-panel,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-search,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-prop-scroll,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-caption-head,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-message-head,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .tree-context-menu {
+  background: var(--classic-panel);
+  border-color: var(--classic-border);
+  color: var(--classic-ink);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .tree-context-menu button:hover:not(:disabled) {
+  background: var(--classic-accent-soft);
+  border-color: var(--classic-accent);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .prop-category,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-prop-category,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-prop-category {
+  background: var(--classic-accent-soft);
+  color: var(--classic-strong);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .tree-label.active,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-tree-row.selected,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-row.selected {
+  background: var(--classic-row-selected);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-tree-row:hover,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-row:hover {
+  background: var(--classic-row-hover);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-tree-search input,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-tree-search-count,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-prop-row input,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-prop-row select,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-prop-row textarea,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .MenuEditor-image-preview-wrap,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-search input,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-tree-search-count,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-prop-row input,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .LanguageEditor-prop-row textarea,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .prop-row input,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .prop-row select,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-textarea,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) input,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) textarea,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) select {
+  background: #ffffff;
+  border-color: var(--classic-ctrl-border);
+  color: var(--classic-ink);
+}
+
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .primary-btn {
+  background: linear-gradient(145deg, var(--classic-strong), var(--classic-accent));
+  border-color: var(--classic-ctrl-border);
+  color: #ffffff;
+}
+
+body.app-theme-office2019darkgray .ribbon {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+body.app-theme-office2019darkgray .home-shortcut-card {
+  background: linear-gradient(180deg, #6d6d6d 0%, #5e5e5e 100%);
+}
+
+body.app-theme-office2019darkgray .ribbon-btn .icon,
+body.app-theme-office2019darkgray .toolbar-btn .icon,
+body.app-theme-office2019darkgray .ribbon-user-icon,
+body.app-theme-office2019darkgray .home-shortcut-icon {
+  background: linear-gradient(180deg, #6d6d6d 0%, #5d5d5d 100%);
+  border-color: #3a3a3a;
+  color: #ffffff;
+}
+
+body.app-theme-office2019darkgray .ribbon-user-chip {
+  background: linear-gradient(180deg, #6d6d6d 0%, #5f5f5f 100%);
+  border-color: #3a3a3a;
+  color: #ffffff;
+}
+
+body.app-theme-office2019darkgray .home-shortcut-name {
+  color: #f2f2f2;
+}
+
+body.app-theme-office2019darkgray .home-shortcut-desc {
+  color: #dfdfdf;
+}
+
+body.app-theme-office2019darkgray .LanguageEditor-prop-row label,
+body.app-theme-office2019darkgray .MenuEditor-prop-row label,
+body.app-theme-office2019darkgray .prop-row label {
+  color: #f2f2f2;
+}
+
+body.app-theme-office2019darkgray .MenuEditor-tree-search input,
+body.app-theme-office2019darkgray .MenuEditor-tree-search-count,
+body.app-theme-office2019darkgray .MenuEditor-prop-row input,
+body.app-theme-office2019darkgray .MenuEditor-prop-row select,
+body.app-theme-office2019darkgray .MenuEditor-prop-row textarea,
+body.app-theme-office2019darkgray .MenuEditor-image-preview-wrap,
+body.app-theme-office2019darkgray .LanguageEditor-tree-search input,
+body.app-theme-office2019darkgray .LanguageEditor-tree-search-count,
+body.app-theme-office2019darkgray .LanguageEditor-prop-row input,
+body.app-theme-office2019darkgray .LanguageEditor-prop-row textarea,
+body.app-theme-office2019darkgray .prop-row input,
+body.app-theme-office2019darkgray .prop-row select,
+body.app-theme-office2019darkgray .sql-textarea,
+body.app-theme-office2019darkgray input,
+body.app-theme-office2019darkgray textarea,
+body.app-theme-office2019darkgray select {
+  background: #5f5f5f;
+  border-color: #3a3a3a;
+  color: #ffffff;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.9);
@@ -432,3 +775,5 @@ body.app-theme-dark .session-dialog .session-dialog-comment {
     opacity: 0.88;
   }
 }
+
+

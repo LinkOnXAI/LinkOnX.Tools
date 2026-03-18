@@ -70,6 +70,21 @@ const AUTO_LOGOUT_IDLE_MS = 10 * 60 * 1000;
 const LOGIN_REMEMBER_KEY = "linkon.login.remember";
 const LOGIN_REMEMBER_FACTORY_KEY = "linkon.login.factory";
 const LOGIN_REMEMBER_USER_KEY = "linkon.login.user";
+const THEME_PRESETS = [
+  "white",
+  "dark",
+  "vs2010",
+  "sevenclassic",
+  "office2013gray",
+  "office2019darkgray",
+];
+const DEFAULT_THEME_PRESET = "white";
+
+function normalizeThemePreset(rawTheme) {
+  const value = String(rawTheme || "").trim().toLowerCase();
+  if (THEME_PRESETS.includes(value)) return value;
+  return DEFAULT_THEME_PRESET;
+}
 
 function App() {
   const [booting, setBooting] = useState(true);
@@ -106,9 +121,9 @@ function App() {
   const [themePreset, setThemePreset] = useState(() => {
     try {
       const raw = window.localStorage.getItem("linkon.themePreset");
-      return raw === "dark" ? "dark" : "white";
+      return normalizeThemePreset(raw);
     } catch {
-      return "white";
+      return DEFAULT_THEME_PRESET;
     }
   });
   const [showTreeDepthGuide, setShowTreeDepthGuide] = useState(() => {
@@ -351,16 +366,21 @@ function App() {
   }, [user]);
 
   useEffect(() => {
-    const className = "app-theme-dark";
-    if (themePreset === "dark") document.body.classList.add(className);
-    else document.body.classList.remove(className);
+    const classPrefix = "app-theme-";
+    const className = themePreset === DEFAULT_THEME_PRESET ? "" : `${classPrefix}${themePreset}`;
+
+    for (const cssClass of Array.from(document.body.classList)) {
+      if (cssClass.startsWith(classPrefix)) document.body.classList.remove(cssClass);
+    }
+    if (className) document.body.classList.add(className);
+
     try {
       window.localStorage.setItem("linkon.themePreset", themePreset);
     } catch {
       // ignore storage failures
     }
     return () => {
-      document.body.classList.remove(className);
+      if (className) document.body.classList.remove(className);
     };
   }, [themePreset]);
 
@@ -1211,6 +1231,7 @@ function App() {
           initialPropFont={propFontFamily}
           initialPropSize={propFontSize}
           initialThemePreset={themePreset}
+          themePresets={THEME_PRESETS}
           initialShowTreeDepthGuide={showTreeDepthGuide}
           onCancel={() => setShowOption(false)}
           onApply={(vals) => {
@@ -1218,7 +1239,7 @@ function App() {
             setTreeFontSize(vals.treeSize);
             setPropFontFamily(vals.propFont);
             setPropFontSize(vals.propSize);
-            setThemePreset(vals.themePreset);
+            setThemePreset(normalizeThemePreset(vals.themePreset));
             setShowTreeDepthGuide(Boolean(vals.showTreeDepthGuide));
             setShowOption(false);
           }}

@@ -7,10 +7,35 @@ export function OptionDialog({
   initialPropFont,
   initialPropSize,
   initialThemePreset,
+  themePresets,
   initialShowTreeDepthGuide,
   onApply,
   onCancel,
 }) {
+  const availableThemePresets = Array.isArray(themePresets) && themePresets.length > 0
+    ? themePresets
+    : ["white", "dark"];
+
+  const normalizeThemePreset = (rawPreset) => {
+    const value = String(rawPreset || "").trim().toLowerCase();
+    if (availableThemePresets.includes(value)) return value;
+    return availableThemePresets[0];
+  };
+
+  const formatThemePresetLabel = (preset) => {
+    const known = {
+      white: "Basic",
+      dark: "Dark",
+      vs2010: "VS2010",
+      sevenclassic: "Seven Classic",
+      office2013gray: "Office 2013 Light Gray",
+      office2019darkgray: "Office 2019 Dark Gray",
+    };
+    if (known[preset]) return known[preset];
+    if (!preset) return "Basic";
+    return preset;
+  };
+
   const fontOptions = Array.from(
     new Set(
       [
@@ -39,7 +64,7 @@ export function OptionDialog({
   const [treeSize, setTreeSize] = useState(initialTreeSize);
   const [propFont, setPropFont] = useState(initialPropFont);
   const [propSize, setPropSize] = useState(initialPropSize);
-  const [themePreset, setThemePreset] = useState(initialThemePreset);
+  const [themePreset, setThemePreset] = useState(() => normalizeThemePreset(initialThemePreset));
   const [showTreeDepthGuide, setShowTreeDepthGuide] = useState(Boolean(initialShowTreeDepthGuide));
 
   const normalizeSize = (raw, fallback) => {
@@ -54,22 +79,13 @@ export function OptionDialog({
         <h3>Options</h3>
         <div className="option-grid">
           <label>Theme Preset</label>
-          <div className="option-theme-presets">
-            <button
-              type="button"
-              className={`option-theme-btn ${themePreset === "white" ? "active" : ""}`}
-              onClick={() => setThemePreset("white")}
-            >
-              White Theme
-            </button>
-            <button
-              type="button"
-              className={`option-theme-btn ${themePreset === "dark" ? "active" : ""}`}
-              onClick={() => setThemePreset("dark")}
-            >
-              Dark Theme
-            </button>
-          </div>
+          <select value={themePreset} onChange={(event) => setThemePreset(event.target.value)}>
+            {availableThemePresets.map((preset) => (
+              <option key={preset} value={preset}>
+                {formatThemePresetLabel(preset)}
+              </option>
+            ))}
+          </select>
 
           <label>Tree Font</label>
           <select value={treeFont} onChange={(event) => setTreeFont(event.target.value)}>
@@ -129,7 +145,7 @@ export function OptionDialog({
                 treeSize: normalizeSize(treeSize, initialTreeSize),
                 propFont,
                 propSize: normalizeSize(propSize, initialPropSize),
-                themePreset,
+                themePreset: normalizeThemePreset(themePreset),
                 showTreeDepthGuide,
               })
             }
