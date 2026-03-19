@@ -19,7 +19,7 @@ const MANUAL_SECTIONS = [
         title: "Main Buttons",
         items: [
           { name: "Refresh", iconClass: "tools-manual-icon-refresh", description: "Reload system file list and current tree data." },
-          { name: "Download (.qsf)", iconClass: "system-download-icon", description: "Download selected system .qsf file." },
+          { name: "Download", iconClass: "system-download-icon", description: "Download selected system .qsf file." },
         ],
       },
       {
@@ -80,9 +80,9 @@ const MANUAL_SECTIONS = [
       {
         title: "Main Buttons",
         items: [
-          { name: "New (.mnu)", iconImage: "icons/menuEditor/new_16x16.png", description: "Create a blank menu tree with default LinkOnMenu root." },
-          { name: "Open (.mnu)", iconImage: "icons/menuEditor/open_16x16.png", description: "Open and load local .mnu file into tree and properties." },
-          { name: "Save (.mnu)", iconImage: "icons/menuEditor/save_16x16.png", description: "Save current menu XML to selected file." },
+          { name: "New", iconImage: "icons/menuEditor/new_16x16.png", description: "Create a blank menu tree with default LinkOnMenu root." },
+          { name: "Open", iconImage: "icons/menuEditor/open_16x16.png", description: "Open and load local .mnu file into tree and properties." },
+          { name: "Save", iconImage: "icons/menuEditor/save_16x16.png", description: "Save current menu XML to selected file." },
         ],
       },
       {
@@ -96,15 +96,9 @@ const MANUAL_SECTIONS = [
       {
         title: "Property Buttons",
         items: [
-          { name: "Image Select (...)", iconText: "...", description: "Select image file for Image(16x16) / Large Image(32x32) property fields." },
+          { name: "Image Select", iconText: "...", description: "Select image file for Image(16x16) / Large Image(32x32) property fields." },
         ],
       },
-    ],
-    menuTitle: "Menu",
-    menuItems: [
-      { name: "Home > Declaration > Menu Editor", description: "Open Menu Editor from Home shortcut card." },
-      { name: "Ribbon > Declaration > Menu Editor", description: "Switch to Menu Editor from ribbon declaration group." },
-      { name: "Tree Node Icons (MNU / MSY / MIT / PIT)", description: "MNU: menu root, MSY: system, MIT: menu item, PIT: popup item (icon markers)." },
     ],
     popupMenuTitle: "Popup Menu",
     popupMenuItems: [
@@ -150,10 +144,10 @@ const MANUAL_SECTIONS = [
       {
         title: "Main Buttons",
         items: [
-          { name: "New (.lng)", iconImage: "icons/menuEditor/new_16x16.png", description: "Create new blank language file data." },
-          { name: "Open (.lng)", iconImage: "icons/menuEditor/open_16x16.png", description: "Open and load local .lng file." },
-          { name: "Save (.lng)", iconImage: "icons/menuEditor/save_16x16.png", description: "Save current language data to file." },
-          { name: "Save As (.lng)", iconImage: "icons/languageEditor/saveas_16x16.png", description: "Save current data as a new .lng file." },
+          { name: "New", iconImage: "icons/menuEditor/new_16x16.png", description: "Create new blank language file data." },
+          { name: "Open", iconImage: "icons/menuEditor/open_16x16.png", description: "Open and load local .lng file." },
+          { name: "Save", iconImage: "icons/menuEditor/save_16x16.png", description: "Save current language data to file." },
+          { name: "Save As", iconImage: "icons/languageEditor/saveas_16x16.png", description: "Save current data as a new .lng file." },
           { name: "Goto Error", iconImage: "icons/languageEditor/ToolGotoError.png", description: "Move through duplicate key entries (Caption DEF / Message MID) in sequence." },
           { name: "Gen Enum", iconImage: "icons/languageEditor/ToolEnumGenerate.png", description: "Generate QMessageId enum text from Message rows and copy it to clipboard." },
         ],
@@ -173,12 +167,6 @@ const MANUAL_SECTIONS = [
           { name: "Delete", iconImage: "icons/languageEditor/ToolRemove.png", description: "Delete selected Caption/Message row." },
         ],
       },
-    ],
-    menuTitle: "Menu",
-    menuItems: [
-      { name: "Home > Declaration > Language", description: "Open Language Editor from Home shortcut card." },
-      { name: "Ribbon > Declaration > Language", description: "Switch to Language Editor from ribbon declaration group." },
-      { name: "Tab: Caption / Message", description: "Select target language group for editing and search." },
     ],
   },
   {
@@ -207,10 +195,10 @@ const MANUAL_SECTIONS = [
       {
         title: "Main Buttons",
         items: [
-          { name: "New (.cfg)", iconImage: "icons/menuEditor/new_16x16.png", description: "Create default LinkOnClient.cfg document data." },
-          { name: "Open (.cfg)", iconImage: "icons/menuEditor/open_16x16.png", description: "Open and load local .cfg file." },
-          { name: "Save (.cfg)", iconImage: "icons/menuEditor/save_16x16.png", description: "Save current configuration to current file." },
-          { name: "Save As (.cfg)", iconImage: "icons/clientConfig/saveall_16x16.png", description: "Save current configuration to new file name." },
+          { name: "New", iconImage: "icons/menuEditor/new_16x16.png", description: "Create default LinkOnClient.cfg document data." },
+          { name: "Open", iconImage: "icons/menuEditor/open_16x16.png", description: "Open and load local .cfg file." },
+          { name: "Save", iconImage: "icons/menuEditor/save_16x16.png", description: "Save current configuration to current file." },
+          { name: "Save As", iconImage: "icons/clientConfig/saveall_16x16.png", description: "Save current configuration to new file name." },
         ],
       },
       {
@@ -227,11 +215,6 @@ const MANUAL_SECTIONS = [
           { name: "Delete", iconImage: "icons/languageEditor/ToolRemove.png", description: "Delete currently selected site row." },
         ],
       },
-    ],
-    menuTitle: "Menu",
-    menuItems: [
-      { name: "Home > Declaration > Client Config", description: "Open Client Config Editor from Home shortcut card." },
-      { name: "Ribbon > Declaration > Client Config", description: "Switch to Client Config Editor from ribbon declaration group." },
     ],
   },
   {
