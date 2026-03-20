@@ -1,6 +1,13 @@
 export function RibbonIcon({ label, fallback }) {
   const key = String(label || "").toLowerCase().replace(/\s+/g, "");
   const common = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" };
+  const manualBookIcon = (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 6.5A2.5 2.5 0 016.5 4H12v16H6.5A2.5 2.5 0 004 22z" {...common} />
+      <path d="M20 6.5A2.5 2.5 0 0017.5 4H12v16h5.5A2.5 2.5 0 0120 22z" {...common} />
+      <path d="M8 8h2M8 12h2M14 8h2M14 12h2" {...common} />
+    </svg>
+  );
 
   const iconByKey = {
     new: (
@@ -108,6 +115,8 @@ export function RibbonIcon({ label, fallback }) {
         <path d="M8 9h8M8 13h8M8 17h5" {...common} />
       </svg>
     ),
+    manual: manualBookIcon,
+    usermanual: manualBookIcon,
     laboratory: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M9 4h6M10 4v4l-5 8a3 3 0 002.6 4.5h8.8A3 3 0 0019 16l-5-8V4" {...common} />
