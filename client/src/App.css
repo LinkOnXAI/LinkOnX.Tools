@@ -210,13 +210,22 @@ button:disabled {
 }
 
 .app-shell {
-  min-height: 100vh;
+  min-height: 100%;
+  height: 100%;
   width: min(1920px, 90vw);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   padding: 1rem 0;
+  --home-shell-bg: rgba(255, 255, 255, 0.54);
+  --home-shell-bg-strong: rgba(255, 255, 255, 0.82);
+  --home-shell-border: rgba(15, 23, 42, 0.1);
+  --home-shell-hover: rgba(255, 255, 255, 0.95);
+  --home-title: var(--ink);
+  --home-muted: var(--ink-soft);
+  --home-accent: #215da3;
+  --home-accent-soft: rgba(33, 93, 163, 0.12);
 }
 
 .panel {
@@ -261,57 +270,91 @@ button:disabled {
 .home-panel {
   flex: 1;
   min-height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem;
+  padding: 1rem;
 }
 
-.home-content {
-  width: min(980px, 100%);
+.home-layout {
+  flex: 1;
+  min-height: 0;
   display: grid;
+  grid-template-columns: minmax(252px, 286px) minmax(0, 1fr);
   gap: 1rem;
 }
 
-.home-title-wrap {
-  text-align: center;
+.home-sidebar {
+  min-height: 0;
   display: grid;
-  gap: 0.25rem;
-}
-
-.home-group {
-  display: grid;
-  gap: 0.6rem;
-}
-
-.home-group h3 {
-  font-size: 0.9rem;
-  color: #475569;
-}
-
-.home-shortcut-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 0.7rem;
-}
-
-.home-shortcut-card {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  align-items: start;
-  gap: 0.72rem;
-  border: 1px solid #d8e4f2;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 0.55rem;
+  border: 1px solid var(--home-shell-border);
   border-radius: 12px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  padding: 0.86rem;
+  background: var(--home-shell-bg);
+  padding: 0.72rem;
+}
+
+.home-sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home-sidebar-head h2 {
+  font-size: 0.98rem;
+  color: var(--home-title);
+}
+
+.home-quick-groups {
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  align-content: start;
+  gap: 0.52rem;
+}
+
+.home-quick-group {
+  display: grid;
+  gap: 0.32rem;
+}
+
+.home-quick-group-title {
+  margin: 0;
+  font-size: 0.69rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--home-muted);
+  opacity: 0.9;
+}
+
+.home-quick-list {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.home-quick-item {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--home-shell-border);
+  border-radius: 9px;
+  background: var(--home-shell-bg-strong);
+  min-height: 30px;
+  padding: 0.28rem 0.56rem;
   text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--home-title);
+}
+
+.home-quick-item:hover:not(:disabled) {
+  background: var(--home-shell-hover);
+  border-color: color-mix(in srgb, var(--home-accent) 45%, var(--home-shell-border));
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.1);
 }
 
 .home-shortcut-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   border: 1px solid #d7e2f5;
   background: linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
   color: #3456bf;
@@ -321,25 +364,184 @@ button:disabled {
 }
 
 .home-shortcut-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
-.home-shortcut-text {
-  min-width: 0;
+.home-workspace {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 0.85rem;
+  border: 1px solid var(--home-shell-border);
+  border-radius: 12px;
+  background: var(--home-shell-bg);
+  padding: 0.9rem;
+}
+
+.home-workspace-head {
+  display: block;
+}
+
+.home-title-wrap {
   display: grid;
   gap: 0.2rem;
+  align-content: end;
 }
 
-.home-shortcut-name {
+.home-title-wrap h2 {
+  color: var(--home-title);
+}
+
+.home-title-wrap .subtext {
+  margin: 0;
+  color: var(--home-muted);
+}
+
+.home-module-grid {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  align-content: stretch;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 0.8rem;
+}
+
+.home-module-card {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 0.55rem;
+  border: 1px solid var(--home-shell-border);
+  border-radius: 12px;
+  background: var(--home-shell-bg-strong);
+  padding: 0.8rem;
+  min-height: 0;
+  height: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.home-module-card:not(.home-module-card-split):hover:not(:disabled) {
+  background: var(--home-shell-hover);
+  border-color: color-mix(in srgb, var(--home-accent) 45%, var(--home-shell-border));
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.1);
+}
+
+.home-module-card-split {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  cursor: default;
+  gap: 0;
+}
+
+.home-module-title-row {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.52rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--home-title);
 }
 
-.home-shortcut-desc {
+.home-module-title-icon {
+  flex: 0 0 auto;
+}
+
+.home-module-desc {
+  display: -webkit-box;
+  color: var(--home-muted);
   font-size: 0.84rem;
-  line-height: 1.3;
-  color: #64748b;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.home-module-split-grid {
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.48rem;
+}
+
+.home-module-split-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.24rem;
+  border: 1px solid var(--home-shell-border);
+  border-radius: 10px;
+  background: var(--home-shell-bg-strong);
+  padding: 0.72rem 0.64rem;
+  min-height: 0;
+  height: auto;
+  text-align: left;
+}
+
+.home-module-split-item:hover:not(:disabled) {
+  background: var(--home-shell-hover);
+  border-color: color-mix(in srgb, var(--home-accent) 45%, var(--home-shell-border));
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.1);
+}
+
+.home-module-split-title {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--home-title);
+}
+
+.home-module-thumb {
+  width: 100%;
+  margin-top: 0;
+  height: 100%;
+  min-height: 92px;
+  object-fit: contain;
+  object-position: top center;
+  border-radius: 8px;
+  border: 1px solid var(--home-shell-border);
+  background: #ffffff;
+}
+
+.home-card-empty {
+  margin: 0;
+  padding: 1rem;
+  border: 1px dashed var(--home-shell-border);
+  border-radius: 10px;
+  color: var(--home-muted);
+}
+
+@media (max-width: 1420px) {
+  .home-module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1120px) {
+  .home-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-workspace-head {
+    display: block;
+  }
+}
+
+@media (max-width: 760px) {
+  .home-module-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(6, minmax(0, 1fr));
+  }
 }
 
 .empty-text {
@@ -360,6 +562,14 @@ body.app-theme-dark .app-shell {
   --surface-border: rgba(148, 163, 184, 0.35);
   --ink: #dbe7ff;
   --ink-soft: #a9b8cf;
+  --home-shell-bg: rgba(15, 23, 42, 0.6);
+  --home-shell-bg-strong: rgba(15, 23, 42, 0.86);
+  --home-shell-border: rgba(148, 163, 184, 0.35);
+  --home-shell-hover: rgba(30, 41, 59, 0.95);
+  --home-title: #dbe7ff;
+  --home-muted: #a9b8cf;
+  --home-accent: #93c5fd;
+  --home-accent-soft: rgba(59, 130, 246, 0.2);
 }
 
 body.app-theme-dark .panel {
@@ -382,18 +592,15 @@ body.app-theme-dark select {
   color: #dbe7ff;
 }
 
-body.app-theme-dark .home-shortcut-card {
+body.app-theme-dark .home-shortcut-icon {
   background: linear-gradient(180deg, #16243d 0%, #0f1a2d 100%);
   border-color: #31445f;
   color: #dbe7ff;
 }
 
-body.app-theme-dark .home-shortcut-name {
-  color: #e2e8f0;
-}
-
-body.app-theme-dark .home-shortcut-desc {
-  color: #93a6c3;
+body.app-theme-dark .home-module-card:not(.home-module-card-split):hover:not(:disabled),
+body.app-theme-dark .home-module-split-item:hover:not(:disabled) {
+  background: rgba(30, 64, 175, 0.35);
 }
 
 body.app-theme-dark .login-remember {
@@ -607,6 +814,14 @@ body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .
   --surface-border: var(--classic-border);
   --ink: var(--classic-ink);
   --ink-soft: var(--classic-ink-soft);
+  --home-shell-bg: var(--classic-panel);
+  --home-shell-bg-strong: var(--classic-panel);
+  --home-shell-border: var(--classic-border);
+  --home-shell-hover: var(--classic-row-hover);
+  --home-title: var(--classic-ink);
+  --home-muted: var(--classic-ink-soft);
+  --home-accent: var(--classic-ctrl-text);
+  --home-accent-soft: var(--classic-accent-soft);
 }
 
 body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .panel {
@@ -658,7 +873,9 @@ body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .
 body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ClientConfigEditor-file-action-btn,
 body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ClientConfigEditor-icon-btn,
 body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-btn,
-body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-icon-btn {
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-icon-btn,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-quick-item,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-module-split-item {
   background: var(--classic-ctrl-bg);
   border-color: var(--classic-ctrl-border);
   color: var(--classic-ctrl-text);
@@ -684,7 +901,9 @@ body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .
 body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ClientConfigEditor-file-action-btn:hover:not(:disabled),
 body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ClientConfigEditor-icon-btn:hover:not(:disabled),
 body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-btn:hover:not(:disabled),
-body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-icon-btn:hover:not(:disabled) {
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .sql-tab-icon-btn:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-quick-item:hover:not(:disabled),
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-module-split-item:hover:not(:disabled) {
   background: var(--classic-ctrl-bg-hover);
   border-color: var(--classic-accent);
   box-shadow: 0 6px 14px rgba(15, 23, 42, 0.14);
@@ -699,14 +918,11 @@ body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .
   color: var(--classic-ctrl-text);
 }
 
-body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-shortcut-card {
-  background: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
-  border-color: var(--classic-ctrl-border);
-}
-
-body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-shortcut-card:hover:not(:disabled) {
-  border-color: var(--classic-accent);
-  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.14);
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-sidebar,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-workspace,
+body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .home-module-card {
+  background: var(--classic-panel);
+  border-color: var(--classic-border);
 }
 
 body:is(.app-theme-vs2010, .app-theme-sevenclassic, .app-theme-office2013gray, .app-theme-office2019darkgray) .ribbon-user-chip {
@@ -871,7 +1087,8 @@ body.app-theme-office2019darkgray .ribbon {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-body.app-theme-office2019darkgray .home-shortcut-card {
+body.app-theme-office2019darkgray .home-quick-item,
+body.app-theme-office2019darkgray .home-module-split-item {
   background: linear-gradient(180deg, #6d6d6d 0%, #5e5e5e 100%);
 }
 
@@ -890,15 +1107,16 @@ body.app-theme-office2019darkgray .ribbon-user-chip {
   color: #ffffff;
 }
 
-body.app-theme-office2019darkgray .home-shortcut-name {
+body.app-theme-office2019darkgray .home-module-title-row,
+body.app-theme-office2019darkgray .home-module-split-title {
   color: #f2f2f2;
 }
 
-body.app-theme-office2019darkgray .home-shortcut-desc {
+body.app-theme-office2019darkgray .home-module-desc {
   color: #dfdfdf;
 }
 
-body.app-theme-office2019darkgray .home-group h3 {
+body.app-theme-office2019darkgray .home-quick-group-title {
   color: var(--classic-ink);
 }
 

@@ -57,12 +57,89 @@ const DEVELOPMENT_SHORTCUTS = [
 
 const HELP_SHORTCUTS = [
   { id: "manual", label: "User Manual", icon: "UM", description: "Open the web-based user manual for LinkOnX Tools." },
+  { id: "option", label: "Option", icon: "OP", description: "Open theme, font, and tree depth options.", action: "openOptionDialog" },
 ];
 
-const HOME_SHORTCUT_GROUPS = [
+const QUICK_ACCESS_GROUPS = [
   { title: "Declaration", items: DECLARATION_SHORTCUTS },
-  { title: "Development", items: DEVELOPMENT_SHORTCUTS },
+  { title: "Deployment", items: DEVELOPMENT_SHORTCUTS },
   { title: "Help", items: HELP_SHORTCUTS },
+];
+
+const QUICK_ACCESS_ITEMS = [...DECLARATION_SHORTCUTS, ...DEVELOPMENT_SHORTCUTS, ...HELP_SHORTCUTS];
+const QUICK_ACCESS_ITEM_MAP = QUICK_ACCESS_ITEMS.reduce((acc, item) => {
+  acc[item.id] = item;
+  return acc;
+}, {});
+const SCREENSHOT_PATHS = {
+  queryDeveloper: buildClientPath("manual/screenshots/query-developer-overview.png"),
+  menuEditor: buildClientPath("manual/screenshots/menu-editor-overview.png"),
+  language: buildClientPath("manual/screenshots/language-editor-overview.png"),
+  clientConfig: buildClientPath("manual/screenshots/client-config-client-overview.png"),
+  manual: buildClientPath("manual/screenshots/language-editor-message-overview.png"),
+  codeGenerator: buildClientPath("manual/screenshots/code-generator-overview.png"),
+};
+
+const HOME_MODULE_CARDS = [
+  {
+    key: "queryDeveloper",
+    id: "queryDeveloper",
+    icon: QUICK_ACCESS_ITEM_MAP.queryDeveloper?.icon || "QD",
+    title: "Query Developer",
+    description: QUICK_ACCESS_ITEM_MAP.queryDeveloper?.description || "",
+    image: SCREENSHOT_PATHS.queryDeveloper,
+  },
+  {
+    key: "menuEditor",
+    id: "menuEditor",
+    icon: QUICK_ACCESS_ITEM_MAP.menuEditor?.icon || "ME",
+    title: "Menu Editor",
+    description: QUICK_ACCESS_ITEM_MAP.menuEditor?.description || "",
+    image: SCREENSHOT_PATHS.menuEditor,
+  },
+  {
+    key: "language",
+    id: "language",
+    icon: QUICK_ACCESS_ITEM_MAP.language?.icon || "LA",
+    title: "Language",
+    description: QUICK_ACCESS_ITEM_MAP.language?.description || "",
+    image: SCREENSHOT_PATHS.language,
+  },
+  {
+    key: "clientConfig",
+    id: "clientConfig",
+    icon: QUICK_ACCESS_ITEM_MAP.clientConfig?.icon || "CC",
+    title: "Client Config",
+    description: QUICK_ACCESS_ITEM_MAP.clientConfig?.description || "",
+    image: SCREENSHOT_PATHS.clientConfig,
+  },
+  {
+    key: "manual",
+    id: "manual",
+    icon: QUICK_ACCESS_ITEM_MAP.manual?.icon || "UM",
+    title: "User Manual",
+    description: QUICK_ACCESS_ITEM_MAP.manual?.description || "",
+    image: SCREENSHOT_PATHS.manual,
+  },
+  {
+    key: "codeGeneratorLaboratory",
+    title: "Code Generator / Laboratory",
+    splitItems: [
+      {
+        id: "codeGenerator",
+        icon: QUICK_ACCESS_ITEM_MAP.codeGenerator?.icon || "CG",
+        label: QUICK_ACCESS_ITEM_MAP.codeGenerator?.label || "Code Generator",
+        description: QUICK_ACCESS_ITEM_MAP.codeGenerator?.description || "",
+      },
+      {
+        id: "laboratory",
+        icon: QUICK_ACCESS_ITEM_MAP.laboratory?.icon || "LB",
+        label: QUICK_ACCESS_ITEM_MAP.laboratory?.label || "Laboratory",
+        description: QUICK_ACCESS_ITEM_MAP.laboratory?.description || "",
+      },
+    ],
+    keywords: ["laboratory"],
+  },
 ];
 
 const MAIN_LOGO_SRC = buildClientPath("linkonx-main-logo.svg");
@@ -548,6 +625,16 @@ function App() {
     if (activeModule === "queryDeveloper" && !confirmDiscard()) return;
     setActiveModule(moduleId);
   }, [activeModule, confirmDiscard]);
+
+  const onActivateHomeItem = useCallback((item) => {
+    if (!item) return;
+    if (item.action === "openOptionDialog") {
+      setShowOption(true);
+      return;
+    }
+    if (!item.id) return;
+    onSelectModule(item.id);
+  }, [onSelectModule]);
 
   const onDownloadSelectedFile = useCallback(async () => {
     if (!selectedFile) {
@@ -1128,35 +1215,87 @@ function App() {
 
       {activeModule === "home" ? (
         <section className="panel home-panel">
-          <div className="home-content">
-            <div className="home-title-wrap">
-              <h2>Home</h2>
-              <p className="subtext">Declaration and Development shortcuts.</p>
-            </div>
+          <div className="home-layout">
+            <aside className="home-sidebar">
+              <header className="home-sidebar-head">
+                <h2>Quick Access</h2>
+              </header>
 
-            {HOME_SHORTCUT_GROUPS.map((group) => (
-              <section key={group.title} className="home-group">
-                <h3>{group.title}</h3>
-                <div className="home-shortcut-grid">
-                  {group.items.map((item) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      className="home-shortcut-card"
-                      onClick={() => onSelectModule(item.id)}
-                    >
-                      <span className="home-shortcut-icon" aria-hidden="true">
-                        <RibbonIcon label={item.label} fallback={item.icon} />
-                      </span>
-                      <span className="home-shortcut-text">
-                        <span className="home-shortcut-name">{item.label}</span>
-                        <span className="home-shortcut-desc">{item.description}</span>
-                      </span>
-                    </button>
+              <div className="home-quick-groups">
+                {QUICK_ACCESS_GROUPS.map((group) => (
+                  <section key={group.title} className="home-quick-group">
+                    <h3 className="home-quick-group-title">{group.title}</h3>
+                    <div className="home-quick-list">
+                      {group.items.map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          className="home-quick-item"
+                          onClick={() => onActivateHomeItem(item)}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </aside>
+
+            <section className="home-workspace">
+              <header className="home-workspace-head">
+                <div className="home-title-wrap">
+                  <h2>LinkOnX Tools Web</h2>
+                </div>
+              </header>
+
+              {HOME_MODULE_CARDS.length ? (
+                <div className="home-module-grid">
+                  {HOME_MODULE_CARDS.map((card) => (
+                    card.splitItems?.length ? (
+                      <article key={card.key} className="home-module-card home-module-card-split">
+                        <div className="home-module-split-grid">
+                          {card.splitItems.map((splitItem) => (
+                            <button
+                              key={`${card.key}-${splitItem.id}`}
+                              type="button"
+                              className="home-module-split-item"
+                              onClick={() => onActivateHomeItem(splitItem)}
+                            >
+                              <span className="home-module-split-title">
+                                <span className="home-shortcut-icon home-module-title-icon" aria-hidden="true">
+                                  <RibbonIcon label={splitItem.label} fallback={splitItem.icon} />
+                                </span>
+                                <span>{splitItem.label}</span>
+                              </span>
+                              <span className="home-module-desc">{splitItem.description}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </article>
+                    ) : (
+                      <button
+                        key={card.key}
+                        type="button"
+                        className="home-module-card"
+                        onClick={() => onActivateHomeItem(card)}
+                      >
+                        <span className="home-module-title-row">
+                          <span className="home-shortcut-icon home-module-title-icon" aria-hidden="true">
+                            <RibbonIcon label={card.title} fallback={card.icon} />
+                          </span>
+                          <span>{card.title}</span>
+                        </span>
+                        <span className="home-module-desc">{card.description}</span>
+                        {card.image && <img src={card.image} alt={`${card.title} preview`} className="home-module-thumb" />}
+                      </button>
+                    )
                   ))}
                 </div>
-              </section>
-            ))}
+              ) : (
+                <p className="home-card-empty">No module matched your search keyword.</p>
+              )}
+            </section>
           </div>
         </section>
       ) : activeModule === "menuEditor" ? (
