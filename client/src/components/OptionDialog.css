@@ -193,6 +193,43 @@ body.app-theme-dark .option-backdrop {
   --option-close-hover: #d5e2f5;
 }
 
+body.app-theme-stitchdark .option-backdrop {
+  background: rgba(2, 6, 23, 0.62);
+  --option-bg: #1b273a;
+  --option-border: #2e435f;
+  --option-ink: #d6e3ff;
+  --option-label-ink: #b8c9e6;
+  --option-help-ink: #99afd4;
+  --option-control-bg: #0f1c2f;
+  --option-control-border: #365074;
+  --option-control-ink: #d6e3ff;
+  --option-btn-bg: #22334c;
+  --option-btn-border: #3a5274;
+  --option-btn-ink: #d6e3ff;
+  --option-primary-bg: #3a80e6;
+  --option-primary-border: #2f6ec9;
+  --option-primary-ink: #f6fbff;
+  --option-close-hover: #2d4261;
+}
+
+body.app-theme-stitchpalette .option-backdrop {
+  --option-bg: #eef4ff;
+  --option-border: #aebdd8;
+  --option-ink: #18283f;
+  --option-label-ink: #3b5274;
+  --option-help-ink: #4f6890;
+  --option-control-bg: #f7fbff;
+  --option-control-border: #9cb3d8;
+  --option-control-ink: #18283f;
+  --option-btn-bg: #e3ebfb;
+  --option-btn-border: #9ab2d6;
+  --option-btn-ink: #2e4c77;
+  --option-primary-bg: #cfddfb;
+  --option-primary-border: #8aa9d8;
+  --option-primary-ink: #1f3f6b;
+  --option-close-hover: #dae5f8;
+}
+
 body.app-theme-vs2010 .option-backdrop {
   --option-bg: #edf2f9;
   --option-border: #a6b6ce;

@@ -30,6 +30,9 @@ export function OptionDialog({
       sevenclassic: "Seven Classic",
       office2013gray: "Office 2013 Light Gray",
       office2019darkgray: "Office 2019 Dark Gray",
+      stitchbasic: "Stitch Basic",
+      stitchdark: "Stitch Dark",
+      stitchpalette: "Stitch Palette",
     };
     if (known[preset]) return known[preset];
     if (!preset) return "Basic";

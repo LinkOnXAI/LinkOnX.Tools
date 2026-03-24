@@ -9,6 +9,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { registerCodeGeneratorRoutes } from "./codeGeneratorRoutes.js";
 import { registerQueryDeveloperRoutes } from "./queryDeveloperRoutes.js";
 
 const serverSrcDir = path.dirname(fileURLToPath(import.meta.url));
@@ -321,6 +322,12 @@ registerQueryDeveloperRoutes({
   parseXmlDocument,
   fs,
   XMLSerializer,
+});
+
+registerCodeGeneratorRoutes({
+  app,
+  requireAuth,
+  parseXmlDocument,
 });
 
 app.use((error, _req, res, _next) => {

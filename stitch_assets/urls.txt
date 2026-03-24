@@ -1,0 +1,4 @@
+https://cdn.tailwindcss.com?plugins=forms,container-queries
+https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&amp;display=swap
+https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap
+https://lh3.googleusercontent.com/aida-public/AB6AXuC6KHl2_xhgl6eAShJzAtZSSvrkb31bXIJdszLcAPlkE7cEBHdC3T7fCTLuy85XZhhiIahxpjS0wEPMb2x4B8yTQfR1TpCiOO0SSycNpUb7XgHVTtWuMxa-gTHCqUPDEtEn-wzdVAxyyDm0l8dTiAuhValHN3f9QBJNWeCzsZV-dzJPiroA_Whjfgtc3GsEHbn_hOWSwmPwVSvM4JSA6Z5wRmXMStdj6x8u2PW9vtnrs1XH9ntdML5TYyTJ7DIGaD2HIR8dt_y-apJT

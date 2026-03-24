@@ -8,6 +8,7 @@ import { LanguageEditor } from "./languageEditor/LanguageEditor";
 import { ClientConfigEditor } from "./clientConfigEditor/ClientConfigEditor";
 import { ToolsManual } from "./manual/ToolsManual";
 import { QueryDeveloperPanel } from "./queryDeveloper/QueryDeveloperPanel";
+import { CodeGenerator } from "./codeGenerator/CodeGenerator";
 import {
   SQL_PROVIDERS,
   TREE_ACTION_ENDPOINTS,
@@ -54,10 +55,27 @@ const DEVELOPMENT_SHORTCUTS = [
   { id: "codeGenerator", label: "Code Generator", icon: "CG", description: "Generate code artifacts from definitions." },
   { id: "laboratory", label: "Laboratory", icon: "LB", description: "Use experimental and test utilities." },
 ];
+const DEVELOPMENT_RIBBON_SHORTCUTS = DEVELOPMENT_SHORTCUTS;
 
 const HELP_SHORTCUTS = [
   { id: "manual", label: "User Manual", icon: "UM", description: "Open the web-based user manual for LinkOnX Tools." },
   { id: "option", label: "Option", icon: "OP", description: "Open theme, font, and tree depth options.", action: "openOptionDialog" },
+];
+const STITCH_NAV_GROUPS = [
+  { title: "Declaration", items: DECLARATION_SHORTCUTS },
+  { title: "Development", items: DEVELOPMENT_SHORTCUTS },
+  { title: "Resources", items: HELP_SHORTCUTS },
+];
+const STITCH_TOP_BAR_GROUPS = [
+  {
+    title: "Home",
+    items: [
+      { id: "home", label: "Home", icon: "H" },
+      { id: "option", label: "Option", icon: "OP", action: "openOptionDialog" },
+    ],
+  },
+  { title: "Declaration", items: DECLARATION_SHORTCUTS },
+  { title: "Development", items: DEVELOPMENT_SHORTCUTS },
 ];
 
 const QUICK_ACCESS_GROUPS = [
@@ -78,6 +96,9 @@ const SCREENSHOT_PATHS = {
   clientConfig: buildClientPath("manual/screenshots/client-config-client-overview.png"),
   manual: buildClientPath("manual/screenshots/language-editor-message-overview.png"),
   codeGenerator: buildClientPath("manual/screenshots/code-generator-overview.png"),
+};
+const GENERAL_HOME_SCREENSHOT_PATHS = {
+  codeGenerator: buildClientPath("manual/screenshots/code-generator-home-overview.png"),
 };
 
 const HOME_MODULE_CARDS = [
@@ -114,6 +135,14 @@ const HOME_MODULE_CARDS = [
     image: SCREENSHOT_PATHS.clientConfig,
   },
   {
+    key: "codeGenerator",
+    id: "codeGenerator",
+    icon: QUICK_ACCESS_ITEM_MAP.codeGenerator?.icon || "CG",
+    title: "Code Generator",
+    description: QUICK_ACCESS_ITEM_MAP.codeGenerator?.description || "",
+    image: GENERAL_HOME_SCREENSHOT_PATHS.codeGenerator,
+  },
+  {
     key: "manual",
     id: "manual",
     icon: QUICK_ACCESS_ITEM_MAP.manual?.icon || "UM",
@@ -121,24 +150,55 @@ const HOME_MODULE_CARDS = [
     description: QUICK_ACCESS_ITEM_MAP.manual?.description || "",
     image: SCREENSHOT_PATHS.manual,
   },
+];
+const STITCH_HOME_MODULE_CARDS = [
   {
-    key: "codeGeneratorLaboratory",
-    title: "Code Generator / Laboratory",
-    splitItems: [
-      {
-        id: "codeGenerator",
-        icon: QUICK_ACCESS_ITEM_MAP.codeGenerator?.icon || "CG",
-        label: QUICK_ACCESS_ITEM_MAP.codeGenerator?.label || "Code Generator",
-        description: QUICK_ACCESS_ITEM_MAP.codeGenerator?.description || "",
-      },
-      {
-        id: "laboratory",
-        icon: QUICK_ACCESS_ITEM_MAP.laboratory?.icon || "LB",
-        label: QUICK_ACCESS_ITEM_MAP.laboratory?.label || "Laboratory",
-        description: QUICK_ACCESS_ITEM_MAP.laboratory?.description || "",
-      },
-    ],
-    keywords: ["laboratory"],
+    key: "queryDeveloper",
+    id: "queryDeveloper",
+    icon: QUICK_ACCESS_ITEM_MAP.queryDeveloper?.icon || "QD",
+    title: "Query Developer",
+    description: QUICK_ACCESS_ITEM_MAP.queryDeveloper?.description || "",
+    image: SCREENSHOT_PATHS.queryDeveloper,
+  },
+  {
+    key: "menuEditor",
+    id: "menuEditor",
+    icon: QUICK_ACCESS_ITEM_MAP.menuEditor?.icon || "ME",
+    title: "Menu Editor",
+    description: QUICK_ACCESS_ITEM_MAP.menuEditor?.description || "",
+    image: SCREENSHOT_PATHS.menuEditor,
+  },
+  {
+    key: "language",
+    id: "language",
+    icon: QUICK_ACCESS_ITEM_MAP.language?.icon || "LA",
+    title: "Language",
+    description: QUICK_ACCESS_ITEM_MAP.language?.description || "",
+    image: SCREENSHOT_PATHS.language,
+  },
+  {
+    key: "clientConfig",
+    id: "clientConfig",
+    icon: QUICK_ACCESS_ITEM_MAP.clientConfig?.icon || "CC",
+    title: "Client Config",
+    description: QUICK_ACCESS_ITEM_MAP.clientConfig?.description || "",
+    image: SCREENSHOT_PATHS.clientConfig,
+  },
+  {
+    key: "codeGenerator",
+    id: "codeGenerator",
+    icon: QUICK_ACCESS_ITEM_MAP.codeGenerator?.icon || "CG",
+    title: "Code Generator",
+    description: QUICK_ACCESS_ITEM_MAP.codeGenerator?.description || "",
+    image: GENERAL_HOME_SCREENSHOT_PATHS.codeGenerator,
+  },
+  {
+    key: "manual",
+    id: "manual",
+    icon: QUICK_ACCESS_ITEM_MAP.manual?.icon || "UM",
+    title: "User Manual",
+    description: QUICK_ACCESS_ITEM_MAP.manual?.description || "",
+    image: SCREENSHOT_PATHS.manual,
   },
 ];
 
@@ -147,6 +207,8 @@ const AUTO_LOGOUT_IDLE_MS = 10 * 60 * 1000;
 const LOGIN_REMEMBER_KEY = "linkon.login.remember";
 const LOGIN_REMEMBER_FACTORY_KEY = "linkon.login.factory";
 const LOGIN_REMEMBER_USER_KEY = "linkon.login.user";
+const STITCH_SIDEBAR_COLLAPSED_KEY = "linkon.stitchSidebarCollapsed";
+const STITCH_THEME_PRESETS = ["stitchbasic", "stitchdark", "stitchpalette"];
 const THEME_PRESETS = [
   "white",
   "dark",
@@ -154,6 +216,7 @@ const THEME_PRESETS = [
   "sevenclassic",
   "office2013gray",
   "office2019darkgray",
+  ...STITCH_THEME_PRESETS,
 ];
 const DEFAULT_THEME_PRESET = "white";
 
@@ -161,6 +224,10 @@ function normalizeThemePreset(rawTheme) {
   const value = String(rawTheme || "").trim().toLowerCase();
   if (THEME_PRESETS.includes(value)) return value;
   return DEFAULT_THEME_PRESET;
+}
+
+function isStitchThemePreset(rawTheme) {
+  return STITCH_THEME_PRESETS.includes(String(rawTheme || "").trim().toLowerCase());
 }
 
 function App() {
@@ -211,6 +278,13 @@ function App() {
       return true;
     } catch {
       return true;
+    }
+  });
+  const [stitchSidebarCollapsed, setStitchSidebarCollapsed] = useState(() => {
+    try {
+      return window.localStorage.getItem(STITCH_SIDEBAR_COLLAPSED_KEY) === "true";
+    } catch {
+      return false;
     }
   });
 
@@ -468,6 +542,14 @@ function App() {
       // ignore storage failures
     }
   }, [showTreeDepthGuide]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STITCH_SIDEBAR_COLLAPSED_KEY, stitchSidebarCollapsed ? "true" : "false");
+    } catch {
+      // ignore storage failures
+    }
+  }, [stitchSidebarCollapsed]);
 
   useEffect(() => {
     try {
@@ -1066,7 +1148,7 @@ function App() {
       icon: item.icon,
       onClick: () => onSelectModule(item.id),
     }));
-    const developmentButtons = DEVELOPMENT_SHORTCUTS.map((item) => ({
+    const developmentButtons = DEVELOPMENT_RIBBON_SHORTCUTS.map((item) => ({
       label: item.label,
       icon: item.icon,
       onClick: () => onSelectModule(item.id),
@@ -1207,183 +1289,348 @@ function App() {
     );
   }
 
+  const useStitchShell = isStitchThemePreset(themePreset);
+
+  const defaultHomeContent = (
+    <section className="panel home-panel">
+      <div className="home-layout">
+        <aside className="home-sidebar">
+          <header className="home-sidebar-head">
+            <h2>Quick Access</h2>
+          </header>
+
+          <div className="home-quick-groups">
+            {QUICK_ACCESS_GROUPS.map((group) => (
+              <section key={group.title} className="home-quick-group">
+                <h3 className="home-quick-group-title">{group.title}</h3>
+                <div className="home-quick-list">
+                  {group.items.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className="home-quick-item"
+                      onClick={() => onActivateHomeItem(item)}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </aside>
+
+        <section className="home-workspace">
+          <header className="home-workspace-head">
+            <div className="home-title-wrap">
+              <h2>LinkOnX Tools Web</h2>
+            </div>
+          </header>
+
+          {HOME_MODULE_CARDS.length ? (
+            <div className="home-module-grid">
+              {HOME_MODULE_CARDS.map((card) => (
+                card.splitItems?.length ? (
+                  <article key={card.key} className="home-module-card home-module-card-split">
+                    <div className="home-module-split-grid">
+                      {card.splitItems.map((splitItem) => (
+                        <button
+                          key={`${card.key}-${splitItem.id}`}
+                          type="button"
+                          className="home-module-split-item"
+                          onClick={() => onActivateHomeItem(splitItem)}
+                        >
+                          <span className="home-module-split-title">
+                            <span className="home-shortcut-icon home-module-title-icon" aria-hidden="true">
+                              <RibbonIcon label={splitItem.label} fallback={splitItem.icon} />
+                            </span>
+                            <span>{splitItem.label}</span>
+                          </span>
+                          <span className="home-module-desc">{splitItem.description}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </article>
+                ) : (
+                  <button
+                    key={card.key}
+                    type="button"
+                    className="home-module-card"
+                    onClick={() => onActivateHomeItem(card)}
+                  >
+                    <span className="home-module-title-row">
+                      <span className="home-shortcut-icon home-module-title-icon" aria-hidden="true">
+                        <RibbonIcon label={card.title} fallback={card.icon} />
+                      </span>
+                      <span>{card.title}</span>
+                    </span>
+                    <span className="home-module-desc">{card.description}</span>
+                    {card.image && <img src={card.image} alt={`${card.title} preview`} className="home-module-thumb" />}
+                  </button>
+                )
+              ))}
+            </div>
+          ) : (
+            <p className="home-card-empty">No module matched your search keyword.</p>
+          )}
+        </section>
+      </div>
+    </section>
+  );
+
+  const stitchHomeContent = (
+    <section className="stitch-home-panel">
+      <div className="stitch-home-canvas">
+        <header className="stitch-home-head">
+          <div>
+            <h2>LinkOnX Tools Web</h2>
+          </div>
+        </header>
+
+        <div className="stitch-home-grid">
+          {STITCH_HOME_MODULE_CARDS.map((card) => (
+            <button
+              key={`stitch-home-card-${card.key}`}
+              type="button"
+              className="stitch-home-card"
+              onClick={() => onActivateHomeItem(card)}
+              >
+                <span className="stitch-home-card-icon" aria-hidden="true">
+                  <RibbonIcon label={card.title} fallback={card.icon} />
+                </span>
+                <span className="stitch-home-card-title">{card.title}</span>
+                <span className="stitch-home-card-desc">{card.description}</span>
+                {card.image && <img src={card.image} alt={`${card.title} preview`} className="stitch-home-thumb" />}
+              </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+
+  const moduleContent = activeModule === "home"
+    ? (useStitchShell ? stitchHomeContent : defaultHomeContent)
+    : activeModule === "menuEditor" ? (
+      <MenuEditor />
+    ) : activeModule === "language" ? (
+      <LanguageEditor />
+    ) : activeModule === "clientConfig" ? (
+      <ClientConfigEditor />
+    ) : activeModule === "codeGenerator" ? (
+      <CodeGenerator />
+    ) : activeModule === "manual" ? (
+      <ToolsManual />
+    ) : activeModule !== "queryDeveloper" ? (
+      <section className="panel module-placeholder">
+        <h2>{activeModuleInfo.label}</h2>
+        <p className="subtext">This module page will be connected in the next step.</p>
+      </section>
+    ) : (
+      <QueryDeveloperPanel
+        files={files}
+        filesLoading={filesLoading}
+        fileLoading={fileLoading}
+        selectedFile={selectedFile}
+        onRefresh={() => {
+          void loadFiles(true);
+        }}
+        refreshDisabled={filesLoading || fileLoading}
+        onDownloadSelectedFile={onDownloadSelectedFile}
+        onSelectFile={onSelectFile}
+        treePaneRef={treePaneRef}
+        searchCollapsed={searchCollapsed}
+        setSearchCollapsed={setSearchCollapsed}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearch={onSearch}
+        searchCaseSensitive={searchCaseSensitive}
+        setSearchCaseSensitive={setSearchCaseSensitive}
+        searchMatches={searchMatches}
+        currentSearchDisplay={currentSearchDisplay}
+        moveSearch={moveSearch}
+        treeRows={treeRows}
+        selectedPath={selectedPath}
+        expanded={expanded}
+        onSelectNode={onSelectNode}
+        onOpenContextMenu={onOpenContextMenu}
+        toggleNodeExpanded={toggleNodeExpanded}
+        nodeDetail={nodeDetail}
+        propertyGroups={propertyGroups}
+        propertiesCollapsed={propertiesCollapsed}
+        setPropertiesCollapsed={setPropertiesCollapsed}
+        propertyDraft={propertyDraft}
+        onChangeProperty={onChangeProperty}
+        saving={saving}
+        propertyDirty={propertyDirty}
+        onUpdateProperties={onUpdateProperties}
+        activeSqlProvider={activeSqlProvider}
+        setActiveSqlProvider={setActiveSqlProvider}
+        sqlDraft={sqlDraft}
+        setSqlDraft={setSqlDraft}
+        sqlDirty={sqlDirty}
+        onUpdateSqlQueries={onUpdateSqlQueries}
+        contextMenu={contextMenu}
+        contextNode={contextNode}
+        contextMenuRef={contextMenuRef}
+        treeClipboard={treeClipboard}
+        onTreeContextAction={onTreeContextAction}
+      />
+    );
+
+  const optionDialog = showOption && (
+    <OptionDialog
+      initialTreeFont={treeFontFamily}
+      initialTreeSize={treeFontSize}
+      initialPropFont={propFontFamily}
+      initialPropSize={propFontSize}
+      initialThemePreset={themePreset}
+      themePresets={THEME_PRESETS}
+      initialShowTreeDepthGuide={showTreeDepthGuide}
+      onCancel={() => setShowOption(false)}
+      onApply={(vals) => {
+        setTreeFontFamily(vals.treeFont);
+        setTreeFontSize(vals.treeSize);
+        setPropFontFamily(vals.propFont);
+        setPropFontSize(vals.propSize);
+        setThemePreset(normalizeThemePreset(vals.themePreset));
+        setShowTreeDepthGuide(Boolean(vals.showTreeDepthGuide));
+        setShowOption(false);
+      }}
+    />
+  );
+
+  if (useStitchShell) {
+    return (
+      <div className={`app-shell app-shell-stitch ${stitchSidebarCollapsed ? "stitch-sidebar-collapsed" : ""}`} style={appShellStyle}>
+        <aside className="stitch-sidebar">
+          <button
+            type="button"
+            className="stitch-splitter-toggle-btn stitch-splitter-toggle-btn-inline"
+            onClick={() => setStitchSidebarCollapsed((prev) => !prev)}
+            aria-label="Collapse sidebar"
+            title="Collapse sidebar"
+            >
+              <span className="stitch-splitter-toggle-symbol" aria-hidden="true">
+                {"="}
+              </span>
+            </button>
+          <div className="stitch-brand">
+            <img src={MAIN_LOGO_SRC} alt="LinkOnX main logo" className="stitch-brand-logo" />
+            <div className="stitch-brand-text">
+              <h1>LinkOnX Tools Web</h1>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className={`stitch-nav-item stitch-nav-home ${activeModule === "home" ? "active" : ""}`}
+            onClick={() => onSelectModule("home")}
+          >
+            <span className="stitch-nav-icon" aria-hidden="true">
+              <RibbonIcon label="Home" fallback="H" />
+            </span>
+            <span>Home</span>
+          </button>
+
+          <div className="stitch-nav-groups">
+            {STITCH_NAV_GROUPS.map((group) => (
+              <section key={`stitch-nav-${group.title}`} className="stitch-nav-group">
+                <h3>{group.title}</h3>
+                <div className="stitch-nav-list">
+                  {group.items.map((item) => (
+                    <button
+                      key={`stitch-nav-item-${item.id}`}
+                      type="button"
+                      className={`stitch-nav-item ${activeModule === item.id ? "active" : ""}`}
+                      onClick={() => onActivateHomeItem(item)}
+                    >
+                      <span className="stitch-nav-icon" aria-hidden="true">
+                        <RibbonIcon label={item.label} fallback={item.icon} />
+                      </span>
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </aside>
+        {stitchSidebarCollapsed && (
+          <button
+            type="button"
+            className="stitch-splitter-toggle-btn stitch-splitter-toggle-btn-floating"
+            onClick={() => setStitchSidebarCollapsed((prev) => !prev)}
+            aria-label="Expand sidebar"
+            title="Expand sidebar"
+          >
+            <span className="stitch-splitter-toggle-symbol" aria-hidden="true">
+              {"="}
+            </span>
+          </button>
+        )}
+
+        <main className="stitch-main">
+          <header className="stitch-topbar">
+            <div className="stitch-topbar-left">
+              {STITCH_TOP_BAR_GROUPS.map((group) => (
+                <section key={`stitch-topbar-${group.title}`} className="stitch-topbar-group">
+                  <h3>{group.title}</h3>
+                  <div className="stitch-topbar-buttons">
+                    {group.items.map((item) => (
+                      <button
+                        key={`stitch-topbar-btn-${group.title}-${item.id}`}
+                        type="button"
+                        className={`stitch-topbar-btn ${activeModule === item.id ? "active" : ""}`}
+                        onClick={() => onActivateHomeItem(item)}
+                        title={item.label}
+                        aria-label={item.label}
+                      >
+                        <span className="stitch-topbar-btn-icon" aria-hidden="true">
+                          <RibbonIcon label={item.label} fallback={item.icon} />
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+
+            <div className="stitch-topbar-right">
+              <div className="stitch-user-chip" title={sessionLabel}>
+                <span className="stitch-user-icon" aria-hidden="true">
+                  <RibbonIcon label="User" fallback="U" />
+                </span>
+                <span>{sessionLabel || "Administrator"}</span>
+              </div>
+              <button
+                type="button"
+                className="stitch-user-action"
+                onClick={() => {
+                  void onLogout();
+                }}
+                title="Logout"
+                aria-label="Logout"
+              >
+                <RibbonIcon label="Logout" fallback="LO" />
+              </button>
+            </div>
+          </header>
+
+          {banner && <div className="banner">{banner}</div>}
+          <div className="stitch-main-content">{moduleContent}</div>
+        </main>
+        {optionDialog}
+      </div>
+    );
+  }
+
   return (
     <div className="app-shell" style={appShellStyle}>
       <RibbonBar sections={ribbonSections} sessionLabel={sessionLabel} quickActions={ribbonQuickActions} />
 
       {banner && <div className="banner">{banner}</div>}
-
-      {activeModule === "home" ? (
-        <section className="panel home-panel">
-          <div className="home-layout">
-            <aside className="home-sidebar">
-              <header className="home-sidebar-head">
-                <h2>Quick Access</h2>
-              </header>
-
-              <div className="home-quick-groups">
-                {QUICK_ACCESS_GROUPS.map((group) => (
-                  <section key={group.title} className="home-quick-group">
-                    <h3 className="home-quick-group-title">{group.title}</h3>
-                    <div className="home-quick-list">
-                      {group.items.map((item) => (
-                        <button
-                          key={item.id}
-                          type="button"
-                          className="home-quick-item"
-                          onClick={() => onActivateHomeItem(item)}
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
-                  </section>
-                ))}
-              </div>
-            </aside>
-
-            <section className="home-workspace">
-              <header className="home-workspace-head">
-                <div className="home-title-wrap">
-                  <h2>LinkOnX Tools Web</h2>
-                </div>
-              </header>
-
-              {HOME_MODULE_CARDS.length ? (
-                <div className="home-module-grid">
-                  {HOME_MODULE_CARDS.map((card) => (
-                    card.splitItems?.length ? (
-                      <article key={card.key} className="home-module-card home-module-card-split">
-                        <div className="home-module-split-grid">
-                          {card.splitItems.map((splitItem) => (
-                            <button
-                              key={`${card.key}-${splitItem.id}`}
-                              type="button"
-                              className="home-module-split-item"
-                              onClick={() => onActivateHomeItem(splitItem)}
-                            >
-                              <span className="home-module-split-title">
-                                <span className="home-shortcut-icon home-module-title-icon" aria-hidden="true">
-                                  <RibbonIcon label={splitItem.label} fallback={splitItem.icon} />
-                                </span>
-                                <span>{splitItem.label}</span>
-                              </span>
-                              <span className="home-module-desc">{splitItem.description}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </article>
-                    ) : (
-                      <button
-                        key={card.key}
-                        type="button"
-                        className="home-module-card"
-                        onClick={() => onActivateHomeItem(card)}
-                      >
-                        <span className="home-module-title-row">
-                          <span className="home-shortcut-icon home-module-title-icon" aria-hidden="true">
-                            <RibbonIcon label={card.title} fallback={card.icon} />
-                          </span>
-                          <span>{card.title}</span>
-                        </span>
-                        <span className="home-module-desc">{card.description}</span>
-                        {card.image && <img src={card.image} alt={`${card.title} preview`} className="home-module-thumb" />}
-                      </button>
-                    )
-                  ))}
-                </div>
-              ) : (
-                <p className="home-card-empty">No module matched your search keyword.</p>
-              )}
-            </section>
-          </div>
-        </section>
-      ) : activeModule === "menuEditor" ? (
-        <MenuEditor />
-      ) : activeModule === "language" ? (
-        <LanguageEditor />
-      ) : activeModule === "clientConfig" ? (
-        <ClientConfigEditor />
-      ) : activeModule === "manual" ? (
-        <ToolsManual />
-      ) : activeModule !== "queryDeveloper" ? (
-        <section className="panel module-placeholder">
-          <h2>{activeModuleInfo.label}</h2>
-          <p className="subtext">This module page will be connected in the next step.</p>
-        </section>
-      ) : (
-        <QueryDeveloperPanel
-          files={files}
-          filesLoading={filesLoading}
-          fileLoading={fileLoading}
-          selectedFile={selectedFile}
-          onRefresh={() => {
-            void loadFiles(true);
-          }}
-          refreshDisabled={filesLoading || fileLoading}
-          onDownloadSelectedFile={onDownloadSelectedFile}
-          onSelectFile={onSelectFile}
-          treePaneRef={treePaneRef}
-          searchCollapsed={searchCollapsed}
-          setSearchCollapsed={setSearchCollapsed}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          onSearch={onSearch}
-          searchCaseSensitive={searchCaseSensitive}
-          setSearchCaseSensitive={setSearchCaseSensitive}
-          searchMatches={searchMatches}
-          currentSearchDisplay={currentSearchDisplay}
-          moveSearch={moveSearch}
-          treeRows={treeRows}
-          selectedPath={selectedPath}
-          expanded={expanded}
-          onSelectNode={onSelectNode}
-          onOpenContextMenu={onOpenContextMenu}
-          toggleNodeExpanded={toggleNodeExpanded}
-          nodeDetail={nodeDetail}
-          propertyGroups={propertyGroups}
-          propertiesCollapsed={propertiesCollapsed}
-          setPropertiesCollapsed={setPropertiesCollapsed}
-          propertyDraft={propertyDraft}
-          onChangeProperty={onChangeProperty}
-          saving={saving}
-          propertyDirty={propertyDirty}
-          onUpdateProperties={onUpdateProperties}
-          activeSqlProvider={activeSqlProvider}
-          setActiveSqlProvider={setActiveSqlProvider}
-          sqlDraft={sqlDraft}
-          setSqlDraft={setSqlDraft}
-          sqlDirty={sqlDirty}
-          onUpdateSqlQueries={onUpdateSqlQueries}
-          contextMenu={contextMenu}
-          contextNode={contextNode}
-          contextMenuRef={contextMenuRef}
-          treeClipboard={treeClipboard}
-          onTreeContextAction={onTreeContextAction}
-        />
-      )}
-
-      {showOption && (
-        <OptionDialog
-          initialTreeFont={treeFontFamily}
-          initialTreeSize={treeFontSize}
-          initialPropFont={propFontFamily}
-          initialPropSize={propFontSize}
-          initialThemePreset={themePreset}
-          themePresets={THEME_PRESETS}
-          initialShowTreeDepthGuide={showTreeDepthGuide}
-          onCancel={() => setShowOption(false)}
-          onApply={(vals) => {
-            setTreeFontFamily(vals.treeFont);
-            setTreeFontSize(vals.treeSize);
-            setPropFontFamily(vals.propFont);
-            setPropFontSize(vals.propSize);
-            setThemePreset(normalizeThemePreset(vals.themePreset));
-            setShowTreeDepthGuide(Boolean(vals.showTreeDepthGuide));
-            setShowOption(false);
-          }}
-        />
-      )}
+      {moduleContent}
+      {optionDialog}
     </div>
   );
 }

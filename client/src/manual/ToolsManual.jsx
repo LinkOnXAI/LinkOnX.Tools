@@ -220,12 +220,48 @@ const MANUAL_SECTIONS = [
   {
     id: "codeGenerator",
     title: "Code Generator",
-    image: "manual/screenshots/code-generator-overview.png",
-    description: "Code Generator module entry point from Development menu path.",
+    image: "manual/screenshots/code-generator-home-overview.png",
+    description: "Use this screen to open .gen source file, inspect generator tree, and run code generation with options.",
     points: [
-      "Open from Home > Development > Code Generator or Ribbon Development group.",
-      "Current build shows placeholder page for Code Generator module integration.",
-      "Use this location for future code generation actions and output management.",
+      "Menu path: Home > Development > Code Generator or Ribbon Development > Code Generator.",
+      "Preview area: module screen preview image is shown in the Home dashboard card.",
+      "Top toolbar: open .gen file and start generation flow from option dialog.",
+      "Search bar: type keyword, move Previous/Next result, and check match count.",
+      "Tree panel: expand/collapse nodes, select target node, and check level-2 Parameter/Function nodes for generation scope.",
+      "Option dialog: configure Output Path, Creator, Description, Organize Using and generation flags before running.",
+      "Result flow: generation banner appears and output folder can be opened after generation is completed.",
+    ],
+    buttonGroups: [
+      {
+        title: "Main Buttons",
+        items: [
+          { name: "Open", iconImage: "icons/codeGenerator/open_16x16.png", description: "Open local .gen file and load parsed tree data." },
+          { name: "Generate", iconImage: "icons/codeGenerator/Execute.png", description: "Open Code Generate Option dialog and run generation with selected options." },
+        ],
+      },
+      {
+        title: "Tree Search Buttons",
+        items: [
+          { name: "Search", iconText: "Search", description: "Filter tree nodes by label text with live matching." },
+          { name: "Previous", iconClass: "tree-search-icon tree-search-icon-up", description: "Move to previous matched node." },
+          { name: "Next", iconClass: "tree-search-icon tree-search-icon-down", description: "Move to next matched node." },
+          { name: "Match Count", iconText: "0/0", description: "Show current match index and total result count." },
+        ],
+      },
+      {
+        title: "Code Generate Option",
+        items: [
+          { name: "Output Path", iconText: "Path", description: "Set output folder for generated files." },
+          { name: "Creator", iconText: "C", description: "Set creator metadata text written to generated output." },
+          { name: "Description", iconText: "D", description: "Set description metadata text for generated output." },
+          { name: "Organize Using", iconText: "U", description: "Set namespace/import organizing text used during generation." },
+          { name: "Generate Parameter", iconText: "P", description: "Toggle parameter generation option." },
+          { name: "Generate Function", iconText: "F", description: "Toggle function generation option." },
+          { name: "Internal Class", iconText: "I", description: "Toggle internal class generation option." },
+          { name: "OK", iconText: "OK", description: "Execute code generation with current options." },
+          { name: "Cancel", iconText: "X", description: "Close option dialog without generation." },
+        ],
+      },
     ],
   },
 ];
