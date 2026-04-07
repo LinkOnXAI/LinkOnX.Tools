@@ -603,8 +603,12 @@ body.app-theme-dark .home-module-split-item:hover:not(:disabled) {
   background: rgba(30, 64, 175, 0.35);
 }
 
+body.app-theme-dark .login-brand-text h1 {
+  color: #000000;
+}
+
 body.app-theme-dark .login-remember {
-  color: #dbe7ff;
+  color: #000000;
 }
 
 body.app-theme-dark .session-dialog {

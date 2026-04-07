@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./LanguageEditor.css";
 
+const APP_BASE_PATH = normalizeBasePath(import.meta.env.BASE_URL || "/");
+
 const ROOT_META_ORDER = ["QF", "QV", "QC", "QU", "QD", "QS"];
-const NEW_ICON_SRC = "/icons/menuEditor/new_16x16.png";
-const OPEN_ICON_SRC = "/icons/menuEditor/open_16x16.png";
-const SAVE_ICON_SRC = "/icons/menuEditor/save_16x16.png";
-const SAVE_AS_ICON_SRC = "/icons/languageEditor/saveas_16x16.png";
-const UPDATE_ICON_SRC = "/icons/languageEditor/ToolCheck.png";
-const DELETE_ICON_SRC = "/icons/languageEditor/ToolRemove.png";
-const GOTO_ERROR_ICON_SRC = "/icons/languageEditor/ToolGotoError.png";
-const GEN_ENUM_ICON_SRC = "/icons/languageEditor/ToolEnumGenerate.png";
-const TOOL_LANGUAGE_ICON_SRC = "/icons/languageEditor/ToolLanguage.png";
-const TOOL_MESSAGE_ICON_SRC = "/icons/languageEditor/ToolMessage.png";
+const NEW_ICON_SRC = buildClientPath("icons/menuEditor/new_16x16.png");
+const OPEN_ICON_SRC = buildClientPath("icons/menuEditor/open_16x16.png");
+const SAVE_ICON_SRC = buildClientPath("icons/menuEditor/save_16x16.png");
+const SAVE_AS_ICON_SRC = buildClientPath("icons/languageEditor/saveas_16x16.png");
+const UPDATE_ICON_SRC = buildClientPath("icons/languageEditor/ToolCheck.png");
+const DELETE_ICON_SRC = buildClientPath("icons/languageEditor/ToolRemove.png");
+const GOTO_ERROR_ICON_SRC = buildClientPath("icons/languageEditor/ToolGotoError.png");
+const GEN_ENUM_ICON_SRC = buildClientPath("icons/languageEditor/ToolEnumGenerate.png");
+const TOOL_LANGUAGE_ICON_SRC = buildClientPath("icons/languageEditor/ToolLanguage.png");
+const TOOL_MESSAGE_ICON_SRC = buildClientPath("icons/languageEditor/ToolMessage.png");
 
 const CAPTION_PROPERTY_GROUPS = [
   { key: "general", title: "[01] General", rows: [{ key: "DEF", label: "Default", multiline: false }] },
@@ -1224,6 +1226,19 @@ function firstNonEmpty(...values) {
     if (text) return text;
   }
   return "";
+}
+
+function buildClientPath(pathText) {
+  const normalizedPath = String(pathText || "").replace(/^\/+/, "");
+  return `${APP_BASE_PATH}${normalizedPath}`;
+}
+
+function normalizeBasePath(baseUrl) {
+  const raw = String(baseUrl || "/").trim();
+  if (!raw) return "/";
+  let normalized = raw.startsWith("/") ? raw : `/${raw}`;
+  if (!normalized.endsWith("/")) normalized += "/";
+  return normalized;
 }
 
 function supportsFileSystemAccess() {

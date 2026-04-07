@@ -166,7 +166,7 @@ export function QueryDeveloperPanel({
             const canAppendChild = contextNode.kind === "system" || contextNode.kind === "module" || contextNode.kind === "function";
             const canInsertSibling =
               contextNode.kind === "module" || contextNode.kind === "function" || contextNode.kind === "sqlGroup";
-            const canDelete = contextNode.kind !== "root" && !hasChildren;
+            const canDelete = contextNode.kind !== "root" && (!hasChildren || contextNode.kind === "sqlGroup");
             return (
               <>
                 <button type="button" onClick={() => void onTreeContextAction("expand")} disabled={!hasChildren || isOpen}>

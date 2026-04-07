@@ -317,6 +317,7 @@ function App() {
   const [saving, setSaving] = useState(false);
   const [banner, setBanner] = useState("");
   const [showAutoLogoutDialog, setShowAutoLogoutDialog] = useState(false);
+  const [deleteConfirmTarget, setDeleteConfirmTarget] = useState(null);
   const idleTimerRef = useRef(null);
   const autoLogoutPendingRef = useRef(false);
 
@@ -917,11 +918,16 @@ function App() {
     }
 
     if (action === "delete") {
-      if (node.kind === "root" || hasChildren) {
+      const canDeleteNode = node.kind !== "root" && (!hasChildren || node.kind === "sqlGroup");
+      if (!canDeleteNode) {
         setContextMenu(null);
         return;
       }
-      await onRunTreeMutation("deleteNode", pathText);
+      setContextMenu(null);
+      setDeleteConfirmTarget({
+        pathText,
+        label: String(node.label || pathText),
+      });
       return;
     }
 
@@ -957,6 +963,17 @@ function App() {
       await onRunTreeMutation("insertAfterNode", pathText);
     }
   }, [contextMenu, expanded, onRunTreeMutation, selectedFile, treeClipboard, treeMap]);
+
+  const onCancelDeleteConfirm = useCallback(() => {
+    setDeleteConfirmTarget(null);
+  }, []);
+
+  const onConfirmDelete = useCallback(async () => {
+    if (!deleteConfirmTarget?.pathText) return;
+    const targetPath = deleteConfirmTarget.pathText;
+    setDeleteConfirmTarget(null);
+    await onRunTreeMutation("deleteNode", targetPath);
+  }, [deleteConfirmTarget, onRunTreeMutation]);
 
   const onSearch = async () => {
     const keyword = searchQuery.trim();
@@ -1499,6 +1516,30 @@ function App() {
     />
   );
 
+  const deleteConfirmDialog = deleteConfirmTarget && (
+    <div className="session-dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title">
+      <section className="session-dialog">
+        <h3 id="delete-confirm-title">Delete Node</h3>
+        <p>
+          Delete
+          {" "}
+          <strong>{deleteConfirmTarget.label}</strong>
+          {" "}
+          permanently?
+        </p>
+        <p className="session-dialog-comment">This action cannot be undone.</p>
+        <div className="session-dialog-actions">
+          <button type="button" className="primary-btn" onClick={() => { void onConfirmDelete(); }} disabled={saving}>
+            OK
+          </button>
+          <button type="button" onClick={onCancelDeleteConfirm} disabled={saving}>
+            Cancel
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+
   if (useStitchShell) {
     return (
       <div className={`app-shell app-shell-stitch ${stitchSidebarCollapsed ? "stitch-sidebar-collapsed" : ""}`} style={appShellStyle}>
@@ -1620,6 +1661,7 @@ function App() {
           <div className="stitch-main-content">{moduleContent}</div>
         </main>
         {optionDialog}
+        {deleteConfirmDialog}
       </div>
     );
   }
@@ -1631,6 +1673,7 @@ function App() {
       {banner && <div className="banner">{banner}</div>}
       {moduleContent}
       {optionDialog}
+      {deleteConfirmDialog}
     </div>
   );
 }

@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./ClientConfigEditor.css";
 
-const NEW_ICON_SRC = "/icons/menuEditor/new_16x16.png";
-const OPEN_ICON_SRC = "/icons/menuEditor/open_16x16.png";
-const SAVE_ICON_SRC = "/icons/menuEditor/save_16x16.png";
-const SAVE_AS_ICON_SRC = "/icons/clientConfig/saveall_16x16.png";
-const UPDATE_ICON_SRC = "/icons/languageEditor/ToolCheck.png";
-const DELETE_ICON_SRC = "/icons/languageEditor/ToolRemove.png";
+const APP_BASE_PATH = normalizeBasePath(import.meta.env.BASE_URL || "/");
+const NEW_ICON_SRC = buildClientPath("icons/menuEditor/new_16x16.png");
+const OPEN_ICON_SRC = buildClientPath("icons/menuEditor/open_16x16.png");
+const SAVE_ICON_SRC = buildClientPath("icons/menuEditor/save_16x16.png");
+const SAVE_AS_ICON_SRC = buildClientPath("icons/clientConfig/saveall_16x16.png");
+const UPDATE_ICON_SRC = buildClientPath("icons/languageEditor/ToolCheck.png");
+const DELETE_ICON_SRC = buildClientPath("icons/languageEditor/ToolRemove.png");
 
 const YES_NO_OPTIONS = ["Yes", "No"];
 const BOOL_OPTIONS = ["True", "False"];
@@ -564,6 +565,8 @@ function buildClientAttrOrder() { const order = []; const used = new Set(); cons
 function buildSiteAttrOrder() { const order = []; const used = new Set(); const push = (key) => { const text = String(key || "").trim(); if (!text || used.has(text)) return; used.add(text); order.push(text); }; Object.values(SITE_FIELD_ALIASES).forEach((aliases) => aliases.forEach(push)); for (const tab of SITE_TABS) for (const group of tab.groups || []) for (const field of group.fields || []) for (const alias of field.aliases || []) push(alias); return order; }
 function formatStamp(dateLike) { const d = dateLike instanceof Date ? dateLike : new Date(dateLike); const p2 = (v) => String(v).padStart(2, "0"); const p3 = (v) => String(v).padStart(3, "0"); return `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())} ${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}.${p3(d.getMilliseconds())}`; }
 function firstNonEmpty(...values) { for (const value of values) { const text = String(value ?? "").trim(); if (text) return text; } return ""; }
+function buildClientPath(pathText) { const normalizedPath = String(pathText || "").replace(/^\/+/, ""); return `${APP_BASE_PATH}${normalizedPath}`; }
+function normalizeBasePath(baseUrl) { const raw = String(baseUrl || "/").trim(); if (!raw) return "/"; let normalized = raw.startsWith("/") ? raw : `/${raw}`; if (!normalized.endsWith("/")) normalized += "/"; return normalized; }
 function ensureConfigFileName(fileName) { const text = String(fileName ?? "").trim() || "LinkOnClient.cfg"; return /\.cfg$/i.test(text) ? text : `${text}.cfg`; }
 function supportsFileSystemAccess() { return typeof window !== "undefined" && typeof window.showOpenFilePicker === "function" && typeof window.showSaveFilePicker === "function"; }
 function isAbortError(error) { return error && String(error?.name || "") === "AbortError"; }

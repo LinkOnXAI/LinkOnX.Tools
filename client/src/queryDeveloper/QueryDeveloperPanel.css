@@ -196,14 +196,17 @@
 
 .msg-form {
   background: #fff;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .qd-detail-pane {
   display: flex;
   flex-direction: column;
+  height: 100%;
   min-height: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 .tree-search {
@@ -488,24 +491,26 @@
 }
 
 .qd-detail-grid {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.8rem;
-  grid-template-rows: auto minmax(0, 1fr);
-  flex: 1 1 auto;
-  height: 100%;
+  flex: 0 0 auto;
+  height: fit-content;
   min-height: 0;
+  overflow: visible;
 }
 
 .qd-prop-grid,
 .qd-sql-editor {
   display: flex;
   flex-direction: column;
+  flex: 0 0 auto;
   gap: 0.5rem;
   min-height: 0;
 }
 
 .qd-sql-editor {
-  overflow: hidden;
+  overflow: visible;
 }
 
 .qd-sql-head {
@@ -582,7 +587,22 @@
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 8px;
-  overflow: auto;
+  overflow: visible;
+}
+
+.qd-sql-editor .sql-highlight-editor-wrap {
+  flex: 0 0 auto;
+  min-height: 280px;
+  height: 280px;
+}
+
+.qd-sql-editor .sql-highlight-editor {
+  min-height: 280px;
+}
+
+.qd-sql-editor .sql-textarea {
+  min-height: 280px;
+  height: 100%;
 }
 
 .prop-category {

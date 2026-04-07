@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./MenuEditor.css";
 
+const APP_BASE_PATH = normalizeBasePath(import.meta.env.BASE_URL || "/");
+
 const TREE_NODE_TAGS = new Set(["MNU", "MSY", "MIT", "PIT"]);
 
 const CATEGORY_ORDER = ["General", "Font", "Menu", "Assembly", "Image", "User Tag", "Etc"];
@@ -166,17 +168,17 @@ const IMAGE_PREVIEW_ROW_META = {
 const BOOLEAN_VALUE_KEYS = new Set(["FB", "MB", "MV", "AMF"]);
 const MULTILINE_KEYS = new Set(["MI", "ML"]);
 const TREE_ICON_MAP = {
-  MNU: "/icons/menuEditor/ToolMenu.png",
-  MSY: "/icons/menuEditor/ToolMenuSystem.png",
-  MIT: "/icons/menuEditor/ToolMenuItem.png",
-  PIT: "/icons/menuEditor/ToolMenuPopupItem.png",
+  MNU: buildClientPath("icons/menuEditor/ToolMenu.png"),
+  MSY: buildClientPath("icons/menuEditor/ToolMenuSystem.png"),
+  MIT: buildClientPath("icons/menuEditor/ToolMenuItem.png"),
+  PIT: buildClientPath("icons/menuEditor/ToolMenuPopupItem.png"),
 };
-const NEW_ICON_SRC = "/icons/menuEditor/new_16x16.png";
-const OPEN_ICON_SRC = "/icons/menuEditor/open_16x16.png";
-const SAVE_ICON_SRC = "/icons/menuEditor/save_16x16.png";
-const FALLBACK_MENU_ITEM_ICON = "/icons/menuEditor/ToolMenuItem.png";
-const FALLBACK_MENU_GROUP_ICON = "/icons/menuEditor/ToolMenuGroup.png";
-const FALLBACK_MENU_GROUP_SUB_ICON = "/icons/menuEditor/ToolMenuGroupSub.png";
+const NEW_ICON_SRC = buildClientPath("icons/menuEditor/new_16x16.png");
+const OPEN_ICON_SRC = buildClientPath("icons/menuEditor/open_16x16.png");
+const SAVE_ICON_SRC = buildClientPath("icons/menuEditor/save_16x16.png");
+const FALLBACK_MENU_ITEM_ICON = buildClientPath("icons/menuEditor/ToolMenuItem.png");
+const FALLBACK_MENU_GROUP_ICON = buildClientPath("icons/menuEditor/ToolMenuGroup.png");
+const FALLBACK_MENU_GROUP_SUB_ICON = buildClientPath("icons/menuEditor/ToolMenuGroupSub.png");
 const ROOT_META_ORDER = ["QF", "QV", "QC", "QU", "QD", "QS"];
 
 export function MenuEditor() {
@@ -1953,6 +1955,19 @@ function supportsFileSystemAccess() {
     typeof window.showOpenFilePicker === "function" &&
     typeof window.showSaveFilePicker === "function"
   );
+}
+
+function buildClientPath(pathText) {
+  const normalizedPath = String(pathText || "").replace(/^\/+/, "");
+  return `${APP_BASE_PATH}${normalizedPath}`;
+}
+
+function normalizeBasePath(baseUrl) {
+  const raw = String(baseUrl || "/").trim();
+  if (!raw) return "/";
+  let normalized = raw.startsWith("/") ? raw : `/${raw}`;
+  if (!normalized.endsWith("/")) normalized += "/";
+  return normalized;
 }
 
 function isAbortError(error) {

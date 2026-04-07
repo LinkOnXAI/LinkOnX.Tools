@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="light dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinkonX Tools - Enterprise Suite</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {outline: "#8f9097", "tertiary-fixed": "#5ffbd6", "on-primary": "#002e68", "secondary-fixed-dim": "#b6c6ed", "on-tertiary-container": "#00937a", "on-secondary": "#20304f", "error-dim": "#4e0309", tertiary: "#38debb", "primary-container": "#00183c", "secondary-fixed": "#d8e2ff", secondary: "#b6c6ed", "primary-dim": "#4a5268", "inverse-primary": "#005bc0", "on-primary-container": "#167eff", "surface-container-highest": "#27354c", "on-error": "#690005", "on-primary-fixed-variant": "#004493", "surface-container-low": "#0d1c32", "primary-fixed": "#d8e2ff", error: "#ffb4ab", "primary-fixed-dim": "#adc7ff", "on-tertiary-fixed": "#002019", "on-secondary-fixed": "#091b39", "on-surface-variant": "#c5c6cd", "secondary-dim": "#465468", "on-tertiary-fixed-variant": "#005142", "surface-container-high": "#1c2a41", "on-primary-fixed": "#001a41", "surface-bright": "#2c3951", "on-surface": "#d6e3ff", "on-background": "#d6e3ff", "on-tertiary": "#00382d", "inverse-surface": "#d6e3ff", "surface-tint": "#adc7ff", "inverse-on-surface": "#233148", "error-container": "#93000a", "tertiary-dim": "#54506b", "outline-variant": "#44474d", "on-error-container": "#ffdad6", "tertiary-container": "#001e17", "surface-container": "#112036", surface: "#041329", background: "#041329", "on-secondary-container": "#a5b5db", "surface-dim": "#041329", "surface-container-lowest": "#010e24", "secondary-container": "#374767", "tertiary-fixed-dim": "#38debb", "surface-variant": "#27354c", primary: "#adc7ff", "on-secondary-fixed-variant": "#374767"}, fontFamily: {headline: ["Manrope"], body: ["Manrope"], label: ["Manrope"], display: "Manrope"}, borderRadius: {DEFAULT: "0px", lg: "0px", xl: "0px", full: "0px"}}}};</script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ribbon-btn {
+            @apply flex items-center justify-center w-10 h-10 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors shadow-sm;
+        }
+        .ribbon-divider {
+            @apply h-6 w-px bg-slate-200 mx-2;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-slate-50 flex flex-col p-4 space-y-2 border-r border-outline-variant/10 shadow-sm">
+<div class="mb-8 px-2 flex items-center space-x-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</div>
+<div>
+<h1 class="font-manrope font-black text-slate-900 text-lg leading-tight">LinkonX Tools</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Enterprise Suite</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<p class="px-3 text-[11px] font-bold text-outline uppercase tracking-wider mb-2">DECLARATION</p>
+<a class="flex items-center space-x-3 px-3 py-2.5 bg-white text-slate-900 shadow-sm rounded-lg hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+<span class="font-inter text-sm font-medium">Language</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 text-slate-500 hover:bg-slate-100 transition-transform duration-200 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="font-inter text-sm font-medium">Menu Editor</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 text-slate-500 hover:bg-slate-100 transition-transform duration-200 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-inter text-sm font-medium">Client Config</span>
+</a>
+<div class="pt-6">
+<p class="px-3 text-[11px] font-bold text-outline uppercase tracking-wider mb-2">Development</p>
+<a class="flex items-center space-x-3 px-3 py-2.5 text-slate-500 hover:bg-slate-100 transition-transform duration-200 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-inter text-sm font-medium">Query Developer</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 text-slate-500 hover:bg-slate-100 transition-transform duration-200 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+<span class="font-inter text-sm font-medium">Code Generator</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 text-slate-500 hover:bg-slate-100 transition-transform duration-200 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-inter text-sm font-medium">Laboratory</span>
+</a>
+</div>
+<div class="pt-6">
+<p class="px-3 text-[11px] font-bold text-outline uppercase tracking-wider mb-2">Resources</p>
+<a class="flex items-center space-x-3 px-3 py-2.5 text-slate-500 hover:bg-slate-100 transition-transform duration-200 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-inter text-sm font-medium">User Manual</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 text-slate-500 hover:bg-slate-100 transition-transform duration-200 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-inter text-sm font-medium">Option</span>
+</a>
+</div>
+</nav>
+<!-- Footer Items -->
+<div class="pt-4 border-t border-outline-variant/20 space-y-1">
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 hover:bg-slate-100 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="contact_support">contact_support</span>
+<span class="font-inter text-xs font-medium">Support</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 hover:bg-slate-100 transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="lan">lan</span>
+<span class="font-inter text-xs font-medium">System Status</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 flex flex-col min-h-screen">
+<!-- TopAppBar as Ribbon Bar -->
+<header class="sticky top-0 z-50 bg-slate-100/90 backdrop-blur-xl border-b border-slate-200 w-full px-6 py-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2">
+<!-- Home Section -->
+<div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+<span class="text-sm font-bold text-slate-800 px-1">Home</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard_customize">dashboard_customize</span>
+</button>
+</div>
+<div class="h-8 w-px bg-slate-200 mx-1"></div>
+<!-- Declaration Section -->
+<div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+<span class="text-sm font-bold text-slate-800 px-1">Declaration</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="language">language</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="menu">menu</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings_input_component">settings_input_component</span>
+</button>
+</div>
+<div class="h-8 w-px bg-slate-200 mx-1"></div>
+<!-- Development Section -->
+<div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+<span class="text-sm font-bold text-slate-800 px-1">Development</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="database">database</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="code">code</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-50 text-slate-500">
+<span class="material-symbols-outlined text-[20px]" data-icon="biotech">biotech</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 bg-white px-4 py-1.5 rounded-full border border-slate-200 shadow-sm">
+<div class="w-6 h-6 rounded-full bg-slate-200 overflow-hidden">
+<img alt="Admin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6KHl2_xhgl6eAShJzAtZSSvrkb31bXIJdszLcAPlkE7cEBHdC3T7fCTLuy85XZhhiIahxpjS0wEPMb2x4B8yTQfR1TpCiOO0SSycNpUb7XgHVTtWuMxa-gTHCqUPDEtEn-wzdVAxyyDm0l8dTiAuhValHN3f9QBJNWeCzsZV-dzJPiroA_Whjfgtc3GsEHbn_hOWSwmPwVSvM4JSA6Z5wRmXMStdj6x8u2PW9vtnrs1XH9ntdML5TYyTJ7DIGaD2HIR8dt_y-apJT"/>
+</div>
+<span class="text-xs font-bold text-slate-700">Administrator @ FAB1</span>
+<div class="h-4 w-px bg-slate-200 mx-1"></div>
+<button class="text-slate-500 hover:text-slate-800">
+<span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+</button>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm text-slate-500 hover:bg-slate-50">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</header>
+<!-- Canvas -->
+<div class="p-10 space-y-10 max-w-7xl mx-auto w-full flex-1">
+<!-- Tool Modules Grid -->
+<section>
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="font-manrope text-2xl font-extrabold text-slate-900 tracking-tight">LinkonX Tools</h2>
+<p class="text-on-surface-variant text-sm mt-1">Direct access to core enterprise management modules.</p>
+</div>
+<button class="text-primary font-bold text-sm flex items-center space-x-1 group">
+<span>View All Tools</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Grid of Uniform Dimension Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Query Developer -->
+<div class="bg-surface-container-lowest h-64 rounded-xl p-8 flex flex-col group cursor-pointer hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary/10">
+<div class="w-12 h-12 bg-primary-container rounded-xl flex items-center justify-center text-primary mb-6 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+</div>
+<h3 class="font-manrope font-bold text-lg text-slate-900 mb-2">Query Developer</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-auto">Construct and optimize complex database queries across all enterprise nodes.</p>
+<div class="flex items-center text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        Launch Module <span class="material-symbols-outlined text-xs ml-1" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Menu Editor -->
+<div class="bg-surface-container-lowest h-64 rounded-xl p-8 flex flex-col group cursor-pointer hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary/10">
+<div class="w-12 h-12 bg-secondary-container rounded-xl flex items-center justify-center text-secondary mb-6 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</div>
+<h3 class="font-manrope font-bold text-lg text-slate-900 mb-2">Menu Editor</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-auto">Manage global application navigation hierarchies and permission sets.</p>
+<div class="flex items-center text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        Launch Module <span class="material-symbols-outlined text-xs ml-1" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Language -->
+<div class="bg-surface-container-lowest h-64 rounded-xl p-8 flex flex-col group cursor-pointer hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary/10">
+<div class="w-12 h-12 bg-tertiary-container rounded-xl flex items-center justify-center text-tertiary mb-6 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</div>
+<h3 class="font-manrope font-bold text-lg text-slate-900 mb-2">Language</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-auto">Localize resources and manage multi-lingual string dictionaries globally.</p>
+<div class="flex items-center text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        Launch Module <span class="material-symbols-outlined text-xs ml-1" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Client Config -->
+<div class="bg-surface-container-lowest h-64 rounded-xl p-8 flex flex-col group cursor-pointer hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary/10">
+<div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 mb-6 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+</div>
+<h3 class="font-manrope font-bold text-lg text-slate-900 mb-2">Client Config</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-auto">Tailor individual client environments and feature flags without code changes.</p>
+<div class="flex items-center text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        Launch Module <span class="material-symbols-outlined text-xs ml-1" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- User Manual -->
+<div class="bg-surface-container-lowest h-64 rounded-xl p-8 flex flex-col group cursor-pointer hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary/10">
+<div class="w-12 h-12 bg-primary-container/50 rounded-xl flex items-center justify-center text-primary mb-6 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+</div>
+<h3 class="font-manrope font-bold text-lg text-slate-900 mb-2">User Manual</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-auto">Access comprehensive documentation and technical specifications for the suite.</p>
+<div class="flex items-center text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        Launch Module <span class="material-symbols-outlined text-xs ml-1" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Code Generator -->
+<div class="bg-surface-container-lowest h-64 rounded-xl p-8 flex flex-col group cursor-pointer hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary/10">
+<div class="w-12 h-12 bg-tertiary-container/50 rounded-xl flex items-center justify-center text-tertiary mb-6 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+</div>
+<h3 class="font-manrope font-bold text-lg text-slate-900 mb-2">Code Generator</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-auto">Automate boilerplate generation for new API endpoints and data models.</p>
+<div class="flex items-center text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                        Launch Module <span class="material-symbols-outlined text-xs ml-1" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

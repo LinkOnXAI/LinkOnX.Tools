@@ -621,7 +621,9 @@ function deleteQueryDeveloperNode(documentNode, targetPath) {
   }
 
   const targetNode = children[childIndex];
-  if ((getElementChildren(targetNode) || []).length > 0) {
+  const hasElementChildren = (getElementChildren(targetNode) || []).length > 0;
+  const isSqlGroupNode = String(targetNode?.tagName || "").toUpperCase() === "SG";
+  if (hasElementChildren && !isSqlGroupNode) {
     throw new Error("Delete is disabled when the node has child items.");
   }
 
@@ -793,6 +795,8 @@ function readSqlGroupQueries(sqlGroupNode) {
 }
 
 function setSqlGroupQueries(sqlGroupNode, rawSqlQueries, changed) {
+  removeWhitespaceTextChildren(sqlGroupNode);
+
   const providerMap = new Map();
   const unknownProviderNodes = [];
   const qyNodes = getElementChildren(sqlGroupNode).filter((childNode) => childNode.tagName === "QY");
@@ -832,6 +836,7 @@ function setSqlGroupQueries(sqlGroupNode, rawSqlQueries, changed) {
   });
 
   unknownProviderNodes.forEach((qyNode) => {
+    removeWhitespaceTextChildren(qyNode);
     sqlGroupNode.appendChild(qyNode);
   });
 }
@@ -841,12 +846,26 @@ function refreshSqlParameterNodes(queryNode, provider, queryText) {
   oldParameterNodes.forEach((parameterNode) => {
     queryNode.removeChild(parameterNode);
   });
+  removeWhitespaceTextChildren(queryNode);
 
   const parameters = extractSqlParameters(provider, queryText);
   parameters.forEach((parameterName) => {
     const parameterNode = queryNode.ownerDocument.createElement("QP");
     parameterNode.setAttribute("N", parameterName);
     queryNode.appendChild(parameterNode);
+  });
+}
+
+function removeWhitespaceTextChildren(elementNode) {
+  if (!elementNode) return;
+  const removals = [];
+  for (const childNode of Array.from(elementNode.childNodes || [])) {
+    if (childNode.nodeType !== 3 && childNode.nodeType !== 4) continue;
+    if (String(childNode.data || "").trim() !== "") continue;
+    removals.push(childNode);
+  }
+  removals.forEach((childNode) => {
+    elementNode.removeChild(childNode);
   });
 }
 
