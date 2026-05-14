@@ -334,7 +334,7 @@ export function MenuEditor() {
   }, []);
 
   const onOpenMenuFile = useCallback(async () => {
-    if (supportsFileSystemAccess()) {
+    if (supportsOpenFilePicker()) {
       try {
         const [handle] = await window.showOpenFilePicker({
           multiple: false,
@@ -437,43 +437,28 @@ export function MenuEditor() {
 
     try {
       const built = buildMenuXml(treeRoot, menuMeta);
-      let nextHandle = fileHandle;
       let nextFileName = ensureMenuFileName(selectedFile?.name);
-      let saved = false;
 
-      if (supportsFileSystemAccess()) {
-        try {
-          if (!nextHandle) {
-            nextHandle = await window.showSaveFilePicker({
-              suggestedName: nextFileName,
-              excludeAcceptAllOption: true,
-              types: [{
-                description: "Menu Files",
-                accept: { "application/xml": [".mnu"] },
-              }],
-            });
-          }
+      if (supportsSaveFilePicker()) {
+        const nextHandle = await window.showSaveFilePicker({
+          suggestedName: nextFileName,
+          excludeAcceptAllOption: true,
+          types: [{
+            description: "Menu Files",
+            accept: { "application/xml": [".mnu"] },
+          }],
+        });
+        if (!nextHandle) return;
 
-          const writable = await nextHandle.createWritable();
-          await writable.write(built.xmlText);
-          await writable.close();
+        const writable = await nextHandle.createWritable();
+        await writable.write(built.xmlText);
+        await writable.close();
 
-          nextFileName = ensureMenuFileName(nextHandle.name || nextFileName);
-          setFileHandle(nextHandle);
-          saved = true;
-        } catch (error) {
-          if (isAbortError(error)) return;
-          downloadTextFile(nextFileName, built.xmlText);
-          setFileHandle(null);
-          saved = true;
-        }
+        nextFileName = ensureMenuFileName(nextHandle.name || nextFileName);
+        setFileHandle(nextHandle);
       } else {
         downloadTextFile(nextFileName, built.xmlText);
-        saved = true;
-      }
-
-      if (!saved) {
-        return;
+        setFileHandle(null);
       }
 
       setMenuMeta(built.meta);
@@ -484,7 +469,7 @@ export function MenuEditor() {
       if (isAbortError(error)) return;
       setErrorText(error instanceof Error ? error.message : "Failed to save .mnu file.");
     }
-  }, [treeRoot, menuMeta, fileHandle, selectedFile]);
+  }, [treeRoot, menuMeta, selectedFile]);
 
   const onSearchTree = useCallback(() => {
     const keyword = normalizeSearchText(treeSearchDraft);
@@ -1949,10 +1934,16 @@ function arrayBufferToHexString(buffer) {
   return Array.from(bytes, (value) => value.toString(16).padStart(2, "0").toUpperCase()).join(" ");
 }
 
-function supportsFileSystemAccess() {
+function supportsOpenFilePicker() {
   return (
     typeof window !== "undefined" &&
-    typeof window.showOpenFilePicker === "function" &&
+    typeof window.showOpenFilePicker === "function"
+  );
+}
+
+function supportsSaveFilePicker() {
+  return (
+    typeof window !== "undefined" &&
     typeof window.showSaveFilePicker === "function"
   );
 }

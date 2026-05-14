@@ -94,6 +94,26 @@ function collectQueryChildRefs(parentNode, parentPath, allowedTags) {
       elementPath: [...parentPath, index],
     });
   });
+
+  // TreeView display order requirement:
+  // - Module(M) children Function(F)
+  // - Function(F) children SqlGroup(SG)
+  // Sort by Name(N) ascending while preserving original elementPath indexes.
+  if (parentNode?.tagName === "M" || parentNode?.tagName === "F") {
+    refs.sort((left, right) => {
+      const leftName = String(readAttribute(left?.elementNode, "N", "") || "").trim();
+      const rightName = String(readAttribute(right?.elementNode, "N", "") || "").trim();
+      const byName = leftName.localeCompare(rightName, undefined, {
+        sensitivity: "base",
+        numeric: true,
+      });
+      if (byName !== 0) return byName;
+
+      const leftIndex = Number(left?.elementPath?.[left.elementPath.length - 1] ?? 0);
+      const rightIndex = Number(right?.elementPath?.[right.elementPath.length - 1] ?? 0);
+      return leftIndex - rightIndex;
+    });
+  }
   return refs;
 }
 

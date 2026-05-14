@@ -26,8 +26,19 @@ const app = express();
 
 const port = Number(process.env.PORT || 3001);
 const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
-const jwtSecret = process.env.JWT_SECRET || "linkonx-tools-dev-secret";
+const jwtSecret = readJwtSecret();
 const authCookieName = "linkonx_qd_session";
+const defaultClientIdleLogoutMs = 10 * 60 * 1000;
+const defaultAuthSessionTtlMs = 8 * 60 * 60 * 1000;
+const clientIdleLogoutMs = parsePositiveIntegerEnv(
+  process.env.CLIENT_IDLE_LOGOUT_MS,
+  defaultClientIdleLogoutMs,
+);
+const authSessionTtlMs = parsePositiveIntegerEnv(
+  process.env.AUTH_SESSION_TTL_MS,
+  defaultAuthSessionTtlMs,
+);
+const authSessionTtlSeconds = Math.max(1, Math.floor(authSessionTtlMs / 1000));
 const mssqlConnectionString = String(
   process.env.MSSQL_CONNECTION_STRING ||
     "Data Source=192.168.0.111,1433;Initial Catalog=LINKON;User ID=linkon;Password=p@ssw0rd!2",
@@ -71,6 +82,8 @@ app.get("/api/health", async (_req, res) => {
     pid: process.pid,
     env: isProduction ? "production" : "debug",
     loginRateLimitEnabled,
+    clientIdleLogoutMs,
+    authSessionTtlMs,
   });
 });
 
@@ -157,14 +170,14 @@ WHERE LTRIM(RTRIM(USER_ID)) = @userId
       role: "query-developer",
     },
     jwtSecret,
-    { expiresIn: "8h" },
+    { expiresIn: authSessionTtlSeconds },
   );
 
   res.cookie(authCookieName, token, {
     httpOnly: true,
     sameSite: "lax",
     secure: false,
-    maxAge: 8 * 60 * 60 * 1000,
+    maxAge: authSessionTtlMs,
   });
 
   return res.json({
@@ -173,6 +186,8 @@ WHERE LTRIM(RTRIM(USER_ID)) = @userId
     userName,
     factory: userFactory,
     role: "query-developer",
+    clientIdleLogoutMs,
+    authSessionTtlMs,
   });
 });
 
@@ -203,6 +218,8 @@ app.get("/api/auth/me", requireAuth, (req, res) => {
     userName: req.user.userName || req.user.sub,
     factory: req.user.factory || "",
     role: req.user.role,
+    clientIdleLogoutMs,
+    authSessionTtlMs,
   });
 });
 
@@ -1005,4 +1022,18 @@ function loadEnvFiles(filePaths) {
     if (!fs.existsSync(envPath)) continue;
     dotenv.config({ path: envPath, override: false });
   }
+}
+
+function parsePositiveIntegerEnv(rawValue, fallback) {
+  const parsed = Number.parseInt(String(rawValue || "").trim(), 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+  return parsed;
+}
+
+function readJwtSecret() {
+  const secret = String(process.env.JWT_SECRET || "").trim();
+  if (!secret || secret === "change-this-secret") {
+    throw new Error("Missing JWT_SECRET. Set a non-default JWT_SECRET value in server/.env.");
+  }
+  return secret;
 }

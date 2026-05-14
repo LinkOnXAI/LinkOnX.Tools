@@ -203,7 +203,7 @@ const STITCH_HOME_MODULE_CARDS = [
 ];
 
 const MAIN_LOGO_SRC = buildClientPath("linkonx-main-logo.svg");
-const AUTO_LOGOUT_IDLE_MS = 10 * 60 * 1000;
+const DEFAULT_AUTO_LOGOUT_IDLE_MS = 10 * 60 * 1000;
 const LOGIN_REMEMBER_KEY = "linkon.login.remember";
 const LOGIN_REMEMBER_FACTORY_KEY = "linkon.login.factory";
 const LOGIN_REMEMBER_USER_KEY = "linkon.login.user";
@@ -228,6 +228,22 @@ function normalizeThemePreset(rawTheme) {
 
 function isStitchThemePreset(rawTheme) {
   return STITCH_THEME_PRESETS.includes(String(rawTheme || "").trim().toLowerCase());
+}
+
+function parsePositiveInteger(value, fallback) {
+  const parsed = Number.parseInt(String(value ?? "").trim(), 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+  return parsed;
+}
+
+function formatIdleTimeoutText(timeoutMs) {
+  const safeMs = parsePositiveInteger(timeoutMs, DEFAULT_AUTO_LOGOUT_IDLE_MS);
+  const minutes = safeMs / (60 * 1000);
+  if (Number.isInteger(minutes)) {
+    return `${minutes} minute${minutes === 1 ? "" : "s"}`;
+  }
+  const seconds = Math.max(1, Math.round(safeMs / 1000));
+  return `${seconds} second${seconds === 1 ? "" : "s"}`;
 }
 
 function App() {
@@ -317,6 +333,7 @@ function App() {
   const [saving, setSaving] = useState(false);
   const [banner, setBanner] = useState("");
   const [showAutoLogoutDialog, setShowAutoLogoutDialog] = useState(false);
+  const [autoLogoutIdleMs, setAutoLogoutIdleMs] = useState(DEFAULT_AUTO_LOGOUT_IDLE_MS);
   const [deleteConfirmTarget, setDeleteConfirmTarget] = useState(null);
   const idleTimerRef = useRef(null);
   const autoLogoutPendingRef = useRef(false);
@@ -473,6 +490,7 @@ function App() {
       try {
         const session = await apiRequest("/api/auth/me");
         if (!alive) return;
+        setAutoLogoutIdleMs(parsePositiveInteger(session?.clientIdleLogoutMs, DEFAULT_AUTO_LOGOUT_IDLE_MS));
         setUser(session);
       } catch {
         if (!alive) return;
@@ -596,7 +614,7 @@ function App() {
         void runAutoLogout().finally(() => {
           autoLogoutPendingRef.current = false;
         });
-      }, AUTO_LOGOUT_IDLE_MS);
+      }, autoLogoutIdleMs);
     };
 
     const activityEvents = ["mousemove", "mousedown", "keydown", "touchstart", "scroll", "focus"];
@@ -610,7 +628,7 @@ function App() {
         idleTimerRef.current = null;
       }
     };
-  }, [runAutoLogout, user]);
+  }, [autoLogoutIdleMs, runAutoLogout, user]);
 
   useEffect(() => {
     setSearchMatches([]);
@@ -673,6 +691,7 @@ function App() {
           password: credentials.password,
         },
       });
+      setAutoLogoutIdleMs(parsePositiveInteger(session?.clientIdleLogoutMs, DEFAULT_AUTO_LOGOUT_IDLE_MS));
       setUser(session);
       setActiveModule("home");
       setShowAutoLogoutDialog(false);
@@ -1289,7 +1308,7 @@ function App() {
           <div className="session-dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby="session-dialog-title">
             <section className="session-dialog">
               <h3 id="session-dialog-title">Session Timed Out</h3>
-              <p>You were logged out automatically after 10 minutes of inactivity.</p>
+              <p>You were logged out automatically after {formatIdleTimeoutText(autoLogoutIdleMs)} of inactivity.</p>
               <p className="session-dialog-comment">Would you like to log in again?</p>
               <div className="session-dialog-actions">
                 <button type="button" className="primary-btn" onClick={() => setShowAutoLogoutDialog(false)}>
